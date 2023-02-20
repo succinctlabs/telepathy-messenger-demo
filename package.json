@@ -1,0 +1,13 @@
+{
+  "name": "messenger-demo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "frontend"
+  ],
+  "engines": {
+    "node": ">= 16.15.0",
+    "yarn": ">= 3.0.0"
+  },
+  "packageManager": "yarn@3.3.1"
+}
