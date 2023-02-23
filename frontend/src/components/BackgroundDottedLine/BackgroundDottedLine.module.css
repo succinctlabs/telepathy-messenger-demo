@@ -1,3 +1,4 @@
 .backgroundLine {
     background-image: linear-gradient(to right, var(--color-succinct-black) 0%, var(--color-transparent) 30%, var(--color-transparent) 70%, var(--color-succinct-black) 100%), url("/svgs/line.svg");
+    opacity: 80%;
 }

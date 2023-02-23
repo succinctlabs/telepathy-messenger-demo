@@ -38,12 +38,17 @@ a {
   color: inherit;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+html {
+  color-scheme: dark;
 }
 
+/* Prevent page from shifting when scrollbar appears */
+@media screen and (min-width: 960px) {
+  html {
+      margin-left: calc(100vw - 100%);
+      margin-right: 0;
+  }
+}
 
 .customScrollBar {
   scrollbar-color: var(--color-succinct-teal);
