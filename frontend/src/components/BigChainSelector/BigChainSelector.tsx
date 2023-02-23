@@ -4,36 +4,40 @@ import Image from "next/image";
 import { CaretDown, CaretUp } from "phosphor-react";
 import { forwardRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import styles from "./ChainSelector.module.css";
+import styles from "./BigChainSelector.module.css";
 
-const ChainSelectorChain = (props: {
+type ChainItemProps = {
   chain: string;
   active?: boolean;
   onClick?: () => void;
-}) => {
-  const { chain, active } = props;
-  console.log(chain, active);
-  return (
-    <div
-      className={twMerge(
-        "w-full flex items-center justify-center h-[50px] z-10 cursor-pointer",
-        active && "bg-succinct-teal-30"
-      )}
-      // Prop spreading so Menu.Item passes props correctly
-      {...props}
-    >
-      <Image
-        src={`/svgs/chains/${chain}.svg`}
-        height={50}
-        width={160}
-        alt={`${chain} logo`}
-        style={{ maxHeight: "35px" }}
-      />
-    </div>
-  );
 };
+const ChainItem = forwardRef<HTMLDivElement, ChainItemProps>(
+  (props: ChainItemProps, ref) => {
+    const { chain, active } = props;
+    return (
+      <div
+        className={twMerge(
+          "w-full flex items-center justify-center h-[50px] z-10 cursor-pointer",
+          active && "bg-succinct-teal-30"
+        )}
+        ref={ref}
+        // Prop spreading so Menu.Item passes props correctly
+        {...props}
+      >
+        <Image
+          src={`/svgs/chains/${chain}.svg`}
+          height={50}
+          width={160}
+          alt={`${chain} logo`}
+          style={{ maxHeight: "35px" }}
+        />
+      </div>
+    );
+  }
+);
+ChainItem.displayName = "ChainSelectorChain";
 
-export default function ChainSelector({
+export default function BigChainSelector({
   name,
   defaultChain,
 }: {
@@ -44,22 +48,20 @@ export default function ChainSelector({
 
   return (
     <Menu as="div" className="relative w-full">
-      <Menu.Button className="w-full">
-        <button
-          className={twMerge(
-            styles.sendChainSelect,
-            styles.sendChainSelectFrom,
-            "w-full cursor-pointer"
-          )}
-        >
-          <div className="py-4 flex flex-col items-center">
-            <div className="flex flex-row items-center justify-center space-x-1">
-              <span>{name}</span>
-              <CaretDown />
-            </div>
-            <ChainSelectorChain chain={selected} />
+      <Menu.Button
+        className={twMerge(
+          styles.sendChainSelect,
+          styles.sendChainSelectFrom,
+          "w-full cursor-pointer"
+        )}
+      >
+        <div className="py-4 flex flex-col items-center">
+          <div className="flex flex-row items-center justify-center space-x-1">
+            <span>{name}</span>
+            <CaretDown />
           </div>
-        </button>
+          <ChainItem chain={selected} />
+        </div>
       </Menu.Button>
       <Transition
         className={twMerge(
@@ -81,14 +83,12 @@ export default function ChainSelector({
               </div>
             </Menu.Item>
             <Menu.Item>
-              {({ active }) => (
-                <ChainSelectorChain chain={selected} active={active} />
-              )}
+              {({ active }) => <ChainItem chain={selected} active={active} />}
             </Menu.Item>
             {CHAINS.filter((chain) => chain !== selected).map((chain) => (
               <Menu.Item key={chain}>
                 {({ active }) => (
-                  <ChainSelectorChain
+                  <ChainItem
                     chain={chain}
                     active={active}
                     onClick={() => setSelected(chain)}

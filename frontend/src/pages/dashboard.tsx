@@ -1,4 +1,6 @@
 import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/BackgroundDottedLine";
+import Button from "@/components/Button";
+import ChainSelector from "@/components/ChainSelector";
 import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
 import { Tab } from "@headlessui/react";
 import { useState } from "react";
@@ -37,8 +39,12 @@ export default function Dashboard() {
             <BackgroundDottedLine />
             <Tab.Panels>
               <Tab.Panel>sent</Tab.Panel>
+
               <Tab.Panel>
-                <SliderSelector />
+                <div className="flex flex-row space-x-2">
+                  <SliderSelector />
+                  <ChainSelector label="From">Goerli</ChainSelector>
+                </div>
                 <table className="w-full">
                   <thead>
                     <tr className="font-mono text-succinct-teal-50 text-left">

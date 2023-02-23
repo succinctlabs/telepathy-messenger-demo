@@ -1,6 +1,6 @@
 import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/BackgroundDottedLine";
 import Button from "@/components/Button";
-import ChainSelector from "@/components/ChainSelector/ChainSelector";
+import BigChainSelector from "@/components/BigChainSelector/BigChainSelector";
 import { CodeBlock } from "@/components/CodeBlock";
 import styles from "@/styles/Index.module.css";
 import { PaperPlaneTilt, Shuffle } from "phosphor-react";
@@ -24,8 +24,8 @@ export default function Home() {
         <div className="grid grid-cols-2 mt-6 space-x-8">
           <div className="col-span-1 flex flex-col space-y-2 w-full text-succinct-teal">
             <div className="grid grid-cols-2 space-x-4">
-              <ChainSelector name="From" defaultChain="mainnet" />
-              <ChainSelector name="To" defaultChain="goerli" />
+              <BigChainSelector name="From" defaultChain="mainnet" />
+              <BigChainSelector name="To" defaultChain="goerli" />
             </div>
 
             <div className="w-full grow">
