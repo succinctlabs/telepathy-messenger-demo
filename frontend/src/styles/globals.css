@@ -43,3 +43,25 @@ a {
     color-scheme: dark;
   }
 }
+
+
+.customScrollBar {
+  scrollbar-color: var(--color-succinct-teal);
+  scrollbar-width: 10px;
+}
+
+
+.customScrollBar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Handle */
+.customScrollBar::-webkit-scrollbar-thumb {
+  background: var(--color-succinct-teal-80);
+}
+
+/* Handle on hover */
+.customScrollBar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-succinct-teal);
+}
