@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 import ChainSelector from "@/components/ChainSelector";
 import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
 import { Tab } from "@headlessui/react";
+import Link from "next/link";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -38,7 +39,34 @@ export default function Dashboard() {
             </Tab.List>
             <BackgroundDottedLine />
             <Tab.Panels>
-              <Tab.Panel>sent</Tab.Panel>
+              <Tab.Panel className="relative">
+                <table className="w-full border-separate border-spacing-y-3">
+                  <thead>
+                    <tr className="font-mono text-succinct-teal-50 text-left">
+                      <th className="p-4">FROM</th>
+                      <th className="p-4">MESSAGE</th>
+                      <th className="p-4">PROOF</th>
+                      <th className="p-4">TRANSACTION</th>
+                    </tr>
+                  </thead>
+                  <tbody className="border-spacing-2">
+                    {Array.from(Array(9).keys()).map((_, i) => (
+                      <tr key={i} className="bg-succinct-teal-5">
+                        <td
+                          colSpan={4}
+                          className="p-4 font-mono rounded-xl h-[56px]"
+                        ></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
+                  <h2 className="text-3xl">No messages yet</h2>
+                  <Link href="/">
+                    <Button size="xl">Send a message</Button>
+                  </Link>
+                </div>
+              </Tab.Panel>
 
               <Tab.Panel>
                 <div className="flex flex-row space-x-2">
