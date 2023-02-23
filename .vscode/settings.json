@@ -27,8 +27,6 @@
     "editor.formatOnSave": true
   },
   "solidity.formatter": "forge",
-  // "solidity.packageDefaultDependenciesDirectory": "contracts/lib",
-  // "solidity.packageDefaultDependenciesContractsDirectory": "contracts",
   "search.exclude": { "lib": true },
   "editor.rulers": [
     {
