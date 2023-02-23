@@ -1,8 +1,8 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
-import SuccinctLogo from "public/succinct.svg";
-console.log(SuccinctLogo);
+import SuccinctLogo from "public/svgs/succinct.svg";
+
 export default function NavBar() {
   return (
     <nav className="py-8 flex flex-row items-center justify-between">
@@ -11,7 +11,7 @@ export default function NavBar() {
         <Link href="/" className="mt-1">
           Messenger
         </Link>
-        <Link href="/" className="mt-1 opacity-50">
+        <Link href="/dashboard" className="mt-1 opacity-50">
           Dashboard
         </Link>
         <Link href="/" className="mt-1 opacity-50">
