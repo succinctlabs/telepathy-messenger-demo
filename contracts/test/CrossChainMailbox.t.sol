@@ -5,7 +5,7 @@ import "forge-std/console.sol";
 import "forge-std/Test.sol";
 
 import {CrossChainMailbox, Message} from "contracts/src/CrossChainMailbox.sol";
-import {MockTelepathy} from "telepathy/amb/mocks/MockAMB.sol";
+import {MockTelepathy} from "telepathy/amb/mocks/MockTelepathy.sol";
 
 contract MailboxTest is Test {
     CrossChainMailbox mailbox;
