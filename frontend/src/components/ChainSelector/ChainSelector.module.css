@@ -1,0 +1,13 @@
+.sendChainSelect {
+    border-radius: 40px;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.sendChainSelectFrom {
+    background: linear-gradient(var(--color-succinct-teal-10), var(--color-succinct-teal-10)) padding-box, linear-gradient(156deg, var(--color-succinct-teal) 15%, var(--color-succinct-teal-10) 40%) border-box;
+}
+
+.sendChainSelectTo {
+    background: linear-gradient(var(--color-succinct-teal-10), var(--color-succinct-teal-10)) padding-box, linear-gradient(340deg, var(--color-succinct-teal) 15%, var(--color-succinct-teal-10) 40%) border-box;
+}

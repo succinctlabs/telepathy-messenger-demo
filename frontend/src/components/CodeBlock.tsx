@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Copy } from "phosphor-react";
-import { ReactNode } from "react";
+import { createRef, ReactNode } from "react";
 import styles from "@/styles/CodeBlock.module.css";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import { Prism } from "prism-react-renderer";
@@ -20,6 +20,10 @@ function Border({ children }: { children: ReactNode }) {
       {children}
     </span>
   );
+}
+
+function hasNonAscii(str: string) {
+  return /[^\x00-\x7F]/.test(str);
 }
 
 // @ts-ignore
@@ -44,6 +48,8 @@ export function CodeBlock({
   mailbox: string;
   msg: string;
 }) {
+  const ref = createRef<HTMLPreElement>();
+  const isUnicodeString = hasNonAscii(msg);
   const codeLines = [
     <span key="2">
       address <Teal>telepathy</Teal> = {telepathy}
@@ -59,7 +65,8 @@ export function CodeBlock({
       <Teal>;</Teal>
     </span>,
     <span key="4">
-      bytes memory <Teal>msg</Teal> = &quot;
+      bytes memory <Teal>msg</Teal> ={" "}
+      {isUnicodeString ? <Neon>unicode</Neon> : ""}&quot;
       <Border>
         {msg
           .replaceAll("\\", "\\\\")
@@ -72,10 +79,19 @@ export function CodeBlock({
     " ",
     <span key="6">
       <Teal>
-        ITelepathy(telepathy).<Neon>send</Neon>(targetChain, mailbox, msg);
+        <Neon>ITelepathy</Neon>(telepathy).<Neon>send</Neon>(targetChain,
+        mailbox, msg);
       </Teal>
     </span>,
   ];
+
+  const copyToClipboard = () => {
+    if (ref.current !== null) {
+      navigator.clipboard.writeText(
+        ref.current.innerText.replaceAll("\n \n", "\n\n")
+      );
+    }
+  };
 
   return (
     <div className="bg-[#0A1B2A] h-full relative rounded overflow-hidden">
@@ -101,28 +117,61 @@ export function CodeBlock({
           </pre>
         )}
       </Highlight> */}
-      <div className="h-full flex flex-row pl-4 pt-4">
+      {/* <div className="h-full flex flex-row pl-4 pt-4">
         <pre className="h-full flex flex-col">
           {codeLines.map((line, lineNum) => (
             <span
               key={lineNum}
-              className="text-right pr-4 select-none text-succinct-teal opacity-50"
+              className="table-cell text-right pr-4 select-none text-succinct-teal opacity-50"
             >
               {lineNum + 1}
             </span>
           ))}
         </pre>
         <pre
+          ref={ref}
           className={clsx(
-            "h-full flex flex-col relative",
-            styles.customScrollBar
+            "table-cell h-full flex-col relative customScrollBar whitespace-pre-wrap"
           )}
         >
           {codeLines.map((line, lineNum) => (
             <div key={lineNum}>{line}</div>
           ))}
         </pre>
-        <Button className="absolute bottom-4 right-4 focus:ring-offset-[#0A1B2A]">
+        <Button
+          className="absolute bottom-4 right-4 focus:ring-offset-[#0A1B2A]"
+          onClick={copyToClipboard}
+        >
+          <Copy />
+          <span>Copy snippet</span>
+        </Button>
+      </div>
+    </div> */}
+      <div className="h-full flex pl-4 pt-4">
+        <pre className="h-full table">
+          {codeLines.map((line, lineNum) => (
+            <div key={lineNum}>
+              <span className="table-cell text-right pr-4 select-none text-succinct-teal opacity-50">
+                {lineNum + 1}
+              </span>
+              <span className="table-cell whitespace-pre-line">{line}</span>
+            </div>
+          ))}
+        </pre>
+        {/* <pre
+          ref={ref}
+          className={clsx(
+            "table-cell h-full flex-col relative customScrollBar whitespace-pre-wrap"
+          )}
+        >
+          {codeLines.map((line, lineNum) => (
+            <div key={lineNum}>{line}</div>
+          ))}
+        </pre> */}
+        <Button
+          className="absolute bottom-4 right-4 focus:ring-offset-[#0A1B2A]"
+          onClick={copyToClipboard}
+        >
           <Copy />
           <span>Copy snippet</span>
         </Button>

@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.11",
     "@next/font": "13.1.6",
     "@rainbow-me/rainbowkit": "^0.11.0",
     "@types/node": "18.14.0",
