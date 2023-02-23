@@ -1,0 +1,23 @@
+.sendChainSelect {
+    border-radius: 9999px;
+    padding: 2rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.sendChainSelectFrom {
+    background: linear-gradient(#18232A,#18232A) padding-box, linear-gradient(156deg, #C3DFE0 15%, #18232A 40%) border-box;
+}
+
+.sendChainSelectTo {
+    background: linear-gradient(#18232A,#18232A) padding-box, linear-gradient(340deg, #C3DFE0 15%, #18232A 40%) border-box;
+}
+
+.sendTextarea {
+    border-radius: 10px;
+    padding: 2rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: linear-gradient(rgb(24, 35, 42), rgb(24, 35, 42)) padding-box, linear-gradient(125deg, #C3DFE0 8.73%, #18232A 39.15%, #18232A 68.63%, #C3DFE0 100%) border-box,
+    linear-gradient(0deg, #18232A, #18232A) border-box;
+}
