@@ -28,6 +28,7 @@ module.exports = {
         "teal-90": "#B0CACC",
         "teal-100": "#C3DFE0",
         neon: "#E8FE56",
+        orange: "#FE6535",
       },
     },
     extend: {},
