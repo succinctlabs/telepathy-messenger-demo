@@ -21,7 +21,7 @@ export default function Home() {
           </div>
           <BackgroundDottedLine />
         </div>
-        <div className="grid grid-cols-2 mt-6 space-x-8">
+        <div className="grid grid-cols-3 mt-6 space-x-8">
           <div className="col-span-1 flex flex-col space-y-2 w-full text-succinct-teal">
             <div className="grid grid-cols-2 space-x-4">
               <BigChainSelector name="From" defaultChain="mainnet" />
@@ -66,7 +66,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div>
+          <div className="col-span-2">
             <CodeBlock
               chainId={1}
               telepathy="0x0bF0813EC9170356c51c1bAD52c3fe146d1ccc48"
