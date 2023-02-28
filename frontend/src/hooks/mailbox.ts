@@ -55,7 +55,7 @@ export function useSentMessages(sender?: string, chain?: ChainId) {
     );
 
     setMessages((prev) =>
-      [...prev, ...res].sort((a, b) => b.blockNumber - a.blockNumber)
+      [...prev, ...res].sort((a, b) => b.blockTimestamp - a.blockTimestamp)
     );
     res.forEach((msg) => txHashes.current.add(msg.transactionHash));
   }

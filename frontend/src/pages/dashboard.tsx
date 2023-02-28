@@ -90,9 +90,11 @@ export default function Dashboard() {
                       />
                     ))}
                   {loading && (
-                    <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
-                      {/* <h2 className="text-3xl">Loading messages...</h2> */}
-                    </div>
+                    <td>
+                      <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
+                        {/* <h2 className="text-3xl">Loading messages...</h2> */}
+                      </div>
+                    </td>
                   )}
 
                   {!loading &&
@@ -105,21 +107,23 @@ export default function Dashboard() {
                       />
                     ))}
                   {!loading && messages.length === 0 && (
-                    <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
-                      <h2 className="text-3xl">No messages yet</h2>
-                      <Link href="/">
-                        <Button size="xl">Send a message</Button>
-                      </Link>
-                    </div>
+                    <td>
+                      <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
+                        <h2 className="text-3xl">No messages yet</h2>
+                        <Link href="/">
+                          <Button size="xl">Send a message</Button>
+                        </Link>
+                      </div>
+                    </td>
                   )}
 
                   {!loading &&
                     messages.map((message) => (
                       <Fragment key={message.id}>
-                        <td className="font-mono">
+                        <td className="font-mono whitespace-nowrap">
                           {shortenAddress(message.messageSender)}
                         </td>
-                        <td className="text-succinct-teal">
+                        <td className="text-succinct-teal whitespace-nowrap max-w-[690px] text-ellipsis overflow-hidden">
                           {utils.toUtf8String(message.messageData)}
                         </td>
                         <td className="">
