@@ -3694,21 +3694,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wagmi/chains@npm:0.2.8":
-  version: 0.2.8
-  resolution: "@wagmi/chains@npm:0.2.8"
+"@wagmi/chains@npm:0.2.9":
+  version: 0.2.9
+  resolution: "@wagmi/chains@npm:0.2.9"
   peerDependencies:
     typescript: ">=4.9.4"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: f68b16fa0620fe4162ad3412735a5c239f59c9a7b15e900a217ff7403d74c8a262fdcd77ab0b37cbc747e78c2c197272d9340d9ef091525d5e335e91905d3def
+  checksum: b63112bd7403801ee3d7e2245dbda829163457939aa469041756d8bc175777f350449f857269fb18f42f8007a03ceb13df0b940de28a4fe5e72480b17de800d2
   languageName: node
   linkType: hard
 
-"@wagmi/connectors@npm:0.2.6":
-  version: 0.2.6
-  resolution: "@wagmi/connectors@npm:0.2.6"
+"@wagmi/connectors@npm:0.2.7":
+  version: 0.2.7
+  resolution: "@wagmi/connectors@npm:0.2.7"
   dependencies:
     "@coinbase/wallet-sdk": ^3.5.4
     "@ledgerhq/connect-kit-loader": ^1.0.1
@@ -3728,16 +3728,16 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 48c763d4b8ac072bce36df52de3c847f3fb61261c340e5cff58ffdefa0b686c07059f76c3fc6cd32e04fff417109ec97e115f7e80812fec6422094f4eca5cfae
+  checksum: a3472f1fe68b2c2d6a3a506c1a91999fcfe84e08860d43e4fc9a1d71da5f8f1fcae7965b78f67f8fe58604b5b9fea70ef5d0e84f46fb7d83ef3b789195383897
   languageName: node
   linkType: hard
 
-"@wagmi/core@npm:0.9.6":
-  version: 0.9.6
-  resolution: "@wagmi/core@npm:0.9.6"
+"@wagmi/core@npm:0.9.7":
+  version: 0.9.7
+  resolution: "@wagmi/core@npm:0.9.7"
   dependencies:
-    "@wagmi/chains": 0.2.8
-    "@wagmi/connectors": 0.2.6
+    "@wagmi/chains": 0.2.9
+    "@wagmi/connectors": 0.2.7
     abitype: ^0.3.0
     eventemitter3: ^4.0.7
     zustand: ^4.3.1
@@ -3747,7 +3747,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 3d052510dbb513d564308cb1374bc99cabd6ba18005d969799c9ead054ab5c177901eb23350b08bfd6a2a2faa0c08bd89fde62bb8b96f9141e71060b960608f2
+  checksum: 1d77b16e7092cc4c0460a87d498ff746b5000919365ba3a14e6f3fc1eca04929bca0dfa69996c3f8271da002728f8975356c27182d06ab60bf026a6ace87a51e
   languageName: node
   linkType: hard
 
@@ -7782,11 +7782,12 @@ __metadata:
     prismjs: ^1.29.0
     react: 18.2.0
     react-dom: 18.2.0
+    react-hot-toast: ^2.4.0
     tailwind-merge: ^1.10.0
     tailwindcss: ^3.2.7
     typechain: ^8.1.1
     typescript: 4.9.5
-    wagmi: ^0.11.6
+    wagmi: ^0.11.7
   languageName: unknown
   linkType: soft
 
@@ -8198,6 +8199,15 @@ __metadata:
   bin:
     gluegun: bin/gluegun
   checksum: 71abe7f31555f169a47510675596f79193c8f55e4beeb4e6efa06c22d41988fa9c747d5e398af7f8401cca22c08ffb7a6d57b03d764c14858513c9eba23b53b8
+  languageName: node
+  linkType: hard
+
+"goober@npm:^2.1.10":
+  version: 2.1.12
+  resolution: "goober@npm:2.1.12"
+  peerDependencies:
+    csstype: ^3.0.10
+  checksum: 5945cbe92413031b8859d9087d125a744149e237c8bcf6c15db1998ee3d1b6d680ee4a47dd420f95684b76f72eebc34e98155e8a1cb06748d00cbdc05ede186d
   languageName: node
   linkType: hard
 
@@ -12049,6 +12059,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hot-toast@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "react-hot-toast@npm:2.4.0"
+  dependencies:
+    goober: ^2.1.10
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 910214496d6821af8e643c5f7087eff6c76f1395756f3d6cf1fc07a599c582c443cbb5a4cadfc58205acf0845b77a2a10a4ca49b385e772b72edc57dfd38d016
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -14110,14 +14132,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wagmi@npm:^0.11.6":
-  version: 0.11.6
-  resolution: "wagmi@npm:0.11.6"
+"wagmi@npm:^0.11.7":
+  version: 0.11.7
+  resolution: "wagmi@npm:0.11.7"
   dependencies:
     "@tanstack/query-sync-storage-persister": ^4.14.5
     "@tanstack/react-query": ^4.14.5
     "@tanstack/react-query-persist-client": ^4.14.5
-    "@wagmi/core": 0.9.6
+    "@wagmi/core": 0.9.7
     abitype: ^0.3.0
     use-sync-external-store: ^1.2.0
   peerDependencies:
@@ -14127,7 +14149,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 98f1227650bcc7a92184da2b8b7adfb91b60d1135a41597e13f929aecbe698b54af076d8b532c0d4599cf3e5e57b2d39ce4c9b998e8f7a48042f09afdcb48aab
+  checksum: dd275f7e4f44b4166fd4f95e71b3599bd01bc70a2d5c8458970a3bf560228c82140f72dc9507aa4506904c0c28292580c7705688e9e84157e1996f8316e059a9
   languageName: node
   linkType: hard
 

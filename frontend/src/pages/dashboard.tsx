@@ -24,16 +24,11 @@ export default function Dashboard() {
   const provider = useProvider();
 
   const account = useAccount();
-  console.log(account.address);
-  console.log("address", account);
-
-  console.log("view all", viewAll);
 
   const [messages, loading, refreshMessages] = useSentMessages(
     viewAll ? undefined : account.address,
     selectedChain === "all" ? undefined : selectedChain
   );
-  console.log(loading, messages);
 
   return (
     <div className="w-full flex justify-center mt-10">

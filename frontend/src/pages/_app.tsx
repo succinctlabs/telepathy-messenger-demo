@@ -5,12 +5,14 @@ import {
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
 import type { AppProps } from "next/app";
+import { Check, X } from "phosphor-react";
+import { Toaster } from "react-hot-toast";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { gnosis, goerli, polygon } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 import Layout from "@/components/Layout";
-import { colors } from "@/lib/theme";
+import { colors, getTailwindColor } from "@/lib/theme";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const { chains, provider } = configureChains(
@@ -40,6 +42,22 @@ export default function App({ Component, pageProps }: AppProps) {
         })}
         chains={[]}
       >
+        <Toaster
+          toastOptions={{
+            position: "bottom-right",
+            className: "bg-succinct-black",
+            style: {
+              background: getTailwindColor("succinct.teal-20"),
+              color: getTailwindColor("succinct.teal"),
+            },
+            success: {
+              icon: <Check weight="bold" className="text-succinct-teal" />,
+            },
+            error: {
+              icon: <X weight="bold" className="text-succinct-orange" />,
+            },
+          }}
+        />
         <Layout>
           <Component {...pageProps} />
         </Layout>

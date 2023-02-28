@@ -112,9 +112,12 @@ export function CodeBlock({
 
   const copyToClipboard = () => {
     if (ref.current !== null) {
-      navigator.clipboard.writeText(
-        ref.current.innerText.replaceAll("\n \n", "\n\n")
-      );
+      const text = ref.current.innerText
+        .replaceAll("\n \n", "\n\n")
+        .split("\n")
+        .map((line) => line.split("\t").slice(1).join(" "))
+        .join("\n");
+      navigator.clipboard.writeText(text);
     }
   };
 
@@ -173,7 +176,7 @@ export function CodeBlock({
       </div>
     </div> */}
       <div className="h-full flex pl-4 pt-4">
-        <pre className="h-full table">
+        <pre className="h-full table" ref={ref}>
           {codeLines.map((line, lineNum) => (
             <div key={lineNum}>
               <span className="table-cell text-right pr-4 select-none text-succinct-teal opacity-50">

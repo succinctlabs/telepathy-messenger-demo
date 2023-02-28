@@ -7,6 +7,7 @@ export default function Button({
   disabled,
   size = "md",
   variant = "primary",
+  title = "",
 }: {
   children: React.ReactNode;
   className?: string;
@@ -14,6 +15,7 @@ export default function Button({
   disabled?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
   variant?: "primary" | "secondary";
+  title?: string;
 }) {
   return (
     <button
@@ -24,13 +26,17 @@ export default function Button({
         size === "lg" && "text-lg",
         size === "xl" && "text-xl px-4 py-3",
         variant === "primary" &&
-          "bg-succinct-teal-20 hover:bg-succinct-teal-30 text-succinct-teal focus:ring-succinct-teal-30",
+          "bg-succinct-teal-20 text-succinct-teal focus:ring-succinct-teal-30",
+        !disabled && variant === "primary" && "hover:bg-succinct-teal-30",
         variant === "secondary" &&
-          "bg-succinct-teal hover:bg-succinct-teal-80 text-succinct-black focus:ring-succinct-teal-80",
+          "bg-succinct-teal text-succinct-black focus:ring-succinct-teal-80",
+        !disabled && variant === "secondary" && "hover:bg-succinct-teal-80",
+        disabled && "opacity-50 cursor-not-allowed",
         className
       )}
       onClick={onClick}
       disabled={disabled}
+      title={title}
     >
       {children}
     </button>

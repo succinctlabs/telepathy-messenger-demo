@@ -1,6 +1,6 @@
 import { ChainId } from "./chain";
 
-export const CHAIN_MAP = {
+export const CHAIN_MAP: Partial<Record<ChainId, ChainId[]>> = {
   [ChainId.Goerli]: [ChainId.Gnosis, ChainId.Polygon],
   [ChainId.Gnosis]: [ChainId.Goerli, ChainId.Polygon],
 };

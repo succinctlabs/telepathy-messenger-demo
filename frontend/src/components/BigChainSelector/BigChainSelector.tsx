@@ -1,22 +1,22 @@
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { CaretDown, CaretUp } from "phosphor-react";
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 
 import styles from "./BigChainSelector.module.css";
 
-import { CHAIN_MAP } from "@/lib";
 import { ChainId } from "@/lib/chain";
 
 type ChainItemProps = {
-  chain: string;
+  chain: ChainId;
   active?: boolean;
   onClick?: () => void;
 };
 const ChainItem = forwardRef<HTMLDivElement, ChainItemProps>(
   (props: ChainItemProps, ref) => {
     const { chain, active } = props;
+    const chainName = ChainId.toName(chain);
     return (
       <div
         className={twMerge(
@@ -28,11 +28,12 @@ const ChainItem = forwardRef<HTMLDivElement, ChainItemProps>(
         {...props}
       >
         <Image
-          src={`/svgs/chains/${chain}.svg`}
+          src={`/svgs/chains/${chainName}.svg`}
           height={50}
           width={160}
-          alt={`${chain} logo`}
+          alt={`${chainName} logo`}
           style={{ maxHeight: "35px" }}
+          draggable={false}
         />
       </div>
     );
@@ -42,12 +43,20 @@ ChainItem.displayName = "ChainSelectorChain";
 
 export default function BigChainSelector({
   name,
-  defaultChain,
+  chains,
+  selectedChain,
+  setSelectedChain,
 }: {
   name: string;
-  defaultChain?: string;
+  chains: ChainId[];
+  selectedChain: ChainId;
+  setSelectedChain: (newSelection: ChainId) => void;
 }) {
-  const [selected, setSelected] = useState(defaultChain || "mainnet");
+  useEffect(() => {
+    if (!chains.includes(selectedChain)) {
+      setSelectedChain(chains[0]);
+    }
+  }, [chains]);
 
   return (
     <Menu as="div" className="relative w-full">
@@ -65,7 +74,7 @@ export default function BigChainSelector({
             <span>{name}</span>
             <CaretDown />
           </div>
-          <ChainItem chain={selected} />
+          <ChainItem chain={selectedChain} />
         </div>
       </Menu.Button>
       <Transition
@@ -88,18 +97,19 @@ export default function BigChainSelector({
               </div>
             </Menu.Item>
             <Menu.Item>
-              {({ active }) => <ChainItem chain={selected} active={active} />}
+              {({ active }) => (
+                <ChainItem chain={selectedChain} active={active} />
+              )}
             </Menu.Item>
-            {Object.keys(CHAIN_MAP)
-              .map((chainId) => ChainId.toName(chainId as unknown as ChainId))
-              .filter((chain) => chain !== selected)
+            {chains
+              .filter((chain) => chain !== selectedChain)
               .map((chain) => (
                 <Menu.Item key={chain}>
                   {({ active }) => (
                     <ChainItem
                       chain={chain}
                       active={active}
-                      onClick={() => setSelected(chain)}
+                      onClick={() => setSelectedChain(chain)}
                     />
                   )}
                 </Menu.Item>

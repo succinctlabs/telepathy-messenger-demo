@@ -1,5 +1,5 @@
 import { utils } from "ethers";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { SentMessage } from "@/../.graphclient";
 import { ContractId, CONTRACTS, SOURCE_CHAINS, SUBGRAPHS } from "@/lib";
@@ -46,25 +46,28 @@ export function useEnrichedMessage(
 
 export function useSentMessages(sender?: string, chain?: ChainId) {
   const [loading, setLoading] = useState(false);
+  const txHashes = useRef(new Set<string>());
   const [messages, setMessages] = useState<SentMessage[]>([]);
 
   async function loadChain(chain: ChainId) {
-    const res = await getMessages(chain, PAGE_SIZE, sender);
+    const res = (await getMessages(chain, PAGE_SIZE, sender)).filter(
+      (msg) => !txHashes.current.has(msg.transactionHash)
+    );
+
     setMessages((prev) =>
       [...prev, ...res].sort((a, b) => b.blockNumber - a.blockNumber)
     );
-    console.log(messages);
+    res.forEach((msg) => txHashes.current.add(msg.transactionHash));
   }
 
   async function loadAll() {
     await Promise.all(SOURCE_CHAINS.map(loadChain));
   }
-  console.log(sender);
 
   async function refresh() {
     setLoading(true);
-    console.log("refreshing");
     setMessages([]);
+    txHashes.current = new Set();
     if (chain) {
       await loadChain(chain);
     } else {
