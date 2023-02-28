@@ -4,7 +4,7 @@
   "scripts": {
     "build-client": "graphclient build",
     "dev": "next dev",
-    "build": "yarn build:typechain && yarn build-client && next build",
+    "build": "yarn build-client && next build",
     "start": "next start",
     "lint": "next lint",
     "build:typechain": "typechain --target ethers-v5 --out-dir src/contracts '../contracts/out/?(CrossChainMailbox|ITelepathy).sol/*.json'"

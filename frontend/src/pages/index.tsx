@@ -19,7 +19,7 @@ import styles from "@/styles/Index.module.css";
 
 export default function Home() {
   const [message, setMessage] = useState(
-    "Telepathy uses zero-knowledge succinct proofs in the form of zkSNARKs to generate a validity proof of the state of a chain. Consensus of the source chain is verified in the execution environment of the target chain."
+    "Telepathy uses zero-knowledge succinct proofs in the form of zkSNARKs to generate a validity proof of the state of a chain."
   );
   const [selectedSourceChain, setSelectedSourceChain] = useState(
     ChainId.Goerli
@@ -35,7 +35,6 @@ export default function Home() {
 
   const connectModal = useConnectModal();
   const switchNetwork = useSwitchNetwork();
-  const connect = useConnect();
 
   const router = useRouter();
 
