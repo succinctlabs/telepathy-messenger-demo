@@ -19,14 +19,18 @@ import { shortenAddress } from "@/lib/util";
 export default function Dashboard() {
   const [selectedChain, setSelectedChain] = useState<ChainId | "all">("all");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [viewAll, setViewAll] = useState(false);
 
   const provider = useProvider();
 
   const account = useAccount();
   console.log(account.address);
+  console.log("address", account);
+
+  console.log("view all", viewAll);
 
   const [messages, loading, refreshMessages] = useSentMessages(
-    selectedIndex === 0 ? account.address : undefined,
+    viewAll ? undefined : account.address,
     selectedChain === "all" ? undefined : selectedChain
   );
   console.log(loading, messages);
@@ -63,7 +67,6 @@ export default function Dashboard() {
             <Tab.Panels>
               <Tab.Panel className="relative">
                 <div className="flex flex-row space-x-2">
-                  <SliderSelector />
                   <ChainSelector
                     label="From"
                     chains={SOURCE_CHAINS}
@@ -72,6 +75,9 @@ export default function Dashboard() {
                   >
                     Goerli
                   </ChainSelector>
+                  {account.address && (
+                    <SliderSelector state={viewAll} setState={setViewAll} />
+                  )}
                 </div>
                 <MessagesTable
                   colNames={["FROM", "MESSAGE", "STATUS", "TRANSACTION"]}
@@ -81,16 +87,21 @@ export default function Dashboard() {
                       <td
                         key={i}
                         colSpan={4}
-                        className="p-4 font-mono rounded-xl h-[56px]"
+                        className="p-4 font-mono rounded-xl h-[56px]
+                        relative before:absolute before:inset-0 before:-translate-x-full
+                        before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r
+                        before:from-transparent before:via-succinct-teal-10 before:to-transparent
+                        overflow-hidden"
                       />
                     ))}
                   {loading && (
                     <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
-                      <h2 className="text-3xl">Loading messages...</h2>
+                      {/* <h2 className="text-3xl">Loading messages...</h2> */}
                     </div>
                   )}
 
-                  {messages.length === 0 &&
+                  {!loading &&
+                    messages.length === 0 &&
                     Array.from(Array(9).keys()).map((_, i) => (
                       <td
                         key={i}
@@ -98,7 +109,7 @@ export default function Dashboard() {
                         className="p-4 font-mono rounded-xl h-[56px]"
                       />
                     ))}
-                  {messages.length === 0 && (
+                  {!loading && messages.length === 0 && (
                     <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
                       <h2 className="text-3xl">No messages yet</h2>
                       <Link href="/">

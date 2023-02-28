@@ -62,7 +62,7 @@ export default function ChainSelector({
         </span>
         <CaretDown />
       </Menu.Button>
-      <Menu.Items className="w-full absolute right-0 mt-2 origin-top-right divide-y divide-succinct-teal-5 rounded-md bg-white shadow-lg focus:outline-none bg-succinct-teal-10 overflow-hidden">
+      <Menu.Items className="z-[99] w-full absolute right-0 mt-2 origin-top-right divide-y divide-succinct-teal-5 rounded-md bg-white shadow-lg focus:outline-none bg-succinct-teal-10 overflow-hidden">
         {options.map((chain) => (
           <ChainItem
             key={chain}

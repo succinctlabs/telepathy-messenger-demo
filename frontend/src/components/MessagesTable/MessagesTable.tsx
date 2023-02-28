@@ -9,7 +9,7 @@ export function MessagesTable({
 }) {
   const rows = Children.toArray(children);
   return (
-    <table className="w-full border-separate border-spacing-y-3">
+    <table className="w-full border-separate border-spacing-y-3 relative">
       <thead>
         <tr className="font-mono text-succinct-teal-50 text-left [&>th]:p-4">
           {colNames.map((colName) => (

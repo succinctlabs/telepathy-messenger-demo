@@ -59,9 +59,11 @@ export function useSentMessages(sender?: string, chain?: ChainId) {
   async function loadAll() {
     await Promise.all(SOURCE_CHAINS.map(loadChain));
   }
+  console.log(sender);
 
   async function refresh() {
     setLoading(true);
+    console.log("refreshing");
     setMessages([]);
     if (chain) {
       await loadChain(chain);
