@@ -3,4 +3,3 @@
 /* eslint-disable */
 export * as iTelepathySol from "./ITelepathy.sol";
 export { CrossChainMailbox__factory } from "./CrossChainMailbox__factory";
-export { CrossChainMailer__factory } from "./CrossChainMailer__factory";
