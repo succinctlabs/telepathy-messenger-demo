@@ -1,10 +1,13 @@
-import { CHAINS } from "@/content/chains";
 import { Menu, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { CaretDown, CaretUp } from "phosphor-react";
 import { forwardRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+
 import styles from "./BigChainSelector.module.css";
+
+import { CHAIN_MAP } from "@/lib";
+import { ChainId } from "@/lib/chain";
 
 type ChainItemProps = {
   chain: string;
@@ -51,7 +54,9 @@ export default function BigChainSelector({
       <Menu.Button
         className={twMerge(
           styles.sendChainSelect,
-          styles.sendChainSelectFrom,
+          name === "From"
+            ? styles.sendChainSelectFrom
+            : styles.sendChainSelectTo,
           "w-full cursor-pointer"
         )}
       >
@@ -85,17 +90,20 @@ export default function BigChainSelector({
             <Menu.Item>
               {({ active }) => <ChainItem chain={selected} active={active} />}
             </Menu.Item>
-            {CHAINS.filter((chain) => chain !== selected).map((chain) => (
-              <Menu.Item key={chain}>
-                {({ active }) => (
-                  <ChainItem
-                    chain={chain}
-                    active={active}
-                    onClick={() => setSelected(chain)}
-                  />
-                )}
-              </Menu.Item>
-            ))}
+            {Object.keys(CHAIN_MAP)
+              .map((chainId) => ChainId.toName(chainId as unknown as ChainId))
+              .filter((chain) => chain !== selected)
+              .map((chain) => (
+                <Menu.Item key={chain}>
+                  {({ active }) => (
+                    <ChainItem
+                      chain={chain}
+                      active={active}
+                      onClick={() => setSelected(chain)}
+                    />
+                  )}
+                </Menu.Item>
+              ))}
           </div>
         </Menu.Items>
       </Transition>

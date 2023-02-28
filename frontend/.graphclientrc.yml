@@ -1,0 +1,12 @@
+# .graphclientrc.yml
+sources:
+  - name: TelepathyRouter
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/{context.subgraphName:succinctlabs/telepathy-goerli}
+
+
+documents:
+  - "./src/graphql/*.{gql,graphql}"
+codegen:
+  contextType: "MeshContext & { subgraphName: string }"

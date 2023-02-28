@@ -33,6 +33,7 @@
     "wagmi": "^0.11.6"
   },
   "devDependencies": {
+    "@graphprotocol/client-cli": "^2.2.18",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",

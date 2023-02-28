@@ -1,4 +1,3 @@
-import Layout from "@/components/Layout";
 import "@/styles/globals.css";
 import {
   darkTheme,
@@ -7,13 +6,15 @@ import {
 } from "@rainbow-me/rainbowkit";
 import type { AppProps } from "next/app";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum } from "wagmi/chains";
+import { gnosis, goerli, polygon } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+
+import Layout from "@/components/Layout";
+import { colors } from "@/lib/theme";
 import "@rainbow-me/rainbowkit/styles.css";
-import { colors } from "@/util/theme";
 
 const { chains, provider } = configureChains(
-  [mainnet, polygon, optimism, arbitrum],
+  [goerli, gnosis, polygon],
   [publicProvider()]
 );
 

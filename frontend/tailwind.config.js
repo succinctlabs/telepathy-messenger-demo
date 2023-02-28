@@ -31,7 +31,19 @@ module.exports = {
         orange: "#FE6535",
       },
     },
-    extend: {},
+    extend: {
+      keyframes: {
+        "pulse-dark": {
+          "0%, 100%": { opacity: 1 },
+          "50%": { opacity: 0 },
+        },
+        shimmer: {
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
+      },
+    },
   },
   plugins: [
     // https://gist.github.com/Merott/d2a19b32db07565e94f10d13d11a8574

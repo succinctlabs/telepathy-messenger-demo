@@ -1,0 +1,54 @@
+query GetSentMessages($where: SentMessage_filter, $skip: Int, $count: Int) {
+  sentMessages(
+    where: $where
+    skip: $skip
+    first: $count
+    orderBy: blockTimestamp
+    orderDirection: desc
+  ) {
+    id
+    version
+    msgHash
+    message
+    messageData
+    blockNumber
+    blockTimestamp
+    messageNonce
+    messageReceiver
+    messageReceiverChainID
+    messageSender
+    messageSenderChainID
+    transactionHash
+    transactionOrigin
+  }
+}
+
+query GetExecutedMessages(
+  $where: ExecutedMessage_filter
+  $skip: Int
+  $count: Int
+) {
+  executedMessages(
+    where: $where
+    skip: $skip
+    first: $count
+    orderBy: blockTimestamp
+    orderDirection: desc
+  ) {
+    blockNumber
+    blockTimestamp
+    id
+    message
+    messageData
+    messageNonce
+    messageReceiver
+    messageReceiverChainID
+    messageSenderChainID
+    messageSender
+    msgHash
+    status
+    transactionHash
+    transactionOrigin
+    version
+  }
+}

@@ -1,10 +1,12 @@
 import clsx from "clsx";
 import { Copy } from "phosphor-react";
-import { createRef, ReactNode } from "react";
-import styles from "@/styles/CodeBlock.module.css";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import { Prism } from "prism-react-renderer";
+import { createRef, ReactNode } from "react";
+
 import Button from "./Button";
+
+import styles from "@/styles/CodeBlock.module.css";
 
 function Teal({ children }: { children: ReactNode }) {
   return <span className="text-succinct-teal opacity-70">{children}</span>;
@@ -22,10 +24,16 @@ function Border({ children }: { children: ReactNode }) {
   );
 }
 
+function Orange({ children }: { children: ReactNode }) {
+  return <span className="text-succinct-orange">{children}</span>;
+}
+
 function hasNonAscii(str: string) {
+  // eslint-disable-next-line no-control-regex
   return /[^\x00-\x7F]/.test(str);
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // (typeof global !== "undefined" ? global : window).Prism = Prism;
 // require("prismjs/components/prism-solidity");
@@ -51,37 +59,54 @@ export function CodeBlock({
   const ref = createRef<HTMLPreElement>();
   const isUnicodeString = hasNonAscii(msg);
   const codeLines = [
-    <span key="2">
-      address <Teal>telepathy</Teal> = {telepathy}
+    <span key="1">
+      address <Teal>telepathy</Teal> = <Orange>{telepathy}</Orange>
       <Teal>;</Teal>
     </span>,
-    <span key="3">
-      address <Teal>mailbox</Teal> = {mailbox}
+    <span key="2">
+      address <Teal>mailbox</Teal> = <Orange>{mailbox}</Orange>
       <Teal>;</Teal>
     </span>,
     " ",
-    <span key="1">
-      uint256 <Teal>targetChain</Teal> = <Border>{chainId}</Border>
+    <span key="4">
+      uint256{" "}
+      <Teal>
+        <Border>targetChain</Border>
+      </Teal>{" "}
+      ={" "}
+      <Orange>
+        {/* <Border> */}
+        {chainId}
+        {/* </Border> */}
+      </Orange>
       <Teal>;</Teal>
     </span>,
-    <span key="4">
-      bytes memory <Teal>msg</Teal> ={" "}
-      {isUnicodeString ? <Neon>unicode</Neon> : ""}&quot;
-      <Border>
+    <span key="5">
+      bytes memory{" "}
+      <Teal>
+        <Border>message</Border>
+      </Teal>{" "}
+      ={" "}
+      <Orange>
+        {isUnicodeString ? <Neon>unicode</Neon> : ""}&quot;
+        {/* <Border> */}
         {msg
           .replaceAll("\\", "\\\\")
           .replaceAll('"', '\\"')
           .replaceAll("\n", "\\n")}
-      </Border>
-      &quot;
+        {/* </Border> */}
+        &quot;
+      </Orange>
       <Teal>;</Teal>
     </span>,
     " ",
-    <span key="6">
-      <Teal>
-        <Neon>ITelepathy</Neon>(telepathy).<Neon>send</Neon>(targetChain,
-        mailbox, msg);
-      </Teal>
+    // <span key="7">
+    //   bytes memory <Teal>data</Teal> = <Neon>abi</Neon>.<Neon>encode</Neon>(
+    //   <Teal>msg</Teal>.<Teal>sender</Teal>, <Teal>message</Teal>);
+    // </span>,
+    <span key="7">
+      <Neon>ITelepathy</Neon>(<Teal>telepathy</Teal>).<Neon>send</Neon>(
+      <Teal>targetChain</Teal>, <Teal>mailbox</Teal>, <Teal>message</Teal>);
     </span>,
   ];
 

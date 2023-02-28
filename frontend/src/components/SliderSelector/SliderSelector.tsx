@@ -35,7 +35,7 @@ export function SliderSelector() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   console.log(selectedIndex);
   return (
-    <div className="relative flex flex-row p-1 space-x-0 w-fit bg-succinct-teal-10 rounded-xl font-sans-regular">
+    <div className="relative flex flex-row p-1 space-x-0 w-fit bg-succinct-teal-10 rounded-xl font-sans-regular items-center">
       {/* <button>Sent by me</button> */}
       <SliderButton
         name="Sent by me"

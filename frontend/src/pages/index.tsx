@@ -1,11 +1,12 @@
-import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/BackgroundDottedLine";
-import Button from "@/components/Button";
-import BigChainSelector from "@/components/BigChainSelector/BigChainSelector";
-import { CodeBlock } from "@/components/CodeBlock";
-import styles from "@/styles/Index.module.css";
 import { PaperPlaneTilt, Shuffle } from "phosphor-react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+
+import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/BackgroundDottedLine";
+import BigChainSelector from "@/components/BigChainSelector/BigChainSelector";
+import Button from "@/components/Button";
+import { CodeBlock } from "@/components/CodeBlock";
+import styles from "@/styles/Index.module.css";
 
 export default function Home() {
   const [message, setMessage] = useState(
