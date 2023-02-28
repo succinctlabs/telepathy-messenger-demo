@@ -1,21 +1,20 @@
 import { Tab } from "@headlessui/react";
 import { utils } from "ethers/lib";
-import { Check, Spinner, SpinnerGap } from "phosphor-react";
+import Link from "next/link";
+import { Check } from "phosphor-react";
 import { Fragment, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useAccount, useProvider } from "wagmi";
 
 import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/BackgroundDottedLine";
+import Button from "@/components/Button";
 import ChainSelector from "@/components/ChainSelector";
 import { MessagesTable } from "@/components/MessagesTable/MessagesTable";
 import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
 import { useSentMessages } from "@/hooks/mailbox";
-import { ContractId, CONTRACTS, SOURCE_CHAINS, SUBGRAPHS } from "@/lib";
+import { SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
-import { graphSDK } from "@/lib/graphSDK";
-import { addressToBytes32, shortenAddress } from "@/lib/util";
-import Link from "next/link";
-import Button from "@/components/Button";
+import { shortenAddress } from "@/lib/util";
 
 export default function Dashboard() {
   const [selectedChain, setSelectedChain] = useState<ChainId | "all">("all");
@@ -134,7 +133,14 @@ export default function Dashboard() {
               <Tab.Panel>
                 <div className="flex flex-row space-x-2">
                   <SliderSelector />
-                  <ChainSelector label="From">Goerli</ChainSelector>
+                  <ChainSelector
+                    label="From"
+                    chains={SOURCE_CHAINS}
+                    selectedChain={selectedChain}
+                    setSelectedChain={setSelectedChain}
+                  >
+                    Goerli
+                  </ChainSelector>
                 </div>
                 <MessagesTable
                   colNames={["FROM", "MESSAGE", "PROOF", "TRANSACTION"]}

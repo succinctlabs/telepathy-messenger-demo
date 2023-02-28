@@ -2,9 +2,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { twMerge } from "tailwind-merge";
-
 import SuccinctLogo from "public/svgs/succinct.svg";
+import { twMerge } from "tailwind-merge";
 
 function NavLink({ href, name }: { href: string; name: string }) {
   const { pathname } = useRouter();

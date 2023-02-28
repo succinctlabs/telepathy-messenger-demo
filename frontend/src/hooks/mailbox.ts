@@ -1,12 +1,11 @@
 import { utils } from "ethers";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
+import { SentMessage } from "@/../.graphclient";
 import { ContractId, CONTRACTS, SOURCE_CHAINS, SUBGRAPHS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import { graphSDK } from "@/lib/graphSDK";
 import { addressToBytes32 } from "@/lib/util";
-
-import { SentMessage } from "@/../.graphclient";
 
 async function getMessages(chain: ChainId, count: number, sender?: string) {
   const subgraphName = SUBGRAPHS[chain];
