@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn build-client && next build",
     "start": "next start",
     "lint": "next lint",
     "build:typechain": "typechain --target ethers-v5 --out-dir src/contracts '../contracts/out/?(CrossChainMailer|CrossChainMailbox|ITelepathy).sol/*.json'"
