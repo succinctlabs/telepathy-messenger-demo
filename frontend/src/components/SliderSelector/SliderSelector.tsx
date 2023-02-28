@@ -8,9 +8,9 @@ function SliderButton({
   setState,
 }: {
   name: string;
-  value: number;
-  state: number;
-  setState: (index: number) => void;
+  value: boolean;
+  state: boolean;
+  setState: (index: boolean) => void;
 }) {
   return (
     <label

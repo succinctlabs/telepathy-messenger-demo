@@ -118,32 +118,33 @@ export default function Dashboard() {
                     </div>
                   )}
 
-                  {messages.map((message) => (
-                    <Fragment key={message.id}>
-                      <td className="font-mono">
-                        {shortenAddress(message.messageSender)}
-                      </td>
-                      <td className="text-succinct-teal">
-                        {utils.toUtf8String(message.messageData)}
-                      </td>
-                      <td className="">
-                        <span className="text-succinct-teal-50 flex flex-row items-center space-x-2">
-                          <Check size={20} />
-                          <span>Complete</span>
-                        </span>
-                      </td>
-                      <td className="text-succinct-teal-50 font-mono">
-                        {/* {shortenAddress(message.transactionHash)} */}
-                        {message.transactionHash.slice(0, 20) + "…"}
-                      </td>
-                    </Fragment>
-                  ))}
+                  {!loading &&
+                    messages.map((message) => (
+                      <Fragment key={message.id}>
+                        <td className="font-mono">
+                          {shortenAddress(message.messageSender)}
+                        </td>
+                        <td className="text-succinct-teal">
+                          {utils.toUtf8String(message.messageData)}
+                        </td>
+                        <td className="">
+                          <span className="text-succinct-teal-50 flex flex-row items-center space-x-2">
+                            <Check size={20} />
+                            <span>Complete</span>
+                          </span>
+                        </td>
+                        <td className="text-succinct-teal-50 font-mono">
+                          {/* {shortenAddress(message.transactionHash)} */}
+                          {message.transactionHash.slice(0, 20) + "…"}
+                        </td>
+                      </Fragment>
+                    ))}
                 </MessagesTable>
               </Tab.Panel>
 
               <Tab.Panel>
                 <div className="flex flex-row space-x-2">
-                  <SliderSelector />
+                  <SliderSelector state={viewAll} setState={setViewAll} />
                   <ChainSelector
                     label="From"
                     chains={SOURCE_CHAINS}
