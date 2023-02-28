@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "scripts": {
+    "build-client": "graphclient build",
     "dev": "next dev",
     "build": "yarn build-client && next build",
     "start": "next start",
