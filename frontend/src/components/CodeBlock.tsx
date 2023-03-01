@@ -60,7 +60,7 @@ export function CodeBlock({
   const isUnicodeString = hasNonAscii(msg);
   const codeLines = [
     <span key="1">
-      address <Teal>telepathy</Teal> = <Orange>{telepathy}</Orange>
+      address <Teal>router</Teal> = <Orange>{telepathy}</Orange>
       <Teal>;</Teal>
     </span>,
     <span key="2">
@@ -69,7 +69,7 @@ export function CodeBlock({
     </span>,
     " ",
     <span key="4">
-      uint256{" "}
+      uint32{" "}
       <Teal>
         <Border>targetChain</Border>
       </Teal>{" "}
@@ -82,9 +82,9 @@ export function CodeBlock({
       <Teal>;</Teal>
     </span>,
     <span key="5">
-      bytes memory{" "}
+      string memory{" "}
       <Teal>
-        <Border>message</Border>
+        <Border>input</Border>
       </Teal>{" "}
       ={" "}
       <Orange>
@@ -100,13 +100,11 @@ export function CodeBlock({
       <Teal>;</Teal>
     </span>,
     " ",
-    // <span key="7">
-    //   bytes memory <Teal>data</Teal> = <Neon>abi</Neon>.<Neon>encode</Neon>(
-    //   <Teal>msg</Teal>.<Teal>sender</Teal>, <Teal>message</Teal>);
-    // </span>,
     <span key="7">
-      <Neon>ITelepathy</Neon>(<Teal>telepathy</Teal>).<Neon>send</Neon>(
-      <Teal>targetChain</Teal>, <Teal>mailbox</Teal>, <Teal>message</Teal>);
+      <Neon>ITelepathyBroadcaster</Neon>(<Teal>router</Teal>).
+      <Neon>send</Neon>(<Teal>targetChain</Teal>, <Teal>mailbox</Teal>,{" "}
+      <span className="text-succinct-teal">bytes</span>(<Teal>input</Teal>))
+      <Teal>;</Teal>
     </span>,
   ];
 
