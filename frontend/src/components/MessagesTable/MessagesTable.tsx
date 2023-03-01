@@ -1,19 +1,25 @@
 import { Children, ReactNode } from "react";
 
-export function MessagesTable({
-  colNames,
-  children,
-}: {
-  colNames: string[];
-  children: ReactNode;
-}) {
+const COLUMNS = [
+  "SENDER",
+  "SOURCE",
+  "TARGET",
+  "MESSAGE",
+  "STATUS",
+  "TRANSACTION",
+];
+const WIDTHS = ["140px", "110px", "110px", "auto", "200px", "auto"];
+
+export function MessagesTable({ children }: { children: ReactNode }) {
   const rows = Children.toArray(children);
   return (
-    <table className="w-full border-separate border-spacing-y-3 relative">
+    <table className="w-full border-separate border-spacing-y-3 table-fixed max-w-full">
       <thead>
         <tr className="font-mono text-succinct-teal-50 text-left [&>th]:p-4">
-          {colNames.map((colName) => (
-            <th key={colName}>{colName}</th>
+          {COLUMNS.map((colName, i) => (
+            <th key={colName} style={{ width: WIDTHS[i] }}>
+              {colName}
+            </th>
           ))}
         </tr>
       </thead>
