@@ -4,36 +4,122 @@ import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 import "forge-std/Test.sol";
 
-import {CrossChainMailbox, Message} from "contracts/src/CrossChainMailbox.sol";
+import {CrossChainMailboxSender, CrossChainMailboxReceiver, Message} from "contracts/src/CrossChainMailbox.sol";
 import {MockTelepathy} from "telepathy/amb/mocks/MockTelepathy.sol";
 
 contract MailboxTest is Test {
-    CrossChainMailbox mailbox;
+    uint256 constant FEE = 0.01 ether;
+    uint32 constant SOURCE_CHAIN_ID = 1;
+    uint32 constant TARGET_CHAIN_ID = 100;
+    bytes constant MESSAGE = "Hello, world!";
+
+    CrossChainMailboxSender mailboxSender;
+    CrossChainMailboxReceiver mailboxReceiver;
     MockTelepathy source;
     MockTelepathy target;
+    address owner;
+    address alice;
 
     event MessageReceived(uint32 indexed sourceChain, address indexed sender, string message);
 
     function setUp() public {
-        source = new MockTelepathy(1);
-        target = new MockTelepathy(100);
-        source.addTelepathyReceiver(100, target);
-        mailbox = new CrossChainMailbox(address(target));
+        source = new MockTelepathy(SOURCE_CHAIN_ID);
+        target = new MockTelepathy(TARGET_CHAIN_ID);
+        source.addTelepathyReceiver(TARGET_CHAIN_ID, target);
+
+        owner = payable(makeAddr("owner"));
+        vm.prank(owner);
+        mailboxSender = new CrossChainMailboxSender(FEE, address(source));
+        mailboxReceiver = new CrossChainMailboxReceiver(address(target));
+
+        alice = payable(makeAddr("alice"));
+        deal(alice, 1 ether);
     }
 
-    function testMailbox() public {
-        assertEq(mailbox.messagesLength(), 0);
+    function test_Send() public {
+        assertEq(mailboxReceiver.messagesLength(), 0);
 
-        source.send(100, address(mailbox), "Hello, world!");
+        vm.prank(alice);
+        mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
         vm.expectEmit(true, true, true, true);
-        emit MessageReceived(1, address(this), "Hello, world!");
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE)));
         source.executeNextMessage();
 
-        assertEq(mailbox.messagesLength(), 1);
-        (uint32 sourceChain, address sender, string memory message) = mailbox.messages(0);
-        assertEq(sourceChain, 1);
-        assertEq(sender, address(this));
-        assertEq(message, "Hello, world!");
+        assertEq(mailboxReceiver.messagesLength(), 1);
+        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
+        assertEq(sourceChain, SOURCE_CHAIN_ID);
+        assertEq(sender, address(mailboxSender));
+        assertEq(message, string(abi.encode(MESSAGE)));
+        assertEq(address(mailboxSender).balance, FEE);
+    }
+
+    function test_RevertSend_WhenFeeTooLow() public {
+        assertEq(mailboxReceiver.messagesLength(), 0);
+
+        vm.prank(alice);
+        vm.expectRevert();
+        mailboxSender.sendMail{value: FEE - 1}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
+    }
+
+    function test_setFee() public {
+        assertEq(mailboxSender.fee(), FEE);
+
+        vm.prank(owner);
+        mailboxSender.setFee(FEE + 1);
+
+        assertEq(mailboxSender.fee(), FEE + 1);
+    }
+
+    function test_RevertSetFee_WhenNotOwner() public {
+        assertEq(mailboxSender.fee(), FEE);
+
+        vm.prank(alice);
+        vm.expectRevert();
+        mailboxSender.setFee(FEE + 1);
+    }
+
+    function test_collectFees() public {
+        assertEq(mailboxReceiver.messagesLength(), 0);
+
+        vm.prank(alice);
+        mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
+
+        vm.expectEmit(true, true, true, true);
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE)));
+        source.executeNextMessage();
+
+        assertEq(mailboxReceiver.messagesLength(), 1);
+        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
+        assertEq(sourceChain, SOURCE_CHAIN_ID);
+        assertEq(sender, address(mailboxSender));
+        assertEq(message, string(abi.encode(MESSAGE)));
+        assertEq(address(mailboxSender).balance, FEE);
+
+        vm.prank(owner);
+        mailboxSender.claimFees();
+        assertEq(address(mailboxSender).balance, 0);
+    }
+
+    function test_RevertCollectFees_WhenNotOwner() public {
+        assertEq(mailboxReceiver.messagesLength(), 0);
+
+        vm.prank(alice);
+        mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
+
+        vm.expectEmit(true, true, true, true);
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE)));
+        source.executeNextMessage();
+
+        assertEq(mailboxReceiver.messagesLength(), 1);
+        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
+        assertEq(sourceChain, SOURCE_CHAIN_ID);
+        assertEq(sender, address(mailboxSender));
+        assertEq(message, string(abi.encode(MESSAGE)));
+        assertEq(address(mailboxSender).balance, FEE);
+
+        vm.prank(alice);
+        vm.expectRevert();
+        mailboxSender.claimFees();
     }
 }
