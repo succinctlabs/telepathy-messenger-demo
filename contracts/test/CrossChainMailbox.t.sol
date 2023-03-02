@@ -4,11 +4,11 @@ import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 import "forge-std/Test.sol";
 
-import {CrossChainMailbox, Message} from "contracts/src/CrossChainMailbox.sol";
+import {CrossChainMailboxReceiver, Message} from "contracts/src/CrossChainMailbox.sol";
 import {MockTelepathy} from "telepathy/amb/mocks/MockTelepathy.sol";
 
 contract MailboxTest is Test {
-    CrossChainMailbox mailbox;
+    CrossChainMailboxReceiver mailbox;
     MockTelepathy source;
     MockTelepathy target;
 
@@ -18,7 +18,7 @@ contract MailboxTest is Test {
         source = new MockTelepathy(1);
         target = new MockTelepathy(100);
         source.addTelepathyReceiver(100, target);
-        mailbox = new CrossChainMailbox(address(target));
+        mailbox = new CrossChainMailboxReceiver(address(target));
     }
 
     function testMailbox() public {
