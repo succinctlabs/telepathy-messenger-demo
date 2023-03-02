@@ -3,6 +3,7 @@ pragma solidity ^0.8.16;
 
 import {ITelepathyBroadcaster} from "telepathy/amb/interfaces/ITelepathy.sol";
 import {TelepathyHandler} from "telepathy/amb/interfaces/TelepathyHandler.sol";
+import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
 struct Message {
     uint32 sourceChain;
@@ -10,31 +11,34 @@ struct Message {
     string message;
 }
 
-contract CrossChainMailboxSender {
+contract CrossChainMailboxSender is Ownable {
     error InsufficientFee(uint256 actual, uint256 expected);
 
     /// @notice The fee to pay for sending a message.
-    /// @dev Only applies when sending from non-mainnet chains, used to discourage spam.
+    /// @dev The intention is only set to non-zero when deployed non-mainnet chains, used to discourage spam.
     uint256 public fee;
 
     /// @notice The TelepathyBroadcaster contract, which sends messages to other chains.
     ITelepathyBroadcaster public telepathyBroadcaster;
 
-    /// @notice The receiver Mailbox contract, which handles Telepathy messages.
-    CrossChainMailboxReceiver public receivingMailbox;
-
-    constructor(uint256 _fee, address _TelepathyBroadcaster, address _receivingMailbox) {
+    constructor(uint256 _fee, address _TelepathyBroadcaster) {
         fee = _fee;
         telepathyBroadcaster = ITelepathyBroadcaster(_TelepathyBroadcaster);
-        receivingMailbox = CrossChainMailboxReceiver(_receivingMailbox);
     }
 
-    function sendMail(uint32 _recipientChainId, bytes calldata _message) external payable {
-        if (block.chainid != 1 && msg.value < fee) {
+    /// @notice Sends a message to a target recipient on a target chain.
+    function sendMail(uint32 _recipientChainId, address _recipientMailbox, bytes calldata _message) external payable {
+        if (msg.value < fee) {
             revert InsufficientFee(msg.value, fee);
         }
         bytes memory data = abi.encode(_message); // TODO add extra params to encode
-        telepathyBroadcaster.sendViaStorage(_recipientChainId, address(receivingMailbox), data);
+        telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, data);
+    }
+
+    /// @notice to claimFees to the owner of the contract
+    function claimFees() external onlyOwner {
+        address payable owner = payable(msg.sender);
+        owner.transfer(address(this).balance);
     }
 }
 
