@@ -26,7 +26,10 @@ contract CrossChainMailboxSender is Ownable {
         telepathyBroadcaster = ITelepathyBroadcaster(_TelepathyBroadcaster);
     }
 
-    /// @notice Sends a message to a target recipient on a target chain.
+    /// @notice Sends a message to a target recipient mailbox.
+    /// @param _recipientChainId The chain ID where the target CrossChainMailboxReceiver.
+    /// @param _recipientMailbox The address of the target CrossChainMailboxReceiver.
+    /// @param _message The message to send.
     function sendMail(uint32 _recipientChainId, address _recipientMailbox, bytes calldata _message) external payable {
         if (msg.value < fee) {
             revert InsufficientFee(msg.value, fee);
@@ -35,10 +38,9 @@ contract CrossChainMailboxSender is Ownable {
         telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, data);
     }
 
-    /// @notice to claimFees to the owner of the contract
+    /// @notice Allows owner to claim all fees sent to this contract.
     function claimFees() external onlyOwner {
-        address payable owner = payable(msg.sender);
-        owner.transfer(address(this).balance);
+        payable(owner()).transfer(address(this).balance);
     }
 }
 
