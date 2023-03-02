@@ -3,7 +3,7 @@ pragma solidity ^0.8.16;
 
 import {ITelepathyBroadcaster} from "telepathy/amb/interfaces/ITelepathy.sol";
 import {TelepathyHandler} from "telepathy/amb/interfaces/TelepathyHandler.sol";
-import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
+import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 struct Message {
     uint32 sourceChain;

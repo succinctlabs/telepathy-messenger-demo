@@ -8,7 +8,3 @@
 	url = https://github.com/succinctlabs/telepathy
 [submodule "lib/telepathy"]
 	branch = dev-protocol
-[submodule "contracts/lib/openzeppelin-contracts"]
-	path = contracts/lib/openzeppelin-contracts
-	url = https://github.com/openzeppelin/openzeppelin-contracts
-	branch = v4.8.1
