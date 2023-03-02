@@ -38,6 +38,12 @@ contract CrossChainMailboxSender is Ownable {
         telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, data);
     }
 
+    /// @notice Allows owner to set a new fee.
+    /// @param _fee The new fee to use.
+    function setFee(uint256 _fee) external onlyOwner {
+        fee = _fee;
+    }
+
     /// @notice Allows owner to claim all fees sent to this contract.
     function claimFees() external onlyOwner {
         payable(owner()).transfer(address(this).balance);
