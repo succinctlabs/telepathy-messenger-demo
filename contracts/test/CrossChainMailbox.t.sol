@@ -2,7 +2,7 @@ pragma solidity ^0.8.16;
 
 import "forge-std/Vm.sol";
 import "forge-std/Test.sol";
-import {CrossChainMailboxSender, CrossChainMailboxReceiver, Message} from "contracts/src/CrossChainMailbox.sol";
+import {CrossChainMailer, CrossChainMailbox, Message} from "contracts/src/CrossChainMailbox.sol";
 import {ENSHelper} from "contracts/src/utils/ENSHelper.sol";
 import {StringHelper} from "contracts/src/utils/StringHelper.sol";
 import {MockTelepathy} from "telepathy/amb/mocks/MockTelepathy.sol";
@@ -13,8 +13,8 @@ contract MailboxTest is Test, ENSHelper {
     uint32 constant TARGET_CHAIN_ID = 100;
     bytes constant MESSAGE = "Hello, world!";
 
-    CrossChainMailboxSender mailboxSender;
-    CrossChainMailboxReceiver mailboxReceiver;
+    CrossChainMailer mailboxSender;
+    CrossChainMailbox mailboxReceiver;
     MockTelepathy source;
     MockTelepathy target;
     address owner;
@@ -39,8 +39,8 @@ contract MailboxTest is Test, ENSHelper {
 
         owner = payable(makeAddr("owner"));
         vm.prank(owner);
-        mailboxSender = new CrossChainMailboxSender(FEE, address(source));
-        mailboxReceiver = new CrossChainMailboxReceiver(address(target));
+        mailboxSender = new CrossChainMailer(FEE, address(source));
+        mailboxReceiver = new CrossChainMailbox(address(target));
 
         alice = payable(makeAddr("alice"));
         deal(alice, 0.555 ether);
