@@ -7,7 +7,7 @@
     "build": "yarn build-client && next build",
     "start": "next start",
     "lint": "next lint",
-    "build:typechain": "typechain --target ethers-v5 --out-dir src/contracts '../contracts/out/?(CrossChainMailbox|ITelepathy).sol/*.json'"
+    "build:typechain": "typechain --target ethers-v5 --out-dir src/contracts '../contracts/out/?(CrossChainMailboxSender|CrossChainMailboxReceiver|ITelepathy).sol/*.json'"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.11",

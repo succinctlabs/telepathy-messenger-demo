@@ -44,8 +44,7 @@ export default function Home() {
     //send message
     const telepathyContract =
       CONTRACTS[ContractId.TelepathyRouter][selectedSourceChain];
-    const mailboxContract =
-      CONTRACTS[ContractId.CrossChainMailbox][selectedSourceChain];
+    const mailboxContract = CONTRACTS[ContractId.CrossChainMailbox];
     if (!telepathyContract || !mailboxContract) {
       throw new Error("Contract not found");
     }
@@ -166,13 +165,13 @@ export default function Home() {
                     styles.sendTextareaGradient
                   )}
                 >
-                  <Button
+                  {/* <Button
                     className="absolute bottom-4 left-4 focus:ring-offset-succinct-teal-10 pointer-events-auto"
                     size="lg"
                   >
                     <Shuffle />
                     <span>Shuffle</span>
-                  </Button>
+                  </Button> */}
                   <Button
                     className="absolute bottom-4 right-4 focus:ring-offset-succinct-teal-10 pointer-events-auto h-[46px] min-w-[50px] justify-center"
                     size="lg"
@@ -197,15 +196,14 @@ export default function Home() {
           {/* Code preview */}
           <div className="col-span-2">
             <CodeBlock
-              chainId={selectedTargetChain}
+              sourceChain={selectedSourceChain}
+              targetChain={selectedTargetChain}
               telepathy={
                 CONTRACTS[ContractId.TelepathyRouter]?.[selectedSourceChain] ||
                 ""
               }
               mailbox={
-                CONTRACTS[ContractId.CrossChainMailbox]?.[
-                  selectedTargetChain
-                ] || ""
+                (CONTRACTS[ContractId.CrossChainMailbox] as string) || ""
               }
               msg={message}
             />

@@ -8,12 +8,12 @@ const COLUMNS = [
   "TRANSACTION",
   "STATUS",
 ];
-const WIDTHS = ["140px", "110px", "110px", "auto", "auto", "230px"];
+const WIDTHS = ["140px", "110px", "110px", "auto", "auto", "280px"];
 
 export function MessagesTable({ children }: { children: ReactNode }) {
   const rows = Children.toArray(children);
   return (
-    <table className="w-full border-separate border-spacing-y-3 table-fixed max-w-full">
+    <table className="relative w-full border-separate border-spacing-y-3 table-fixed max-w-full">
       <thead>
         <tr className="font-mono text-succinct-teal-50 text-left [&>th]:p-4">
           {COLUMNS.map((colName, i) => (

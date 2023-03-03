@@ -1,12 +1,10 @@
-import clsx from "clsx";
 import { Copy } from "phosphor-react";
-import Highlight, { defaultProps } from "prism-react-renderer";
-import { Prism } from "prism-react-renderer";
 import { createRef, ReactNode } from "react";
 
 import Button from "./Button";
 
-import styles from "@/styles/CodeBlock.module.css";
+import { ChainId } from "@/lib/chain";
+import { getExplorerUrl } from "@/lib/util";
 
 function Teal({ children }: { children: ReactNode }) {
   return <span className="text-succinct-teal opacity-70">{children}</span>;
@@ -33,25 +31,15 @@ function hasNonAscii(str: string) {
   return /[^\x00-\x7F]/.test(str);
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// (typeof global !== "undefined" ? global : window).Prism = Prism;
-// require("prismjs/components/prism-solidity");
-
-// const code = `uint256 chainId = 1;
-// address telepathy = 0x12;
-// address mailbox = 0x12;
-// bytes memory msg = "asdf alsj falksdjf laskj falskfj laskj ";
-
-// ITelepathy(telepathy).send( chainId, mailbox, msg );`;
-
 export function CodeBlock({
-  chainId,
+  sourceChain,
+  targetChain,
   telepathy,
   mailbox,
   msg,
 }: {
-  chainId: number;
+  sourceChain: ChainId;
+  targetChain: ChainId;
   telepathy: string;
   mailbox: string;
   msg: string;
@@ -60,11 +48,29 @@ export function CodeBlock({
   const isUnicodeString = hasNonAscii(msg);
   const codeLines = [
     <span key="1">
-      address <Teal>router</Teal> = <Orange>{telepathy}</Orange>
+      address <Teal>router</Teal> ={" "}
+      <Orange>
+        <a
+          target="_blank"
+          href={getExplorerUrl(sourceChain, `/address/${telepathy}#code`)}
+          className="underline"
+        >
+          {telepathy}
+        </a>
+      </Orange>
       <Teal>;</Teal>
     </span>,
     <span key="2">
-      address <Teal>mailbox</Teal> = <Orange>{mailbox}</Orange>
+      address <Teal>mailbox</Teal> ={" "}
+      <Orange>
+        <a
+          target="_blank"
+          href={getExplorerUrl(targetChain, `/address/${mailbox}#code`)}
+          className="underline"
+        >
+          {mailbox}
+        </a>
+      </Orange>
       <Teal>;</Teal>
     </span>,
     " ",
@@ -76,7 +82,7 @@ export function CodeBlock({
       ={" "}
       <Orange>
         {/* <Border> */}
-        {chainId}
+        {targetChain}
         {/* </Border> */}
       </Orange>
       <Teal>;</Teal>

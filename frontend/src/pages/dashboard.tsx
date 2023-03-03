@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowClockwise } from "phosphor-react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { useAccount, useProvider } from "wagmi";
 
@@ -9,7 +10,7 @@ import ChainSelector from "@/components/ChainSelector";
 import { MessageRow } from "@/components/MessageRow";
 import { MessagesTable } from "@/components/MessagesTable/MessagesTable";
 import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
-import { useReceivedMessages, useSentMessages } from "@/hooks/mailbox";
+import { useExecutionStatuses, useSentMessages } from "@/hooks/mailbox";
 import { SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import { graphSDK } from "@/lib/graphSDK";
@@ -28,18 +29,17 @@ export default function Dashboard() {
     selectedChain === "all" ? undefined : selectedChain
   );
 
-  console.log(sentMessages);
+  // console.log(sentMessages, loadingSent);
 
-  const sentMsgHashes = useMemo(
-    () => sentMessages.map((msg) => msg.msgHash),
-    [sentMessages]
-  );
+  const [executionStatuses, loadingStatuses, refreshStatuses] =
+    useExecutionStatuses(sentMessages);
+  // const [receivedMessages, loadingReceived, refreshReceived] =
+  //   useReceivedMessages(
+  //     sentMsgHashes,
+  //     selectedChain === "all" ? undefined : selectedChain
+  //   );
 
-  const [receivedMessages, loadingReceived, refreshReceived] =
-    useReceivedMessages(
-      sentMsgHashes,
-      selectedChain === "all" ? undefined : selectedChain
-    );
+  console.log(executionStatuses, loadingStatuses);
 
   useEffect(() => {
     async function test() {
@@ -52,7 +52,7 @@ export default function Dashboard() {
     test();
   }, []);
 
-  console.log(receivedMessages);
+  // console.log(receivedMessages);
 
   return (
     <div className="w-full flex justify-center mt-10">
@@ -66,18 +66,29 @@ export default function Dashboard() {
           </div>
           <BackgroundDottedLine />
           <div className="relative">
-            <div className="flex flex-row space-x-2">
-              <ChainSelector
-                label="From"
-                chains={SOURCE_CHAINS}
-                selectedChain={selectedChain}
-                setSelectedChain={setSelectedChain}
-              >
-                Goerli
-              </ChainSelector>
-              {account.address && (
-                <SliderSelector state={viewAll} setState={setViewAll} />
-              )}
+            <div className="flex flex-row justify-between">
+              <div className="flex flex-row space-x-2">
+                <ChainSelector
+                  label="From"
+                  chains={SOURCE_CHAINS}
+                  selectedChain={selectedChain}
+                  setSelectedChain={setSelectedChain}
+                >
+                  Goerli
+                </ChainSelector>
+                {account.address && (
+                  <SliderSelector state={viewAll} setState={setViewAll} />
+                )}
+              </div>
+              <div>
+                <Button
+                  className="h-[50px] w-[50px]"
+                  onClick={refreshSent}
+                  disabled={loadingSent || loadingStatuses}
+                >
+                  <ArrowClockwise weight="bold" size={"20px"} />
+                </Button>
+              </div>
             </div>
             <MessagesTable>
               {loadingSent &&
@@ -121,11 +132,11 @@ export default function Dashboard() {
               )}
 
               {!loadingSent &&
-                sentMessages.map((message) => (
+                sentMessages.map((message, idx) => (
                   <MessageRow
                     sentMessage={message}
                     key={message.id}
-                    receivedMessage={receivedMessages.get(message.msgHash)}
+                    executionStatus={executionStatuses[idx]}
                   />
                 ))}
             </MessagesTable>

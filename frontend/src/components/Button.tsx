@@ -20,7 +20,7 @@ export default function Button({
   return (
     <button
       className={twMerge(
-        "px-3 py-2 rounded-[10px] space-x-2 flex flex-row items-center border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2",
+        "px-3 py-2 rounded-[10px] space-x-2 flex flex-row items-center justify-center border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2",
         size === "sm" && "text-sm",
         size === "md" && "text-base",
         size === "lg" && "text-lg",

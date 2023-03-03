@@ -1,158 +1,109 @@
-import { utils } from "ethers";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useImmer } from "use-immer";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 
-import { ExecutedMessage, SentMessage } from "@/../.graphclient";
-import { ContractId, CONTRACTS, SOURCE_CHAINS, SUBGRAPHS } from "@/lib";
+import { SentMessage } from "@/../.graphclient";
+import { CONTRACTS } from "@/lib";
 import { ChainId } from "@/lib/chain";
-import { graphSDK } from "@/lib/graphSDK";
+import { ContractId } from "@/lib/config";
+import { ExecutionStatus } from "@/lib/types";
 import { addressToBytes32 } from "@/lib/util";
 
-async function getSentMessages(
-  chain: ChainId,
-  count: number,
-  sender?: string
-): Promise<SentMessage[]> {
-  const subgraphName = SUBGRAPHS[chain];
-  const mailboxAddress = CONTRACTS[ContractId.CrossChainMailbox][chain];
-  if (!subgraphName || !mailboxAddress) {
-    throw new Error("Chain not supported");
-  }
-  const res = await graphSDK.GetSentMessages(
-    {
-      where: {
-        messageReceiver: addressToBytes32(mailboxAddress),
-        messageSender: sender,
-      },
-      count,
-    },
-    { subgraphName }
-  );
-  return res.sentMessages;
-}
-
-async function getExecutedMessages(
-  msgHashes: string[],
-  chain: ChainId
-): Promise<ExecutedMessage[]> {
-  const subgraphName = SUBGRAPHS[chain];
-  if (!subgraphName) {
-    throw new Error("Chain not supported");
-  }
-  if (msgHashes.length === 0) {
+async function getExecutionStatuses(
+  sentMessages: SentMessage[]
+): Promise<ExecutionStatus[]> {
+  if (sentMessages.length === 0) {
     return [];
   }
-  const res = await graphSDK.GetExecutedMessages(
-    {
-      where: {
-        msgHash_in: msgHashes,
-      },
-    },
-    { subgraphName }
+  const res = await axios.post(
+    process.env.NEXT_PUBLIC_TELEPATHY_FUNCTIONS_ENDPOINT +
+      "/api/telepathy/getExecutionStatuses",
+    { messages: sentMessages }
   );
-  return res.executedMessages;
+  if (res.data.status !== "success") {
+    throw new Error("Failed to get execution statuses", res.data);
+  }
+  return res.data.data;
 }
 
 const PAGE_SIZE = 20;
 
-export type EnrichedMessage = SentMessage & { messageString: string };
+export type EnrichedMessage = SentMessage & {
+  executionStatus: ExecutionStatus;
+};
 
-// Will eventually fetch telepathy message status
-export function useEnrichedMessage(
-  message: SentMessage
-): SentMessage | EnrichedMessage {
-  const [enriched, setEnriched] = useState<EnrichedMessage | null>(null);
-  useEffect(() => {
-    setEnriched({
-      ...message,
-      messageString: utils.toUtf8String(message.message),
-    });
-  }, [message]);
-  return enriched || message;
-}
-
-export function useSentMessages(sender?: string, chain?: ChainId) {
+export function useSentMessages(sender?: string, sourceChain?: ChainId) {
   const [loading, setLoading] = useState(false);
-  const txHashes = useRef(new Set<string>());
+  const currentPromise = useRef<Promise<SentMessage[]> | null>(null);
   const [messages, setMessages] = useState<SentMessage[]>([]);
 
-  async function loadChain(chain: ChainId) {
-    const res = (await getSentMessages(chain, PAGE_SIZE, sender)).filter(
-      (msg) => !txHashes.current.has(msg.transactionHash)
+  async function getMessages() {
+    setMessages([]);
+    const results = await axios.post(
+      process.env.NEXT_PUBLIC_TELEPATHY_FUNCTIONS_ENDPOINT +
+        "/api/telepathy/getSentMessages",
+      {
+        where: {
+          messageSenderChainID: sourceChain?.toString(),
+          messageSender: sender,
+          messageReceiver: addressToBytes32(
+            CONTRACTS[ContractId.CrossChainMailbox] as string
+          ),
+        },
+        count: PAGE_SIZE,
+      }
     );
-
-    setMessages((prev) =>
-      [...prev, ...res].sort((a, b) => b.blockTimestamp - a.blockTimestamp)
-    );
-    res.forEach((msg) => txHashes.current.add(msg.transactionHash));
-  }
-
-  async function loadAll() {
-    await Promise.all(SOURCE_CHAINS.map(loadChain));
+    if (results.data.status !== "success") {
+      throw new Error("Failed to get messages: " + results.data.message);
+    }
+    return results.data.data;
   }
 
   async function refresh() {
+    const promise = getMessages();
+    currentPromise.current = promise;
     setLoading(true);
-    setMessages([]);
-    txHashes.current = new Set();
-    if (chain) {
-      await loadChain(chain);
-    } else {
-      await loadAll();
+    const data = await promise;
+    if (currentPromise.current === promise) {
+      setMessages(data);
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
     refresh();
-  }, [sender, chain]);
+  }, [sender, sourceChain]);
 
-  return [
-    useMemo(() => messages.slice(0, PAGE_SIZE), [messages]),
-    loading,
-    refresh,
-  ] as const;
+  return [messages, loading, refresh] as const;
 }
 
 /**
- * Load the corresponding ExecutedMessages that correspond to the SentMessages
- * @returns map of msgHash to ExecutedMessage, loading state, and refresh function
+ * Load the corresponding ExecutionStatuses that correspond to the SentMessages
+ * @returns array of ExecutionStatus
  */
-export function useReceivedMessages(sentMsgHashes: string[], chain?: ChainId) {
+export function useExecutionStatuses(sentMessages: SentMessage[]) {
   const [loading, setLoading] = useState(false);
-  const [messages, setMessages] = useImmer<Map<string, ExecutedMessage>>(
-    new Map()
-  );
-  async function loadChain(chain: ChainId) {
-    const res = await getExecutedMessages(sentMsgHashes, chain);
-    // setMessages(
-    //   new Map<string, ExecutedMessage>(res.map((msg) => [msg.msgHash, msg]))
-    // );
-    setMessages((draft) => {
-      for (const msg of res) {
-        draft.set(msg.msgHash, msg);
-      }
-    });
-  }
-
-  async function loadAll() {
-    await Promise.all(SOURCE_CHAINS.map(loadChain));
-  }
+  const currentPromise = useRef<Promise<ExecutionStatus[]> | null>(null);
+  const [statuses, setStatuses] = useState<ExecutionStatus[]>([]);
 
   async function refresh() {
     setLoading(true);
-    setMessages(new Map());
-    if (chain) {
-      await loadChain(chain);
-    } else {
-      await loadAll();
+    if (sentMessages.length === 0) {
+      setStatuses([]);
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    const promise = getExecutionStatuses(sentMessages);
+    currentPromise.current = promise;
+    const data = await promise;
+    if (currentPromise.current === promise) {
+      setStatuses(data);
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     refresh();
-  }, [sentMsgHashes, chain]);
+  }, [sentMessages]);
 
-  return [messages, loading, refresh] as const;
+  return [statuses, loading, refresh] as const;
 }

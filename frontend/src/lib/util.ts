@@ -1,8 +1,12 @@
 import { ChainId } from "@/lib/chain";
-import { SUBGRAPHS } from "@/lib/config";
+import { EXPLORERS, SUBGRAPHS } from "@/lib/config";
 
 export function addressToBytes32(address: string): string {
-  return address.replace("0x", "0x000000000000000000000000");
+  if (address.length === 42) {
+    return address.replace("0x", "0x000000000000000000000000");
+  } else {
+    return address;
+  }
 }
 
 export function shortenAddress(address: string): string {
@@ -30,4 +34,12 @@ export function getConsensusRpc(chain: ChainId) {
     throw new Error(`No RPC for chain ${ChainId.toName(chain)}`);
   }
   return rpc;
+}
+
+export function getExplorerUrl(chain: ChainId, path: string) {
+  let explorer = EXPLORERS[chain];
+  if (!explorer) {
+    explorer = "https://etherscan.io";
+  }
+  return `${explorer}${path}`;
 }

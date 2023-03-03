@@ -1,29 +1,52 @@
 import { utils } from "ethers";
-import { Check, CircleNotch, Spinner } from "phosphor-react";
+import { Check, CircleNotch, WarningCircle } from "phosphor-react";
 import { Fragment, ReactNode } from "react";
 
-import { ExecutedMessage, SentMessage } from "@/../.graphclient";
+import { SentMessage } from "@/../.graphclient";
 import { ChainId } from "@/lib/chain";
+import { ExecutionStatus } from "@/lib/types";
 import { shortenAddress, titlecase } from "@/lib/util";
 
-function StatusComplete() {
+const STATUS_MAP: Record<ExecutionStatus, ReactNode> = {
+  [ExecutionStatus.WAITING_SLOT_FINALITY]: (
+    <StatusLoading>Waiting for slot to finalize</StatusLoading>
+  ),
+  [ExecutionStatus.WAITING_LIGHT_CLIENT_UPDATE]: (
+    <StatusLoading>Waiting for light client update</StatusLoading>
+  ),
+  [ExecutionStatus.WAITING_SAFETY_DELAY]: (
+    <StatusLoading>Waiting for safety threshold</StatusLoading>
+  ),
+  [ExecutionStatus.WAITING_RELAYER]: (
+    <StatusLoading>Waiting for relayer</StatusLoading>
+  ),
+  [ExecutionStatus.EXECUTED_SUCCESS]: <StatusComplete>Complete</StatusComplete>,
+  [ExecutionStatus.EXECUTED_FAIL]: <StatusError>Failed</StatusError>,
+  [ExecutionStatus.UNKNOWN]: <StatusError>Unknown</StatusError>,
+};
+
+function StatusComplete({ children }: { children?: ReactNode }) {
   return (
     <span className="text-succinct-teal-50 flex flex-row items-center space-x-2">
       <Check weight="bold" size={20} />
-      <span>Complete</span>
+      <span>{children}</span>
     </span>
   );
 }
 
 function StatusLoading({ children }: { children: ReactNode }) {
   return (
-    // <span className="text-succinct-teal-50 flex flex-row items-center space-x-2">
-    //   <span className="animate-pulse">{children}</span>
-    // </span>
     <span className="text-succinct-teal flex flex-row items-center space-x-2">
-      <span className="animate-pulse">
-        <CircleNotch className="animate-spin" size={20} />
-      </span>
+      <CircleNotch className="animate-spin" weight="bold" size={20} />
+      <span>{children}</span>
+    </span>
+  );
+}
+
+function StatusError({ children }: { children: ReactNode }) {
+  return (
+    <span className="text-succinct-orange flex flex-row items-center space-x-2">
+      <WarningCircle weight="bold" size={20} />
       <span>{children}</span>
     </span>
   );
@@ -31,10 +54,10 @@ function StatusLoading({ children }: { children: ReactNode }) {
 
 export function MessageRow({
   sentMessage,
-  receivedMessage,
+  executionStatus,
 }: {
   sentMessage: SentMessage;
-  receivedMessage?: ExecutedMessage;
+  executionStatus?: ExecutionStatus;
 }) {
   return (
     <Fragment>
@@ -63,8 +86,9 @@ export function MessageRow({
         {/* <StatusComplete /> */}
         {/* <StatusLoading>Relaying transaction</StatusLoading> */}
         {/* <StatusLoading>Updating light client</StatusLoading> */}
-        <StatusLoading>Updating light client</StatusLoading>
+        {/* <StatusLoading>{executionStatus}</StatusLoading> */}
         {/* <StatusLoading>Finalizing source block</StatusLoading> */}
+        {executionStatus ? STATUS_MAP[executionStatus] : ""}
       </td>
     </Fragment>
   );
