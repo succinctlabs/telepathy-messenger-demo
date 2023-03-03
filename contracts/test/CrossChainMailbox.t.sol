@@ -2,7 +2,7 @@ pragma solidity ^0.8.16;
 
 import "forge-std/Vm.sol";
 import "forge-std/Test.sol";
-import {CrossChainMailer, CrossChainMailbox, Message} from "contracts/src/CrossChainMailbox.sol";
+import {CrossChainMailer, CrossChainMailbox} from "contracts/src/CrossChainMailbox.sol";
 import {ENSHelper} from "contracts/src/utils/ENSHelper.sol";
 import {StringHelper} from "contracts/src/utils/StringHelper.sol";
 import {MockTelepathy} from "telepathy/amb/mocks/MockTelepathy.sol";
@@ -58,9 +58,7 @@ contract MailboxTest is Test, ENSHelper {
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
-        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
-        assertEq(sourceChain, SOURCE_CHAIN_ID);
-        assertEq(sender, address(mailboxSender));
+        string memory message = mailboxReceiver.messages(0);
         assertEq(message, expectedMessage);
         assertEq(address(mailboxSender).balance, FEE);
     }
@@ -80,9 +78,7 @@ contract MailboxTest is Test, ENSHelper {
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
-        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
-        assertEq(sourceChain, SOURCE_CHAIN_ID);
-        assertEq(sender, address(mailboxSender));
+        string memory message = mailboxReceiver.messages(0);
         assertEq(message, expectedMessage);
         assertEq(address(mailboxSender).balance, FEE);
     }
@@ -124,9 +120,7 @@ contract MailboxTest is Test, ENSHelper {
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
-        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
-        assertEq(sourceChain, SOURCE_CHAIN_ID);
-        assertEq(sender, address(mailboxSender));
+        string memory message = mailboxReceiver.messages(0);
         assertEq(message, expectedMessage);
         assertEq(address(mailboxSender).balance, FEE);
 
@@ -147,9 +141,7 @@ contract MailboxTest is Test, ENSHelper {
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
-        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
-        assertEq(sourceChain, SOURCE_CHAIN_ID);
-        assertEq(sender, address(mailboxSender));
+        string memory message = mailboxReceiver.messages(0);
         assertEq(message, expectedMessage);
         assertEq(address(mailboxSender).balance, FEE);
 

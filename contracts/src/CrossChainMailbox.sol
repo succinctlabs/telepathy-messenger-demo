@@ -7,12 +7,6 @@ import {StringHelper} from "contracts/src/utils/StringHelper.sol";
 import {ITelepathyBroadcaster} from "telepathy/amb/interfaces/ITelepathy.sol";
 import {TelepathyHandler} from "telepathy/amb/interfaces/TelepathyHandler.sol";
 
-struct Message {
-    uint32 sourceChain;
-    address sender;
-    string message;
-}
-
 /// @dev The FeeCollector is for discouraging spam on non-mainnet chains.
 contract CrossChainMailer is FeeCollector, ENSHelper {
     /// @notice The TelepathyBroadcaster contract, which sends messages to other chains.
@@ -36,15 +30,15 @@ contract CrossChainMailer is FeeCollector, ENSHelper {
 }
 
 contract CrossChainMailbox is TelepathyHandler {
-    Message[] public messages;
+    string[] public messages;
 
     event MessageReceived(uint32 indexed sourceChain, address indexed sender, string message);
 
     constructor(address _telepathyReceiever) TelepathyHandler(_telepathyReceiever) {}
 
-    function handleTelepathyImpl(uint32 _sourceChainId, address _senderAddress, bytes memory _data) internal override {
-        messages.push(Message(_sourceChainId, _senderAddress, string(_data)));
-        emit MessageReceived(_sourceChainId, _senderAddress, string(_data));
+    function handleTelepathyImpl(uint32 _sourceChainId, address _sender, bytes memory _message) internal override {
+        messages.push(string(_message));
+        emit MessageReceived(_sourceChainId, _sender, string(_message));
     }
 
     function messagesLength() external view returns (uint256) {
