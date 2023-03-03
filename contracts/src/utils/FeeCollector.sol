@@ -9,10 +9,6 @@ contract FeeCollector is Ownable {
     /// @dev The intention is only set to non-zero when deployed non-mainnet chains, used to discourage spam.
     uint256 public fee;
 
-    constructor(uint256 _fee) {
-        fee = _fee;
-    }
-
     /// @notice Allows owner to set a new fee.
     /// @param _fee The new fee to use.
     function setFee(uint256 _fee) external onlyOwner {
