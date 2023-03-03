@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.16;
 
+import {ENSHelper} from "contracts/src/utils/ENSHelper.sol";
+import {StringHelper} from "contracts/src/utils/StringHelper.sol";
 import {ITelepathyBroadcaster} from "telepathy/amb/interfaces/ITelepathy.sol";
 import {TelepathyHandler} from "telepathy/amb/interfaces/TelepathyHandler.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
@@ -11,7 +13,7 @@ struct Message {
     string message;
 }
 
-contract CrossChainMailboxSender is Ownable {
+contract CrossChainMailboxSender is Ownable, ENSHelper {
     error InsufficientFee(uint256 actual, uint256 expected);
 
     /// @notice The fee to pay for sending a message.
@@ -30,12 +32,12 @@ contract CrossChainMailboxSender is Ownable {
     /// @param _recipientChainId The chain ID where the target CrossChainMailboxReceiver.
     /// @param _recipientMailbox The address of the target CrossChainMailboxReceiver.
     /// @param _message The message to send.
-    function sendMail(uint32 _recipientChainId, address _recipientMailbox, bytes calldata _message) external payable {
+    function sendMail(uint32 _recipientChainId, address _recipientMailbox, bytes memory _message) external payable {
         if (msg.value < fee) {
             revert InsufficientFee(msg.value, fee);
         }
-        bytes memory data = abi.encode(_message); // TODO add extra params to encode
-        telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, data);
+        string memory data = StringHelper.formatMessage(_message, msg.sender.balance, ENSHelper.getName(msg.sender));
+        telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, bytes(data));
     }
 
     /// @notice Allows owner to set a new fee.
