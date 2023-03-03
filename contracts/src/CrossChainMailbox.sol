@@ -13,6 +13,7 @@ struct Message {
     string message;
 }
 
+/// @dev The FeeCollector is for discouraging spam on non-mainnet chains.
 contract CrossChainMailer is FeeCollector, ENSHelper {
     /// @notice The TelepathyBroadcaster contract, which sends messages to other chains.
     ITelepathyBroadcaster public telepathyBroadcaster;
