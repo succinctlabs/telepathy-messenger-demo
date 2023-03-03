@@ -32,12 +32,15 @@ contract CrossChainMailboxSender is Ownable, ENSHelper {
     /// @param _recipientChainId The chain ID where the target CrossChainMailboxReceiver.
     /// @param _recipientMailbox The address of the target CrossChainMailboxReceiver.
     /// @param _message The message to send.
-    function sendMail(uint32 _recipientChainId, address _recipientMailbox, bytes calldata _message) external payable {
+    function sendMail(uint32 _recipientChainId, address _recipientMailbox, bytes memory _message) external payable {
         if (msg.value < fee) {
             revert InsufficientFee(msg.value, fee);
         }
-        bytes memory data = abi.encode(_message, msg.sender.balance, ENSHelper.getName(msg.sender));
-        telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, data);
+        // Add the balance of the sender and their ENS name (if they have one) to the message.
+        string memory data = string.concat(
+            string.concat(string(_message), Strings.toString(msg.sender.balance)), ENSHelper.getName(msg.sender)
+        );
+        telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, bytes(data));
     }
 
     /// @notice Allows owner to set a new fee.
