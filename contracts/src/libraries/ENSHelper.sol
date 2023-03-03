@@ -1,40 +1,51 @@
 pragma solidity ^0.8.16;
 
 import "forge-std/console.sol";
+
+import {Address} from "openzeppelin-contracts/contracts/utils/Address.sol";
 import {ENS} from "ens-contracts/registry/ENS.sol";
 import {IAddrResolver} from "ens-contracts/resolvers/profiles/IAddrResolver.sol";
 import {INameResolver} from "ens-contracts/resolvers/profiles/INameResolver.sol";
 
-library ENSHelper {
+contract ENSHelper {
+    using Address for address;
     using BytesUtils for bytes;
 
     // Same address for Mainet, Ropsten, Rinkerby, Gorli and other networks;
-    ENS constant ensRegistry = ENS(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
+    address constant ensRegistryAddr = 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e;
 
     function getName(address _addr) public view returns (string memory name) {
+        if (!ensRegistryAddr.isContract()) {
+            return "";
+        }
+
         bytes32 node = reverseNode(_addr);
 
         // Use reverse resolver to get the ENS name that address this has.
-        INameResolver reverseResolver = INameResolver(ensRegistry.resolver(node));
-        if (address(reverseResolver) != address(0x0)) {
-            name = reverseResolver.name(node);
-            if (bytes(name).length == 0) {
-                return "";
-            }
+        address reverseResolverAddr = ENS(ensRegistryAddr).resolver(node);
+        if (reverseResolverAddr == address(0) || !reverseResolverAddr.isContract()) {
+            return "";
+        }
+
+        name = INameResolver(reverseResolverAddr).name(node);
+        if (bytes(name).length == 0) {
+            return "";
         }
 
         // ENS does not enforce the accuracy of reverse records, so you you must always perform a
         // forward resolution for the returned name and check it matches the original address.
         bytes32 namehash = bytes(name).namehash(0);
-        IAddrResolver forwardResolver = IAddrResolver(ensRegistry.resolver(namehash));
-        if (address(forwardResolver) != address(0x0)) {
-            address forwardAddr = forwardResolver.addr(namehash);
-            if (forwardAddr == _addr) {
-                return name;
-            }
+        address forwardResolverAddr = ENS(ensRegistryAddr).resolver(namehash);
+        if (forwardResolverAddr == address(0) || !forwardResolverAddr.isContract()) {
+            return "";
         }
 
-        return "";
+        address forwardAddr = IAddrResolver(forwardResolverAddr).addr(namehash);
+        if (forwardAddr == _addr) {
+            return name;
+        } else {
+            return "";
+        }
     }
 
     // Below are helper functions from ReverseRecords.sol, used so we do not have to maintain a

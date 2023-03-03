@@ -13,7 +13,7 @@ struct Message {
     string message;
 }
 
-contract CrossChainMailboxSender is Ownable {
+contract CrossChainMailboxSender is Ownable, ENSHelper {
     error InsufficientFee(uint256 actual, uint256 expected);
 
     /// @notice The fee to pay for sending a message.

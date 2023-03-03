@@ -43,14 +43,14 @@ contract MailboxTest is Test {
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
         vm.expectEmit(true, true, true, true);
-        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE)));
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE, alice.balance, "")));
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
         (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
         assertEq(sourceChain, SOURCE_CHAIN_ID);
         assertEq(sender, address(mailboxSender));
-        assertEq(message, string(abi.encode(MESSAGE)));
+        assertEq(message, string(abi.encode(MESSAGE, alice.balance, "")));
         assertEq(address(mailboxSender).balance, FEE);
     }
 
@@ -86,14 +86,14 @@ contract MailboxTest is Test {
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
         vm.expectEmit(true, true, true, true);
-        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE)));
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE, alice.balance, "")));
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
         (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
         assertEq(sourceChain, SOURCE_CHAIN_ID);
         assertEq(sender, address(mailboxSender));
-        assertEq(message, string(abi.encode(MESSAGE)));
+        assertEq(message, string(abi.encode(MESSAGE, alice.balance, "")));
         assertEq(address(mailboxSender).balance, FEE);
 
         vm.prank(owner);
@@ -108,14 +108,14 @@ contract MailboxTest is Test {
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
         vm.expectEmit(true, true, true, true);
-        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE)));
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE, alice.balance, "")));
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
         (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
         assertEq(sourceChain, SOURCE_CHAIN_ID);
         assertEq(sender, address(mailboxSender));
-        assertEq(message, string(abi.encode(MESSAGE)));
+        assertEq(message, string(abi.encode(MESSAGE, alice.balance, "")));
         assertEq(address(mailboxSender).balance, FEE);
 
         vm.prank(alice);
