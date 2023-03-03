@@ -52,3 +52,21 @@ query GetExecutedMessages(
     version
   }
 }
+
+query GetHeadUpdates($where: HeadUpdate_filter $first: Int, $skip: Int) {
+  headUpdates(
+    where: $where
+    orderBy: blockTimestamp
+    orderDirection: desc
+    first: $first
+    skip: $skip
+  ) {
+    id
+    slot
+    root
+    transactionHash
+    transactionOrigin
+    blockNumber
+    blockTimestamp
+  }
+}

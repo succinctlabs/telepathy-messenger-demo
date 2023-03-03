@@ -1,13 +1,18 @@
 import { utils } from "ethers";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useImmer } from "use-immer";
 
-import { SentMessage } from "@/../.graphclient";
+import { ExecutedMessage, SentMessage } from "@/../.graphclient";
 import { ContractId, CONTRACTS, SOURCE_CHAINS, SUBGRAPHS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import { graphSDK } from "@/lib/graphSDK";
 import { addressToBytes32 } from "@/lib/util";
 
-async function getMessages(chain: ChainId, count: number, sender?: string) {
+async function getSentMessages(
+  chain: ChainId,
+  count: number,
+  sender?: string
+): Promise<SentMessage[]> {
   const subgraphName = SUBGRAPHS[chain];
   const mailboxAddress = CONTRACTS[ContractId.CrossChainMailbox][chain];
   if (!subgraphName || !mailboxAddress) {
@@ -24,6 +29,28 @@ async function getMessages(chain: ChainId, count: number, sender?: string) {
     { subgraphName }
   );
   return res.sentMessages;
+}
+
+async function getExecutedMessages(
+  msgHashes: string[],
+  chain: ChainId
+): Promise<ExecutedMessage[]> {
+  const subgraphName = SUBGRAPHS[chain];
+  if (!subgraphName) {
+    throw new Error("Chain not supported");
+  }
+  if (msgHashes.length === 0) {
+    return [];
+  }
+  const res = await graphSDK.GetExecutedMessages(
+    {
+      where: {
+        msgHash_in: msgHashes,
+      },
+    },
+    { subgraphName }
+  );
+  return res.executedMessages;
 }
 
 const PAGE_SIZE = 20;
@@ -50,7 +77,7 @@ export function useSentMessages(sender?: string, chain?: ChainId) {
   const [messages, setMessages] = useState<SentMessage[]>([]);
 
   async function loadChain(chain: ChainId) {
-    const res = (await getMessages(chain, PAGE_SIZE, sender)).filter(
+    const res = (await getSentMessages(chain, PAGE_SIZE, sender)).filter(
       (msg) => !txHashes.current.has(msg.transactionHash)
     );
 
@@ -80,5 +107,52 @@ export function useSentMessages(sender?: string, chain?: ChainId) {
     refresh();
   }, [sender, chain]);
 
-  return [messages.slice(0, PAGE_SIZE), loading, refresh] as const;
+  return [
+    useMemo(() => messages.slice(0, PAGE_SIZE), [messages]),
+    loading,
+    refresh,
+  ] as const;
+}
+
+/**
+ * Load the corresponding ExecutedMessages that correspond to the SentMessages
+ * @returns map of msgHash to ExecutedMessage, loading state, and refresh function
+ */
+export function useReceivedMessages(sentMsgHashes: string[], chain?: ChainId) {
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useImmer<Map<string, ExecutedMessage>>(
+    new Map()
+  );
+  async function loadChain(chain: ChainId) {
+    const res = await getExecutedMessages(sentMsgHashes, chain);
+    // setMessages(
+    //   new Map<string, ExecutedMessage>(res.map((msg) => [msg.msgHash, msg]))
+    // );
+    setMessages((draft) => {
+      for (const msg of res) {
+        draft.set(msg.msgHash, msg);
+      }
+    });
+  }
+
+  async function loadAll() {
+    await Promise.all(SOURCE_CHAINS.map(loadChain));
+  }
+
+  async function refresh() {
+    setLoading(true);
+    setMessages(new Map());
+    if (chain) {
+      await loadChain(chain);
+    } else {
+      await loadAll();
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    refresh();
+  }, [sentMsgHashes, chain]);
+
+  return [messages, loading, refresh] as const;
 }

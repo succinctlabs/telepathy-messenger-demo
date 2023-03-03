@@ -4,6 +4,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
+import { enableMapSet } from "immer";
 import type { AppProps } from "next/app";
 import { Check, X } from "phosphor-react";
 import { Toaster } from "react-hot-toast";
@@ -30,6 +31,8 @@ const wagmiClient = createClient({
   connectors,
   provider,
 });
+
+enableMapSet();
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

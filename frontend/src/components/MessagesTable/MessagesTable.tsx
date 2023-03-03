@@ -5,10 +5,10 @@ const COLUMNS = [
   "SOURCE",
   "TARGET",
   "MESSAGE",
-  "STATUS",
   "TRANSACTION",
+  "STATUS",
 ];
-const WIDTHS = ["140px", "110px", "110px", "auto", "200px", "auto"];
+const WIDTHS = ["140px", "110px", "110px", "auto", "auto", "230px"];
 
 export function MessagesTable({ children }: { children: ReactNode }) {
   const rows = Children.toArray(children);
@@ -27,7 +27,7 @@ export function MessagesTable({ children }: { children: ReactNode }) {
         {rows.map((row, i) => (
           <tr
             key={i}
-            className="bg-succinct-teal-5 [&>:first-child]:rounded-l-xl [&>:last-child]:rounded-r-xl [&>td]:p-4"
+            className="bg-succinct-teal-5 [&>:first-child]:rounded-l-xl [&>:last-child]:rounded-r-xl [&>td]:py-4 [&>td]:px-4"
           >
             {row}
           </tr>
