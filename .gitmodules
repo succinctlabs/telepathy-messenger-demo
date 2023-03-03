@@ -8,3 +8,7 @@
 	url = https://github.com/succinctlabs/telepathy
 [submodule "lib/telepathy"]
 	branch = dev-protocol
+[submodule "contracts/lib/ens-contracts"]
+	path = contracts/lib/ens-contracts
+	url = https://github.com/ensdomains/ens-contracts
+	branch = v0.0.19

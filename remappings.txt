@@ -6,3 +6,4 @@ openzeppelin-contracts/=contracts/lib/telepathy/contracts/lib/openzeppelin-contr
 optimism-bedrock-contracts/=contracts/lib/telepathy/contracts/lib/optimism-bedrock-contracts/
 telepathy/=contracts/lib/telepathy/contracts/src/
 v3-core/=contracts/lib/telepathy/contracts/lib/v3-core/
+ens-contracts/=contracts/lib/ens-contracts/contracts/
