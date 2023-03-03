@@ -12,7 +12,7 @@ contract CrossChainMailer is FeeCollector, ENSHelper {
     /// @notice The TelepathyBroadcaster contract, which sends messages to other chains.
     ITelepathyBroadcaster public telepathyBroadcaster;
 
-    constructor(uint256 _fee, address _TelepathyBroadcaster) FeeCollector(_fee) {
+    constructor(address _TelepathyBroadcaster) {
         telepathyBroadcaster = ITelepathyBroadcaster(_TelepathyBroadcaster);
     }
 

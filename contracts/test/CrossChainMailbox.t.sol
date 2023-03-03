@@ -27,7 +27,7 @@ contract MailboxTest is Test, ENSHelper {
     event MessageReceived(uint32 indexed sourceChain, address indexed sender, string message);
 
     function setUp() public {
-        string memory GOERLI_RPC_URL = vm.envString("GOERLI_RPC_URL");
+        string memory GOERLI_RPC_URL = vm.envString("RPC_5");
         uint256 forkId = vm.createSelectFork(GOERLI_RPC_URL);
         if (forkId != 0) {
             checkForENS = true;
@@ -39,8 +39,12 @@ contract MailboxTest is Test, ENSHelper {
 
         owner = payable(makeAddr("owner"));
         vm.prank(owner);
-        mailboxSender = new CrossChainMailer(FEE, address(source));
+        mailboxSender = new CrossChainMailer(address(source));
+        vm.prank(owner);
         mailboxReceiver = new CrossChainMailbox(address(target));
+
+        vm.prank(owner);
+        mailboxSender.setFee(FEE);
 
         alice = payable(makeAddr("alice"));
         deal(alice, 0.555 ether);
