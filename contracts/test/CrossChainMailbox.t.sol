@@ -3,10 +3,11 @@ pragma solidity ^0.8.16;
 import "forge-std/Vm.sol";
 import "forge-std/Test.sol";
 import {CrossChainMailboxSender, CrossChainMailboxReceiver, Message} from "contracts/src/CrossChainMailbox.sol";
-import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
+import {ENSHelper} from "contracts/src/utils/ENSHelper.sol";
+import {StringHelper} from "contracts/src/utils/StringHelper.sol";
 import {MockTelepathy} from "telepathy/amb/mocks/MockTelepathy.sol";
 
-contract MailboxTest is Test {
+contract MailboxTest is Test, ENSHelper {
     uint256 constant FEE = 0.01 ether;
     uint32 constant SOURCE_CHAIN_ID = 1;
     uint32 constant TARGET_CHAIN_ID = 100;
@@ -22,7 +23,6 @@ contract MailboxTest is Test {
     bool checkForENS;
     // this address resolves to succinct.eth on Goerli
     address constant ENS_TEST_ADDR = 0xe2B19845Fe2B7Bb353f377d12dD51af012fbba20;
-    string constant ENS_TEST_NAME = "succinct.eth";
 
     event MessageReceived(uint32 indexed sourceChain, address indexed sender, string message);
 
@@ -43,7 +43,7 @@ contract MailboxTest is Test {
         mailboxReceiver = new CrossChainMailboxReceiver(address(target));
 
         alice = payable(makeAddr("alice"));
-        deal(alice, 1 ether);
+        deal(alice, 0.555 ether);
     }
 
     function test_Send() public {
@@ -52,8 +52,7 @@ contract MailboxTest is Test {
         vm.prank(alice);
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
-        string memory expectedMessage =
-            string.concat(string.concat(string(MESSAGE), Strings.toString(alice.balance)), "");
+        string memory expectedMessage = StringHelper.formatMessage(MESSAGE, alice.balance, getName(alice));
         vm.expectEmit(true, true, true, true);
         emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), expectedMessage);
         source.executeNextMessage();
@@ -75,7 +74,7 @@ contract MailboxTest is Test {
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
         string memory expectedMessage =
-            string.concat(string.concat(string(MESSAGE), Strings.toString(ENS_TEST_ADDR.balance)), ENS_TEST_NAME);
+            StringHelper.formatMessage(MESSAGE, ENS_TEST_ADDR.balance, getName(ENS_TEST_ADDR));
         vm.expectEmit(true, true, true, true);
         emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), expectedMessage);
         source.executeNextMessage();
@@ -119,8 +118,7 @@ contract MailboxTest is Test {
         vm.prank(alice);
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
-        string memory expectedMessage =
-            string.concat(string.concat(string(MESSAGE), Strings.toString(alice.balance)), "");
+        string memory expectedMessage = StringHelper.formatMessage(MESSAGE, alice.balance, getName(alice));
         vm.expectEmit(true, true, true, true);
         emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), expectedMessage);
         source.executeNextMessage();
@@ -143,8 +141,7 @@ contract MailboxTest is Test {
         vm.prank(alice);
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
-        string memory expectedMessage =
-            string.concat(string.concat(string(MESSAGE), Strings.toString(alice.balance)), "");
+        string memory expectedMessage = StringHelper.formatMessage(MESSAGE, alice.balance, getName(alice));
         vm.expectEmit(true, true, true, true);
         emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), expectedMessage);
         source.executeNextMessage();

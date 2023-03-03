@@ -1,6 +1,7 @@
 pragma solidity ^0.8.16;
 
 import {Address} from "openzeppelin-contracts/contracts/utils/Address.sol";
+import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
 import {ENS} from "ens-contracts/registry/ENS.sol";
 import {IAddrResolver} from "ens-contracts/resolvers/profiles/IAddrResolver.sol";
 import {INameResolver} from "ens-contracts/resolvers/profiles/INameResolver.sol";
@@ -15,26 +16,26 @@ contract ENSHelper {
     /// The namehash of the `eth` TLD in the ENS registry, eg. namehash("eth").
     bytes32 public constant ETH_NODE = keccak256(abi.encodePacked(bytes32(0), keccak256("eth")));
 
-    /// @notice Returns the ENS name for a given address, or an empty string if no name is set.
+    /// @notice Returns the ENS name for a given address, or an string address if no name is set.
     /// @param _addr The address to lookup.
     /// @return name The ENS name for the given address.
     /// @dev For this to successfully retrieve a name, the address must have the reverse record
     ///     set, and the forward record must match the address.
     function getName(address _addr) public view returns (string memory name) {
         if (!ensRegistryAddr.isContract()) {
-            return "";
+            return Strings.toHexString(_addr);
         }
 
         // Use reverse resolver to get the ENS name that address this has.
         bytes32 nodeReverse = reverseNode(_addr);
         address reverseResolverAddr = ENS(ensRegistryAddr).resolver(nodeReverse);
         if (reverseResolverAddr == address(0) || !reverseResolverAddr.isContract()) {
-            return "";
+            return Strings.toHexString(_addr);
         }
 
         name = INameResolver(reverseResolverAddr).name(nodeReverse);
         if (bytes(name).length == 0) {
-            return "";
+            return Strings.toHexString(_addr);
         }
 
         // ENS does not enforce the accuracy of reverse records, so you you must always perform a
@@ -42,14 +43,14 @@ contract ENSHelper {
         bytes32 nodeForward = bytes(name).namehash(0);
         address forwardResolverAddr = ENS(ensRegistryAddr).resolver(nodeForward);
         if (forwardResolverAddr == address(0) || !forwardResolverAddr.isContract()) {
-            return "";
+            return Strings.toHexString(_addr);
         }
 
         address forwardAddr = IAddrResolver(forwardResolverAddr).addr(nodeForward);
         if (forwardAddr == _addr) {
             return name;
         } else {
-            return "";
+            return Strings.toHexString(_addr);
         }
     }
 

@@ -2,9 +2,9 @@
 pragma solidity ^0.8.16;
 
 import {ENSHelper} from "contracts/src/utils/ENSHelper.sol";
+import {StringHelper} from "contracts/src/utils/StringHelper.sol";
 import {ITelepathyBroadcaster} from "telepathy/amb/interfaces/ITelepathy.sol";
 import {TelepathyHandler} from "telepathy/amb/interfaces/TelepathyHandler.sol";
-import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
 import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 struct Message {
@@ -36,10 +36,7 @@ contract CrossChainMailboxSender is Ownable, ENSHelper {
         if (msg.value < fee) {
             revert InsufficientFee(msg.value, fee);
         }
-        // Add the balance of the sender and their ENS name (if they have one) to the message.
-        string memory data = string.concat(
-            string.concat(string(_message), Strings.toString(msg.sender.balance)), ENSHelper.getName(msg.sender)
-        );
+        string memory data = StringHelper.formatMessage(_message, msg.sender.balance, ENSHelper.getName(msg.sender));
         telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, bytes(data));
     }
 
