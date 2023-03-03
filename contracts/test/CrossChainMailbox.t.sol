@@ -20,9 +20,21 @@ contract MailboxTest is Test {
     address owner;
     address alice;
 
+    bool checkForENS;
+    // this address resolves to succinct.eth
+    address constant testAddr = 0xe2B19845Fe2B7Bb353f377d12dD51af012fbba20;
+    string constant testENSName = "succinct.eth";
+
     event MessageReceived(uint32 indexed sourceChain, address indexed sender, string message);
 
     function setUp() public {
+        string memory GOERLI_RPC_URL = vm.envString("GOERLI_RPC_URL");
+        uint256 forkId = vm.createSelectFork(GOERLI_RPC_URL);
+        if (forkId != 0) {
+            checkForENS = true;
+        }
+        console.log("Fork ID: ", forkId);
+
         source = new MockTelepathy(SOURCE_CHAIN_ID);
         target = new MockTelepathy(TARGET_CHAIN_ID);
         source.addTelepathyReceiver(TARGET_CHAIN_ID, target);
@@ -39,18 +51,36 @@ contract MailboxTest is Test {
     function test_Send() public {
         assertEq(mailboxReceiver.messagesLength(), 0);
 
-        vm.prank(alice);
+        vm.prank(testAddr);
         mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
 
         vm.expectEmit(true, true, true, true);
-        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE, alice.balance, "")));
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE, testAddr.balance, "")));
         source.executeNextMessage();
 
         assertEq(mailboxReceiver.messagesLength(), 1);
         (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
         assertEq(sourceChain, SOURCE_CHAIN_ID);
         assertEq(sender, address(mailboxSender));
-        assertEq(message, string(abi.encode(MESSAGE, alice.balance, "")));
+        assertEq(message, string(abi.encode(MESSAGE, testAddr.balance, "")));
+        assertEq(address(mailboxSender).balance, FEE);
+    }
+
+    function test_Send_WhenSenderHasENS() public {
+        vm.assume(checkForENS);
+
+        vm.prank(testAddr);
+        mailboxSender.sendMail{value: FEE}(TARGET_CHAIN_ID, address(mailboxReceiver), MESSAGE);
+
+        vm.expectEmit(true, true, true, true);
+        emit MessageReceived(SOURCE_CHAIN_ID, address(mailboxSender), string(abi.encode(MESSAGE, testAddr.balance, "")));
+        source.executeNextMessage();
+
+        assertEq(mailboxReceiver.messagesLength(), 1);
+        (uint32 sourceChain, address sender, string memory message) = mailboxReceiver.messages(0);
+        assertEq(sourceChain, SOURCE_CHAIN_ID);
+        assertEq(sender, address(mailboxSender));
+        assertEq(message, string(abi.encode(MESSAGE, testAddr.balance, "")));
         assertEq(address(mailboxSender).balance, FEE);
     }
 

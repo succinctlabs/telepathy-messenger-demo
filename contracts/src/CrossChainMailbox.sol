@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.16;
 
+import "forge-std/console.sol";
+
 import {ENSHelper} from "contracts/src/libraries/ENSHelper.sol";
 import {ITelepathyBroadcaster} from "telepathy/amb/interfaces/ITelepathy.sol";
 import {TelepathyHandler} from "telepathy/amb/interfaces/TelepathyHandler.sol";
@@ -36,6 +38,8 @@ contract CrossChainMailboxSender is Ownable, ENSHelper {
         if (msg.value < fee) {
             revert InsufficientFee(msg.value, fee);
         }
+        console.log("msg.sender");
+        console.log(msg.sender);
         bytes memory data = abi.encode(_message, msg.sender.balance, ENSHelper.getName(msg.sender));
         telepathyBroadcaster.sendViaStorage(_recipientChainId, _recipientMailbox, data);
     }

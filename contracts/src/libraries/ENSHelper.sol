@@ -14,31 +14,49 @@ contract ENSHelper {
     // Same address for Mainet, Ropsten, Rinkerby, Gorli and other networks;
     address constant ensRegistryAddr = 0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e;
 
+    /// The namehash of the `eth` TLD in the ENS registry, eg. namehash("eth").
+    bytes32 public constant ETH_NODE = keccak256(abi.encodePacked(bytes32(0), keccak256("eth")));
+
     function getName(address _addr) public view returns (string memory name) {
         if (!ensRegistryAddr.isContract()) {
             return "";
         }
 
+        console.log("Getting name for address: ", _addr);
+
         bytes32 node = reverseNode(_addr);
+
+        console.logBytes32(node);
 
         // Use reverse resolver to get the ENS name that address this has.
         address reverseResolverAddr = ENS(ensRegistryAddr).resolver(node);
+        // address reverseResolverAddr = 0x342cf18D3e41DE491aa1a3067574C849AdA6a2Ad;
+        console.log("reverseResolverAddr: ", reverseResolverAddr);
         if (reverseResolverAddr == address(0) || !reverseResolverAddr.isContract()) {
             return "";
         }
 
         name = INameResolver(reverseResolverAddr).name(node);
+        console.log("name: ", name);
         if (bytes(name).length == 0) {
             return "";
         }
 
         // ENS does not enforce the accuracy of reverse records, so you you must always perform a
         // forward resolution for the returned name and check it matches the original address.
-        bytes32 namehash = bytes(name).namehash(0);
+        // bytes32 namehash = bytes(name).namehash(0);
+        // console.logBytes32(namehash);
+
+        bytes32 label = keccak256(bytes(name));
+        bytes32 node2 = namehash(ETH_NODE, label);
+
         address forwardResolverAddr = ENS(ensRegistryAddr).resolver(namehash);
         if (forwardResolverAddr == address(0) || !forwardResolverAddr.isContract()) {
             return "";
         }
+
+        console.log("forwardResolverAddr: ", forwardResolverAddr);
+        console.logBytes32(namehash);
 
         address forwardAddr = IAddrResolver(forwardResolverAddr).addr(namehash);
         if (forwardAddr == _addr) {
@@ -97,18 +115,23 @@ library BytesUtils {
         }
     }
 
+    function namehash(bytes32 parent, bytes32 label) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(parent, label));
+    }
+
     /**
      * @dev Returns the ENS namehash of a DNS-encoded name.
      * @param self The DNS-encoded name to hash.
      * @param offset The offset at which to start hashing.
      * @return The namehash of the name.
      */
-    function namehash(bytes memory self, uint256 offset) internal pure returns (bytes32) {
+    function namehash(bytes memory self, uint256 offset) internal view returns (bytes32) {
         (bytes32 labelhash, uint256 newOffset) = readLabel(self, offset);
         if (labelhash == bytes32(0)) {
             require(offset == self.length - 1, "namehash: Junk at end of name");
             return bytes32(0);
         }
+        console.logBytes32(labelhash);
         return keccak256(abi.encodePacked(namehash(self, newOffset), labelhash));
     }
 
@@ -119,9 +142,11 @@ library BytesUtils {
      * @return labelhash The hash of the label at the specified index, or 0 if it is the last label.
      * @return newIdx The index of the start of the next label.
      */
-    function readLabel(bytes memory self, uint256 idx) internal pure returns (bytes32 labelhash, uint256 newIdx) {
+    function readLabel(bytes memory self, uint256 idx) internal view returns (bytes32 labelhash, uint256 newIdx) {
+        console.log(idx);
         require(idx < self.length, "readLabel: Index out of bounds");
         uint256 len = uint256(uint8(self[idx]));
+        console.log(len);
         if (len > 0) {
             labelhash = keccak(self, idx + 1, len);
         } else {
