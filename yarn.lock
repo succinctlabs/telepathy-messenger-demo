@@ -3375,7 +3375,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.159":
+"@types/lodash.merge@npm:^4.6.7":
+  version: 4.6.7
+  resolution: "@types/lodash.merge@npm:4.6.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: 94cd6fb8e606756a28f45d63c658aacfbce11a151f7fa322c4a3e87aa50d8bf26e0ae8cba0250070a7c5a6792fc51f79abf4c648bbb1850692be386cd76cd0ca
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*, @types/lodash@npm:^4.14.159":
   version: 4.14.191
   resolution: "@types/lodash@npm:4.14.191"
   checksum: ba0d5434e10690869f32d5ea49095250157cae502f10d57de0a723fd72229ce6c6a4979576f0f13e0aa9fbe3ce2457bfb9fa7d4ec3d6daba56730a51906d1491
@@ -7787,6 +7796,7 @@ __metadata:
     "@next/font": 13.1.6
     "@rainbow-me/rainbowkit": ^0.11.0
     "@typechain/ethers-v5": ^10.2.0
+    "@types/lodash.merge": ^4.6.7
     "@types/node": 18.14.0
     "@types/prismjs": ^1.26.0
     "@types/react": 18.0.28
@@ -7799,6 +7809,7 @@ __metadata:
     eslint-plugin-tailwindcss: ^3.9.0
     ethers: ^5.5.1
     immer: ^9.0.19
+    lodash.merge: ^4.6.2
     next: 13.1.6
     phosphor-react: ^1.4.1
     postcss: ^8.4.21

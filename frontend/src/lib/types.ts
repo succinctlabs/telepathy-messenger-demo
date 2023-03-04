@@ -9,3 +9,9 @@ export enum ExecutionStatus {
   // TODO: for messages that are WAITING_RELAYER, we can check if the target chain is frozen with ethers
   // TARGET_CHAIN_FROZEN = "TARGET_CHAIN_FROZEN",
 }
+
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;

@@ -70,3 +70,7 @@ html {
 .customScrollBar::-webkit-scrollbar-thumb:hover {
   background: var(--color-succinct-teal);
 }
+
+[data-rk] div {
+  font-weight: normal;
+}

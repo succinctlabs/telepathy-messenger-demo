@@ -35,9 +35,7 @@ export default function NavBar() {
         <NavLink href="https://docs.succinct.xyz/" name="Docs" />
       </div>
       <div className="flex flex-row items-center space-x-4">
-        <Link href="/" className="mt-1">
-          Become an early partner
-        </Link>
+        <Link href="/">Become an early partner</Link>
         <ConnectButton />
       </div>
     </nav>

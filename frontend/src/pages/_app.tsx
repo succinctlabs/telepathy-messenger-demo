@@ -3,8 +3,10 @@ import {
   darkTheme,
   getDefaultWallets,
   RainbowKitProvider,
+  Theme,
 } from "@rainbow-me/rainbowkit";
 import { enableMapSet } from "immer";
+import merge from "lodash.merge";
 import type { AppProps } from "next/app";
 import { Check, X } from "phosphor-react";
 import { Toaster } from "react-hot-toast";
@@ -13,7 +15,8 @@ import { gnosis, goerli, polygon } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 import Layout from "@/components/Layout";
-import { colors, getTailwindColor } from "@/lib/theme";
+import { getTailwindColor } from "@/lib/theme";
+import { DeepPartial } from "@/lib/types";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const { chains, provider } = configureChains(
@@ -38,10 +41,20 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
-        theme={darkTheme({
-          // accentColor: "#18232A",
-          accentColor: colors?.neon as string,
-          accentColorForeground: colors?.black as string,
+        theme={merge<Theme, DeepPartial<Theme>>(darkTheme(), {
+          radii: {
+            actionButton: "10px",
+            connectButton: "10px",
+            modal: "10px",
+            modalMobile: "10px",
+            menuButton: "10px",
+          },
+          colors: {
+            connectButtonBackground: getTailwindColor("succinct.teal-10"),
+            accentColor: getTailwindColor("succinct.neon"),
+            accentColorForeground: getTailwindColor("succinct.black"),
+            connectButtonInnerBackground: getTailwindColor("succinct.teal-20"),
+          },
         })}
         chains={[]}
       >
