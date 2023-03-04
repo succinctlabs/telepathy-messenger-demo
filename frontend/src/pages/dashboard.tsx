@@ -17,7 +17,7 @@ import { graphSDK } from "@/lib/graphSDK";
 
 export default function Dashboard() {
   const [selectedChain, setSelectedChain] = useState<ChainId | "all">("all");
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [viewAll, setViewAll] = useState(false);
 
   const provider = useProvider();
@@ -82,7 +82,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <Button
-                  className="h-[50px] w-[50px]"
+                  className="h-[50px] w-[50px] ring-offset-succinct-teal-5"
                   onClick={refreshSent}
                   disabled={loadingSent || loadingStatuses}
                 >
@@ -90,12 +90,12 @@ export default function Dashboard() {
                 </Button>
               </div>
             </div>
-            <MessagesTable>
+            <MessagesTable enableSelect>
               {loadingSent &&
                 Array.from(Array(9).keys()).map((_, i) => (
                   <td
                     key={i}
-                    colSpan={6}
+                    colSpan={7}
                     className="p-4 font-mono rounded-xl h-[56px]
                         relative before:absolute before:inset-0 before:-translate-x-full
                         before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r
@@ -116,7 +116,7 @@ export default function Dashboard() {
                 Array.from(Array(9).keys()).map((_, i) => (
                   <td
                     key={i}
-                    colSpan={6}
+                    colSpan={7}
                     className="p-4 font-mono rounded-xl h-[56px]"
                   />
                 ))}
@@ -126,7 +126,9 @@ export default function Dashboard() {
                     <h2 className="text-3xl">No messages yet</h2>
                     <h6>New messages can take ~12 seconds to show up</h6>
                     <Link href="/">
-                      <Button size="xl">Send a message</Button>
+                      <Button size="xl" className="ring-offset-succinct-teal-5">
+                        Send a message
+                      </Button>
                     </Link>
                   </div>
                 </td>
@@ -135,6 +137,9 @@ export default function Dashboard() {
               {!loadingSent &&
                 sentMessages.map((message, idx) => (
                   <MessageRow
+                    selected={selectedIndex === idx}
+                    setSelected={setSelectedIndex}
+                    index={idx}
                     sentMessage={message}
                     key={message.id}
                     executionStatus={executionStatuses[idx]}
