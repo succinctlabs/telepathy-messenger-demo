@@ -20,6 +20,7 @@ export const ALL_CHAINS = Array.from(
 
 export enum ContractId {
   TelepathyRouter = "TelepathyRouter",
+  CrossChainMailer = "CrossChainMailer",
   CrossChainMailbox = "CrossChainMailbox",
 }
 
@@ -28,11 +29,12 @@ export const CONTRACTS: Record<
   string | Partial<Record<ChainId, string>>
 > = {
   [ContractId.TelepathyRouter]: {
-    [ChainId.Goerli]: "0x8A4E030BFc70740C8C5d5d48E4CF4915B512B98A",
-    [ChainId.Gnosis]: "0x8A4E030BFc70740C8C5d5d48E4CF4915B512B98A",
-    [ChainId.Polygon]: "0x8A4E030BFc70740C8C5d5d48E4CF4915B512B98A",
+    [ChainId.Goerli]: "0x68cb68162524661Ae764112726A7e494a0848f23",
+    [ChainId.Gnosis]: "0x68cb68162524661Ae764112726A7e494a0848f23",
+    [ChainId.Polygon]: "0x68cb68162524661Ae764112726A7e494a0848f23",
   },
-  [ContractId.CrossChainMailbox]: "0x6bcb54dC54A9446797724bd502d179242AcEa0CE",
+  [ContractId.CrossChainMailbox]: "0x18043308b8Dc2AaC4f4a94BD027A10daEF0199F9",
+  [ContractId.CrossChainMailer]: "0x2f071e002e1B008CFb2AA0Ff78cd83B215cC6ce0",
 };
 
 export const SUBGRAPHS: Partial<Record<ChainId, string>> = {

@@ -59,10 +59,11 @@ export function MessageRow({
   sentMessage: SentMessage;
   executionStatus?: ExecutionStatus;
 }) {
+  console.log(utils.toUtf8String(sentMessage.messageData));
   return (
     <Fragment>
       <td className="font-mono whitespace-nowrap">
-        {shortenAddress(sentMessage.messageSender)}
+        {shortenAddress(sentMessage.transactionOrigin)}
       </td>
       <td className="font-mono whitespace-nowrap">
         {titlecase(ChainId.toName(sentMessage.messageSenderChainID))}

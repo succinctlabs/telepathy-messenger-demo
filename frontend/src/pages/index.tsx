@@ -12,7 +12,10 @@ import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/Backgrou
 import BigChainSelector from "@/components/BigChainSelector/BigChainSelector";
 import Button from "@/components/Button";
 import { CodeBlock } from "@/components/CodeBlock";
-import { ITelepathyBroadcaster__factory } from "@/contracts";
+import {
+  CrossChainMailer__factory,
+  ITelepathyBroadcaster__factory,
+} from "@/contracts";
 import { CHAIN_MAP, ContractId, CONTRACTS, SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import styles from "@/styles/Index.module.css";
@@ -42,10 +45,9 @@ export default function Home() {
 
   async function sendTransaction() {
     //send message
-    const telepathyContract =
-      CONTRACTS[ContractId.TelepathyRouter][selectedSourceChain];
-    const mailboxContract = CONTRACTS[ContractId.CrossChainMailbox];
-    if (!telepathyContract || !mailboxContract) {
+    const mailerContract = CONTRACTS[ContractId.CrossChainMailer] as string;
+    const mailboxContract = CONTRACTS[ContractId.CrossChainMailbox] as string;
+    if (!mailerContract || !mailboxContract) {
       throw new Error("Contract not found");
     }
     if (!switchNetwork?.switchNetworkAsync) {
@@ -75,13 +77,10 @@ export default function Home() {
       toast.error("Failed to load signer.");
       return;
     }
-    const telepathy = ITelepathyBroadcaster__factory.connect(
-      telepathyContract,
-      signer
-    );
+    const mailer = CrossChainMailer__factory.connect(mailerContract, signer);
     let tx;
     try {
-      tx = await telepathy["send(uint32,address,bytes)"](
+      tx = await mailer.sendMail(
         selectedTargetChain,
         mailboxContract,
         utils.toUtf8Bytes(message)

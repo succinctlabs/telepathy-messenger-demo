@@ -122,8 +122,9 @@ export default function Dashboard() {
                 ))}
               {!loadingSent && sentMessages.length === 0 && (
                 <td>
-                  <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-4 items-center justify-center">
+                  <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-3 items-center justify-center">
                     <h2 className="text-3xl">No messages yet</h2>
+                    <h6>New messages can take ~12 seconds to show up</h6>
                     <Link href="/">
                       <Button size="xl">Send a message</Button>
                     </Link>

@@ -44,7 +44,7 @@ export function useSentMessages(sender?: string, sourceChain?: ChainId) {
       {
         where: {
           messageSenderChainID: sourceChain?.toString(),
-          messageSender: sender,
+          transactionOrigin: sender,
           messageReceiver: addressToBytes32(
             CONTRACTS[ContractId.CrossChainMailbox] as string
           ),
