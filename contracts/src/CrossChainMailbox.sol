@@ -7,6 +7,9 @@ import {StringHelper} from "contracts/src/utils/StringHelper.sol";
 import {ITelepathyBroadcaster} from "telepathy/amb/interfaces/ITelepathy.sol";
 import {TelepathyHandler} from "telepathy/amb/interfaces/TelepathyHandler.sol";
 
+/// @title CrossChainMailer
+/// @author Succinct Labs
+/// @notice An example contract for sending messages to other chains, using the TelepathyBroadcaster.
 /// @dev The FeeCollector is for discouraging spam on non-mainnet chains.
 contract CrossChainMailer is FeeCollector, ENSHelper {
     /// @notice The TelepathyBroadcaster contract, which sends messages to other chains.
@@ -29,6 +32,9 @@ contract CrossChainMailer is FeeCollector, ENSHelper {
     }
 }
 
+/// @title CrossChainMailbox
+/// @author Succinct Labs
+/// @notice An example contract for receiving messages from other chains, using the TelepathyHandler.
 contract CrossChainMailbox is TelepathyHandler {
     string[] public messages;
 

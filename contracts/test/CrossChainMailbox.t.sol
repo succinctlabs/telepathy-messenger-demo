@@ -1,7 +1,5 @@
 pragma solidity ^0.8.16;
 
-import "forge-std/console.sol";
-
 import "forge-std/Vm.sol";
 import "forge-std/Test.sol";
 import {CrossChainMailer, CrossChainMailbox} from "contracts/src/CrossChainMailbox.sol";
