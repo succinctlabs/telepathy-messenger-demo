@@ -1,5 +1,7 @@
 pragma solidity ^0.8.16;
 
+import "forge-std/console.sol";
+
 import "forge-std/Vm.sol";
 import "forge-std/Test.sol";
 import {CrossChainMailer, CrossChainMailbox} from "contracts/src/CrossChainMailbox.sol";
@@ -47,7 +49,7 @@ contract MailboxTest is Test, ENSHelper {
         mailboxSender.setFee(FEE);
 
         alice = payable(makeAddr("alice"));
-        deal(alice, 0.555 ether);
+        deal(alice, 0.01789 ether);
     }
 
     function test_Send() public {
@@ -125,6 +127,7 @@ contract MailboxTest is Test, ENSHelper {
 
         assertEq(mailboxReceiver.messagesLength(), 1);
         string memory message = mailboxReceiver.messages(0);
+        console.log(message);
         assertEq(message, expectedMessage);
         assertEq(address(mailboxSender).balance, FEE);
 
@@ -152,5 +155,26 @@ contract MailboxTest is Test, ENSHelper {
         vm.prank(alice);
         vm.expectRevert();
         mailboxSender.claimFees();
+    }
+
+    function test_formatBalance_WhenGt1Eth() public {
+        string memory balanceStr = StringHelper.formatBalance(1234.5605 ether);
+        assertEq(balanceStr, "1234.56 ETH");
+    }
+
+    function test_formatBalance_WhenLt1Eth() public {
+        string memory balanceStr = StringHelper.formatBalance(0.0234 ether);
+        assertEq(balanceStr, "0.02 ETH");
+    }
+
+    function test_formatBalance_WhenZero() public {
+        string memory balanceStr = StringHelper.formatBalance(0 ether);
+        assertEq(balanceStr, "0.00 ETH");
+    }
+
+    function test_formatBalance_WhenDifferentChain() public {
+        vm.chainId(100);
+        string memory balanceStr = StringHelper.formatBalance(1234.5605 ether);
+        assertEq(balanceStr, "1234.56 xDAI");
     }
 }

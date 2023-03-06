@@ -1,6 +1,5 @@
 pragma solidity ^0.8.16;
 
-import "forge-std/console.sol";
 import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 library StringHelper {
@@ -61,7 +60,6 @@ library StringHelper {
             i--;
         }
 
-        console.log(_balance);
         balanceByteArr[integerDigits] = ".";
         balanceByteArr[integerDigits + 1] = bytes1(uint8(48 + (_balance / 1e17) % 10));
         balanceByteArr[integerDigits + 2] = bytes1(uint8(48 + (_balance / 1e16) % 10));
