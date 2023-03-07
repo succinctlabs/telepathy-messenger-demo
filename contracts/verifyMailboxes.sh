@@ -6,13 +6,27 @@ echo "CONSTUCTOR_ARGS: ${CONSTRUCTOR_ARGS}"
 
 forge build
 
-forge verify-contract $MAILER_ADDRESS_1 contracts/src/CrossChainMailbox.sol:CrossChainMailer $ETHERSCAN_API_KEY_1 --chain 1 --watch --constructor-args $CONSTRUCTOR_ARGS
-forge verify-contract $MAILER_ADDRESS_5 contracts/src/CrossChainMailbox.sol:CrossChainMailer $ETHERSCAN_API_KEY_5 --chain 5 --watch --constructor-args $CONSTRUCTOR_ARGS
-forge verify-contract $MAILER_ADDRESS_100 contracts/src/CrossChainMailbox.sol:CrossChainMailer $ETHERSCAN_API_KEY_100 --chain 100 --verifier-url="https://api.gnosisscan.io/api" --watch --constructor-args $CONSTRUCTOR_ARGS
-forge verify-contract $MAILER_ADDRESS_137 contracts/src/CrossChainMailbox.sol:CrossChainMailer $ETHERSCAN_API_KEY_137 --chain 137 --watch --constructor-args $CONSTRUCTOR_ARGS
+SOURCE_CHAIN_IDS="5 100"
+DESTINATION_CHAINS_IDS="5 100"
 
-forge verify-contract $MAILBOX_ADDRESS_1 contracts/src/CrossChainMailbox.sol:CrossChainMailbox $ETHERSCAN_API_KEY_1 --chain 1 --watch --constructor-args $CONSTRUCTOR_ARGS
-forge verify-contract $MAILBOX_ADDRESS_5 contracts/src/CrossChainMailbox.sol:CrossChainMailbox $ETHERSCAN_API_KEY_5 --chain 5 --watch --constructor-args $CONSTRUCTOR_ARGS
-forge verify-contract $MAILBOX_ADDRESS_56 contracts/src/CrossChainMailbox.sol:CrossChainMailbox $ETHERSCAN_API_KEY_56 --chain 56 --watch --constructor-args $CONSTRUCTOR_ARGS
-forge verify-contract $MAILBOX_ADDRESS_100 contracts/src/CrossChainMailbox.sol:CrossChainMailbox $ETHERSCAN_API_KEY_100 --chain 100 --verifier-url="https://api.gnosisscan.io/api" --watch --constructor-args $CONSTRUCTOR_ARGS
-forge verify-contract $MAILBOX_ADDRESS_137 contracts/src/CrossChainMailbox.sol:CrossChainMailbox $ETHERSCAN_API_KEY_137 --chain 137 --watch --constructor-args $CONSTRUCTOR_ARGS
+for chain_id in $SOURCE_CHAIN_IDS; do
+    address_var=$(echo 'MAILER_ADDRESS_'"${chain_id}" | envsubst)
+    address=$(echo $(eval echo "\$$address_var"))
+
+    etherscan_key_var=$(echo 'ETHERSCAN_API_KEY_'"${chain_id}" | envsubst)
+    etherscan_key=$(echo $(eval echo "\$$etherscan_key_var"))
+
+    echo "Verifying Mailer $address on chain $chain_id"
+    forge verify-contract $address contracts/src/CrossChainMailbox.sol:CrossChainMailer $etherscan_key --chain ${chain_id} --watch --constructor-args $CONSTRUCTOR_ARGS
+done
+
+for chain_id in $DESTINATION_CHAINS_IDS; do
+    address_var=$(echo 'MAILBOX_ADDRESS_'"${chain_id}" | envsubst)
+    address=$(echo $(eval echo "\$$address_var"))
+
+    etherscan_key_var=$(echo 'ETHERSCAN_API_KEY_'"${chain_id}" | envsubst)
+    etherscan_key=$(echo $(eval echo "\$$etherscan_key_var"))
+
+    echo "Verifying Mailbox $address on chain $chain_id"
+    forge verify-contract $address contracts/src/CrossChainMailbox.sol:CrossChainMailbox $etherscan_key --chain ${chain_id} --watch --constructor-args $CONSTRUCTOR_ARGS
+done
