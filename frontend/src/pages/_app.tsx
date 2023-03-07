@@ -11,7 +11,7 @@ import type { AppProps } from "next/app";
 import { Check, X } from "phosphor-react";
 import { Toaster } from "react-hot-toast";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { gnosis, goerli, polygon } from "wagmi/chains";
+import { gnosis, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
 import Layout from "@/components/Layout";
@@ -20,7 +20,7 @@ import { DeepPartial } from "@/lib/types";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const { chains, provider } = configureChains(
-  [goerli, gnosis, polygon],
+  [goerli, gnosis],
   [publicProvider()]
 );
 
