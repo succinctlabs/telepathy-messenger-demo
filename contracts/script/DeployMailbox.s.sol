@@ -6,7 +6,7 @@ import {CrossChainMailer, CrossChainMailbox} from "contracts/src/CrossChainMailb
 import {Strings} from "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 contract Setup is Script {
-    string constant ENV_FILE_PATH = "./contracts/.env";
+    string constant ENV_FILE_PATH = "./contracts/.env.deployments";
     bytes32 CREATE2_SALT = vm.envBytes32("CREATE2_SALT");
     address TELEPATHY_ADDRESS = vm.envAddress("TELEPATHY_ADDRESS");
 

@@ -2,7 +2,7 @@
 SOURCE_CHAIN_IDS=(1 5 100 137)
 DESTINATION_CHAINS_IDS=(1 5 56 100 137)
 
-source .env
+source .env.deployments
 
 CONSTRUCTOR_ARGS=$(cast abi-encode "constructor(address)" $TELEPATHY_ADDRESS)
 echo "CONSTUCTOR_ARGS: ${CONSTRUCTOR_ARGS}"
