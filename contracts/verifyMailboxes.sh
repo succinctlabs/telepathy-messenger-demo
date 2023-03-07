@@ -1,3 +1,6 @@
+# Edit these array to add/remove chains
+SOURCE_CHAIN_IDS=(1 5 100 137)
+DESTINATION_CHAINS_IDS=(1 5 56 100 137)
 
 source .env
 
@@ -5,9 +8,6 @@ CONSTRUCTOR_ARGS=$(cast abi-encode "constructor(address)" $TELEPATHY_ADDRESS)
 echo "CONSTUCTOR_ARGS: ${CONSTRUCTOR_ARGS}"
 
 forge build
-
-SOURCE_CHAIN_IDS="5 100"
-DESTINATION_CHAINS_IDS="5 100"
 
 for chain_id in $SOURCE_CHAIN_IDS; do
     address_var=$(echo 'MAILER_ADDRESS_'"${chain_id}" | envsubst)
