@@ -1,8 +1,17 @@
 import { ChainId } from "./chain";
 
 export const CHAIN_MAP: Partial<Record<ChainId, ChainId[]>> = {
-  [ChainId.Goerli]: [ChainId.Gnosis, ChainId.Polygon],
-  [ChainId.Gnosis]: [ChainId.Goerli, ChainId.Polygon],
+  [ChainId.Goerli]: [ChainId.Gnosis],
+  [ChainId.Gnosis]: [ChainId.Goerli],
+  [ChainId.Mainnet]: [
+    ChainId.Arbitrum,
+    ChainId.Avalanche,
+    ChainId.Binance,
+    ChainId.Gnosis,
+    ChainId.Goerli,
+    ChainId.Optimism,
+    ChainId.Polygon,
+  ],
 };
 
 // Object.keys returns a string[], so we need to cast it to a number[]
@@ -28,11 +37,7 @@ export const CONTRACTS: Record<
   ContractId,
   string | Partial<Record<ChainId, string>>
 > = {
-  [ContractId.TelepathyRouter]: {
-    [ChainId.Goerli]: "0x68cb68162524661Ae764112726A7e494a0848f23",
-    [ChainId.Gnosis]: "0x68cb68162524661Ae764112726A7e494a0848f23",
-    [ChainId.Polygon]: "0x68cb68162524661Ae764112726A7e494a0848f23",
-  },
+  [ContractId.TelepathyRouter]: "0x68cb68162524661Ae764112726A7e494a0848f23",
   [ContractId.CrossChainMailbox]: "0x18043308b8Dc2AaC4f4a94BD027A10daEF0199F9",
   [ContractId.CrossChainMailer]: "0x2f071e002e1B008CFb2AA0Ff78cd83B215cC6ce0",
 };

@@ -25,7 +25,7 @@ export default function Home() {
     "Telepathy uses zero-knowledge succinct proofs in the form of zkSNARKs to generate a validity proof of the state of a chain."
   );
   const [selectedSourceChain, setSelectedSourceChain] = useState(
-    ChainId.Goerli
+    ChainId.Mainnet
   );
   const [selectedTargetChain, setSelectedTargetChain] = useState(
     ChainId.Gnosis
@@ -128,19 +128,26 @@ export default function Home() {
         <div className="grid grid-cols-3 mt-6 space-x-8">
           <div className="col-span-1 flex flex-col space-y-2 w-full text-succinct-teal">
             {/* Chain selectors */}
-            <div className="grid grid-cols-2 space-x-4">
+            <div className="grid grid-cols-2 relative">
               <BigChainSelector
                 name="From"
+                className="pr-3"
                 chains={SOURCE_CHAINS}
                 selectedChain={selectedSourceChain}
                 setSelectedChain={setSelectedSourceChain}
               />
               <BigChainSelector
                 name="To"
+                className="pl-3"
                 chains={CHAIN_MAP[selectedSourceChain] || []}
                 selectedChain={selectedTargetChain}
                 setSelectedChain={setSelectedTargetChain}
               />
+              <div className="absolute left-1/2 translate-x-[-50%] top-1/2 translate-y-[-50%]">
+                <div className={twMerge("relative")}>
+                  <img src="/svgs/arrows.svg" className={twMerge("")} />
+                </div>
+              </div>
             </div>
 
             {/* Message input */}
@@ -197,10 +204,7 @@ export default function Home() {
             <CodeBlock
               sourceChain={selectedSourceChain}
               targetChain={selectedTargetChain}
-              telepathy={
-                CONTRACTS[ContractId.TelepathyRouter]?.[selectedSourceChain] ||
-                ""
-              }
+              telepathy={CONTRACTS[ContractId.TelepathyRouter] || ""}
               mailbox={
                 (CONTRACTS[ContractId.CrossChainMailbox] as string) || ""
               }
