@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import {CrossChainMailer, CrossChainMailbox} from "contracts/src/CrossChainMailbox.sol";
 import {ENSHelper} from "contracts/src/utils/ENSHelper.sol";
 import {StringHelper} from "contracts/src/utils/StringHelper.sol";
-import {MockTelepathy} from "telepathy/amb/mocks/MockTelepathy.sol";
+import {MockTelepathy} from "telepathy-contracts/amb/mocks/MockTelepathy.sol";
 
 contract MailboxTest is Test, ENSHelper {
     uint256 constant FEE = 0.01 ether;
