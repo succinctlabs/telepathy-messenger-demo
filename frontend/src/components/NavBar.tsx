@@ -36,7 +36,9 @@ export default function NavBar() {
       </div>
       <div className="flex flex-row items-center space-x-4">
         <Link href="/">Become an early partner</Link>
-        <ConnectButton />
+        <div className="connect-button-container">
+          <ConnectButton />
+        </div>
       </div>
     </nav>
   );

@@ -1,21 +1,18 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { utils } from "ethers";
 import { useRouter } from "next/router";
-import { CircleNotch, PaperPlaneTilt, Shuffle } from "phosphor-react";
+import { CircleNotch, PaperPlaneTilt } from "phosphor-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
-import { useAccount, useConnect, useSwitchNetwork } from "wagmi";
+import { useAccount, useSwitchNetwork } from "wagmi";
 import { fetchSigner } from "wagmi/actions";
 
 import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/BackgroundDottedLine";
 import BigChainSelector from "@/components/BigChainSelector/BigChainSelector";
 import Button from "@/components/Button";
 import { CodeBlock } from "@/components/CodeBlock";
-import {
-  CrossChainMailer__factory,
-  ITelepathyBroadcaster__factory,
-} from "@/contracts";
+import { CrossChainMailer__factory } from "@/contracts";
 import { CHAIN_MAP, ContractId, CONTRACTS, SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import styles from "@/styles/Index.module.css";
@@ -126,7 +123,7 @@ export default function Home() {
 
         {/* Inputs */}
         <div className="grid grid-cols-3 mt-6 space-x-8">
-          <div className="col-span-1 flex flex-col space-y-2 w-full text-succinct-teal">
+          <div className="col-span-1 flex flex-col space-y-6 w-full text-succinct-teal">
             {/* Chain selectors */}
             <div className="grid grid-cols-2 relative">
               <BigChainSelector
@@ -152,12 +149,7 @@ export default function Home() {
 
             {/* Message input */}
             <div className="w-full grow">
-              <div
-                className={twMerge(
-                  "relative mt-6 h-[300px]",
-                  styles.sendTextarea
-                )}
-              >
+              <div className={twMerge("relative h-full", styles.sendTextarea)}>
                 <textarea
                   className={twMerge(
                     "w-full h-full bg-succinct-teal-10 p-4 customScrollBar"

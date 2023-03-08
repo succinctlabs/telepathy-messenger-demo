@@ -71,6 +71,6 @@ html {
   background: var(--color-succinct-teal);
 }
 
-[data-rk] div {
-  font-weight: normal;
+.connect-button-container, .connect-button-container button, .connect-button-container div {
+  font-weight: normal !important;
 }

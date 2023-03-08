@@ -1,14 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-export default function Button({
-  children,
-  className,
-  onClick,
-  disabled,
-  size = "md",
-  variant = "primary",
-  title = "",
-}: {
+type ButtonProps<T extends React.ElementType> = {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
@@ -16,9 +8,23 @@ export default function Button({
   size?: "sm" | "md" | "lg" | "xl";
   variant?: "primary" | "secondary";
   title?: string;
-}) {
+  as?: T;
+};
+export default function Button<T extends React.ElementType = "button">({
+  children,
+  className,
+  onClick,
+  disabled,
+  size = "md",
+  variant = "primary",
+  title = "",
+  as,
+  ...props
+}: ButtonProps<T> &
+  Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonProps<T>>) {
+  const As = as || "button";
   return (
-    <button
+    <As
       className={twMerge(
         "px-3 py-2 rounded-[10px] space-x-2 flex flex-row items-center justify-center border border-transparent focus:outline-none focus:ring-2 focus:ring-offset-2",
         size === "sm" && "text-sm",
@@ -37,8 +43,9 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       title={title}
+      {...props}
     >
       {children}
-    </button>
+    </As>
   );
 }

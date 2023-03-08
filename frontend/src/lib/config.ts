@@ -33,10 +33,7 @@ export enum ContractId {
   CrossChainMailbox = "CrossChainMailbox",
 }
 
-export const CONTRACTS: Record<
-  ContractId,
-  string | Partial<Record<ChainId, string>>
-> = {
+export const CONTRACTS: Record<ContractId, string> = {
   [ContractId.TelepathyRouter]: "0x68cb68162524661Ae764112726A7e494a0848f23",
   [ContractId.CrossChainMailbox]: "0x18043308b8Dc2AaC4f4a94BD027A10daEF0199F9",
   [ContractId.CrossChainMailer]: "0x2f071e002e1B008CFb2AA0Ff78cd83B215cC6ce0",
