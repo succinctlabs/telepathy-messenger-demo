@@ -1,9 +1,9 @@
 ds-test/=contracts/lib/forge-std/lib/ds-test/src/
-erc4626-tests/=contracts/lib/telepathy/contracts/lib/openzeppelin-contracts/lib/erc4626-tests/
+erc4626-tests/=contracts/lib/telepathy-contracts/contracts/lib/openzeppelin-contracts/lib/erc4626-tests/
 forge-std/=contracts/lib/forge-std/src/
-openzeppelin-contracts-upgradeable/=contracts/lib/telepathy/contracts/lib/openzeppelin-contracts-upgradeable/contracts
-openzeppelin-contracts/=contracts/lib/telepathy/contracts/lib/openzeppelin-contracts/
-optimism-bedrock-contracts/=contracts/lib/telepathy/contracts/lib/optimism-bedrock-contracts/
-telepathy/=contracts/lib/telepathy/contracts/src/
-v3-core/=contracts/lib/telepathy/contracts/lib/v3-core/
+openzeppelin-contracts-upgradeable/=contracts/lib/telepathy-contracts/contracts/lib/openzeppelin-contracts-upgradeable/contracts
+openzeppelin-contracts/=contracts/lib/telepathy-contracts/contracts/lib/openzeppelin-contracts/
+optimism-bedrock-contracts/=contracts/lib/telepathy-contracts/contracts/lib/optimism-bedrock-contracts/
+telepathy/=contracts/lib/telepathy-contracts/contracts/src/
+v3-core/=contracts/lib/telepathy-contracts/contracts/lib/v3-core/
 ens-contracts/=contracts/lib/ens-contracts/contracts/
