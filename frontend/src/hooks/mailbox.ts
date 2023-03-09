@@ -1,28 +1,29 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
-import { SentMessage } from "@/../.graphclient";
 import { CONTRACTS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import { ContractId } from "@/lib/config";
-import { ExecutionStatus } from "@/lib/types";
+import { ExecutedMessage, ExecutionStatus, SentMessage } from "@/lib/types";
 import { addressToBytes32 } from "@/lib/util";
+
+type ExecutionStatusesResult = [ExecutionStatus[], (ExecutedMessage | null)[]];
 
 async function getExecutionStatuses(
   sentMessages: SentMessage[]
-): Promise<ExecutionStatus[]> {
+): Promise<ExecutionStatusesResult> {
   if (sentMessages.length === 0) {
-    return [];
+    return [[], []];
   }
   const res = await axios.post(
     process.env.NEXT_PUBLIC_TELEPATHY_FUNCTIONS_ENDPOINT +
       "/api/telepathy/getExecutionStatuses",
-    { messages: sentMessages }
+    { messages: sentMessages, includeExecutedMessages: true }
   );
   if (res.data.status !== "success") {
     throw new Error("Failed to get execution statuses", res.data);
   }
-  return res.data.data;
+  return [res.data.executionStatuses, res.data.executedMessages];
 }
 
 const PAGE_SIZE = 20;
@@ -82,13 +83,13 @@ export function useSentMessages(sender?: string, sourceChain?: ChainId) {
  */
 export function useExecutionStatuses(sentMessages: SentMessage[]) {
   const [loading, setLoading] = useState(false);
-  const currentPromise = useRef<Promise<ExecutionStatus[]> | null>(null);
-  const [statuses, setStatuses] = useState<ExecutionStatus[]>([]);
+  const currentPromise = useRef<Promise<ExecutionStatusesResult> | null>(null);
+  const [result, setResult] = useState<ExecutionStatusesResult>([[], []]);
 
   async function refresh() {
     setLoading(true);
     if (sentMessages.length === 0) {
-      setStatuses([]);
+      setResult([[], []]);
       setLoading(false);
       return;
     }
@@ -96,7 +97,7 @@ export function useExecutionStatuses(sentMessages: SentMessage[]) {
     currentPromise.current = promise;
     const data = await promise;
     if (currentPromise.current === promise) {
-      setStatuses(data);
+      setResult(data);
       setLoading(false);
     }
   }
@@ -105,5 +106,5 @@ export function useExecutionStatuses(sentMessages: SentMessage[]) {
     refresh();
   }, [sentMessages]);
 
-  return [statuses, loading, refresh] as const;
+  return [result[0], result[1], loading, refresh] as const;
 }

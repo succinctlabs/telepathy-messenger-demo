@@ -10,6 +10,7 @@ import ChainSelector from "@/components/ChainSelector";
 import { MessageRow } from "@/components/MessageRow";
 import { MessagesTable } from "@/components/MessagesTable/MessagesTable";
 import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
+import { useIsMounted } from "@/hooks/isMounted";
 import { useExecutionStatuses, useSentMessages } from "@/hooks/mailbox";
 import { SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
@@ -19,6 +20,7 @@ export default function Dashboard() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [viewAll, setViewAll] = useState(false);
 
+  const isMounted = useIsMounted();
   const account = useAccount();
 
   const [sentMessages, loadingSent, refreshSent] = useSentMessages(
@@ -26,7 +28,7 @@ export default function Dashboard() {
     selectedChain === "all" ? undefined : selectedChain
   );
 
-  const [executionStatuses, loadingStatuses] =
+  const [executionStatuses, executedMessages, loadingStatuses] =
     useExecutionStatuses(sentMessages);
 
   return (
@@ -49,7 +51,7 @@ export default function Dashboard() {
                   selectedChain={selectedChain}
                   setSelectedChain={setSelectedChain}
                 />
-                {account.address && (
+                {isMounted && account.address && (
                   <SliderSelector state={viewAll} setState={setViewAll} />
                 )}
               </div>
@@ -116,6 +118,7 @@ export default function Dashboard() {
                     sentMessage={message}
                     key={message.id}
                     executionStatus={executionStatuses[idx]}
+                    executedMessage={executedMessages[idx]}
                   />
                 ))}
             </MessagesTable>

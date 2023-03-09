@@ -15,3 +15,50 @@ export type DeepPartial<T> = T extends object
       [P in keyof T]?: DeepPartial<T[P]>;
     }
   : T;
+
+// From .graphclient
+export type Scalars = {
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+  BigDecimal: any;
+  BigInt: any;
+  Bytes: any;
+};
+
+export type SentMessage = {
+  id: Scalars["Bytes"];
+  version: Scalars["Int"];
+  msgHash: Scalars["Bytes"];
+  message: Scalars["Bytes"];
+  messageNonce: Scalars["BigInt"];
+  messageSenderChainID: Scalars["BigInt"];
+  messageSender: Scalars["Bytes"];
+  messageReceiverChainID: Scalars["BigInt"];
+  messageReceiver: Scalars["Bytes"];
+  messageData: Scalars["Bytes"];
+  transactionOrigin: Scalars["Bytes"];
+  blockNumber: Scalars["BigInt"];
+  blockTimestamp: Scalars["BigInt"];
+  transactionHash: Scalars["Bytes"];
+};
+
+export type ExecutedMessage = {
+  id: Scalars["Bytes"];
+  version: Scalars["Int"];
+  msgHash: Scalars["Bytes"];
+  message: Scalars["Bytes"];
+  messageNonce: Scalars["BigInt"];
+  messageSenderChainID: Scalars["BigInt"];
+  messageSender: Scalars["Bytes"];
+  messageReceiverChainID: Scalars["BigInt"];
+  messageReceiver: Scalars["Bytes"];
+  messageData: Scalars["Bytes"];
+  status: Scalars["Boolean"];
+  transactionOrigin: Scalars["Bytes"];
+  blockNumber: Scalars["BigInt"];
+  blockTimestamp: Scalars["BigInt"];
+  transactionHash: Scalars["Bytes"];
+};

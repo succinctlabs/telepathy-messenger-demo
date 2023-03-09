@@ -1,4 +1,3 @@
-import { Disclosure, Transition } from "@headlessui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { utils } from "ethers";
 import { useRouter } from "next/router";
@@ -14,6 +13,7 @@ import BigChainSelector from "@/components/BigChainSelector/BigChainSelector";
 import Button from "@/components/Button";
 import { CodeBlock } from "@/components/CodeBlock";
 import { CrossChainMailer__factory } from "@/contracts";
+import { useIsMounted } from "@/hooks/isMounted";
 import { CHAIN_MAP, ContractId, CONTRACTS, SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import styles from "@/styles/Index.module.css";
@@ -31,8 +31,9 @@ export default function Home() {
   // if we are waiting for user to sign txn
   const [waiting, setWaiting] = useState(false);
 
+  const isMounted = useIsMounted();
   const account = useAccount();
-  const walletConnected = !!account.address;
+  const walletConnected = isMounted && !!account.address;
 
   const connectModal = useConnectModal();
   const switchNetwork = useSwitchNetwork();
@@ -162,15 +163,15 @@ export default function Home() {
                     styles.sendTextareaGradient
                   )}
                 >
-                  <Button
+                  {/* <Button
                     className="absolute bottom-4 left-4 focus:ring-offset-succinct-teal-10 pointer-events-auto"
                     size="lg"
                   >
                     <Shuffle />
                     <span>Ask ChatGPT</span>
-                  </Button>
+                  </Button> */}
                   <Button
-                    className="absolute bottom-4 right-4 focus:ring-offset-succinct-teal-10 pointer-events-auto h-[46px] min-w-[50px] justify-center"
+                    className="transition-width absolute bottom-4 right-4 focus:ring-offset-succinct-teal-10 pointer-events-auto h-[46px] min-w-[50px] justify-center"
                     size="lg"
                     variant="secondary"
                     onClick={onSendButton}

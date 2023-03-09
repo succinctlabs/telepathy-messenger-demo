@@ -9,10 +9,9 @@ import {
 import { Fragment, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { SentMessage } from "@/../.graphclient";
 import Button from "@/components/Button";
 import { ChainId } from "@/lib/chain";
-import { ExecutionStatus } from "@/lib/types";
+import { ExecutedMessage, ExecutionStatus, SentMessage } from "@/lib/types";
 import { getExplorerUrl, shortenAddress, titlecase } from "@/lib/util";
 
 const STATUS_MAP: Record<ExecutionStatus, React.ElementType> = {
@@ -89,16 +88,26 @@ export function MessageRow({
   index,
   sentMessage,
   executionStatus,
+  executedMessage,
 }: {
   selected: boolean;
   setSelected: (selected: number | null) => void;
   index: number;
   sentMessage: SentMessage;
   executionStatus?: ExecutionStatus;
+  executedMessage: ExecutedMessage | null;
 }) {
   const onClick = () => {
     setSelected(selected ? null : index);
   };
+
+  const executedMessageUrl =
+    executedMessage !== null && executedMessage?.transactionHash !== undefined
+      ? getExplorerUrl(
+          sentMessage.messageReceiverChainID,
+          "/tx/" + executedMessage.transactionHash
+        )
+      : "#";
 
   const StatusComponent = executionStatus ? STATUS_MAP[executionStatus] : null;
 
@@ -135,7 +144,7 @@ export function MessageRow({
         </a>
       </td>
       <td className="">
-        {StatusComponent ? <StatusComponent href={"#"} /> : ""}
+        {StatusComponent ? <StatusComponent href={executedMessageUrl} /> : ""}
       </td>
       <td>
         <Button className="ring-offset-succinct-teal-5" onClick={onClick}>
