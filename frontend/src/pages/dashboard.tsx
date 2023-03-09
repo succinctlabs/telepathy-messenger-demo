@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ArrowClockwise } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { useAccount, useProvider } from "wagmi";
+import { useAccount } from "wagmi";
 
 import { BackgroundDottedLine } from "@/components/BackgroundDottedLine/BackgroundDottedLine";
 import Button from "@/components/Button";
@@ -13,14 +13,11 @@ import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
 import { useExecutionStatuses, useSentMessages } from "@/hooks/mailbox";
 import { SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
-import { graphSDK } from "@/lib/graphSDK";
 
 export default function Dashboard() {
   const [selectedChain, setSelectedChain] = useState<ChainId | "all">("all");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [viewAll, setViewAll] = useState(false);
-
-  const provider = useProvider();
 
   const account = useAccount();
 
@@ -29,30 +26,8 @@ export default function Dashboard() {
     selectedChain === "all" ? undefined : selectedChain
   );
 
-  // console.log(sentMessages, loadingSent);
-
-  const [executionStatuses, loadingStatuses, refreshStatuses] =
+  const [executionStatuses, loadingStatuses] =
     useExecutionStatuses(sentMessages);
-  // const [receivedMessages, loadingReceived, refreshReceived] =
-  //   useReceivedMessages(
-  //     sentMsgHashes,
-  //     selectedChain === "all" ? undefined : selectedChain
-  //   );
-
-  console.log(executionStatuses, loadingStatuses);
-
-  useEffect(() => {
-    async function test() {
-      const res = await graphSDK.GetSentMessages(
-        { count: 1 },
-        { subgraphName: "succinctlabs/telepathy-goerli" }
-      );
-      console.log(res);
-    }
-    test();
-  }, []);
-
-  // console.log(receivedMessages);
 
   return (
     <div className="w-full flex justify-center mt-10">
@@ -73,9 +48,7 @@ export default function Dashboard() {
                   chains={SOURCE_CHAINS}
                   selectedChain={selectedChain}
                   setSelectedChain={setSelectedChain}
-                >
-                  Goerli
-                </ChainSelector>
+                />
                 {account.address && (
                   <SliderSelector state={viewAll} setState={setViewAll} />
                 )}

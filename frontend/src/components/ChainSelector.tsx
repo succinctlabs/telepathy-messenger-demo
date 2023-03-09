@@ -32,14 +32,12 @@ function ChainItem({
 // const sourceChains =
 
 export default function ChainSelector({
-  children,
   className,
   label,
   chains,
   selectedChain,
   setSelectedChain,
 }: {
-  children: React.ReactNode;
   className?: string;
   label: string;
   chains: ChainId[];
@@ -71,21 +69,6 @@ export default function ChainSelector({
             setSelectedChain={setSelectedChain}
           />
         ))}
-        {/* <ChainItem
-          chain="goerli"
-          name="Goerli"
-          setSelectedChain={setSelectedChain}
-        />
-        <ChainItem
-          chain="gnosis"
-          name="Gnosis"
-          setSelectedChain={setSelectedChain}
-        />
-        <ChainItem
-          chain="mainnet"
-          name="Mainnet"
-          setSelectedChain={setSelectedChain}
-        /> */}
       </Menu.Items>
     </Menu>
   );

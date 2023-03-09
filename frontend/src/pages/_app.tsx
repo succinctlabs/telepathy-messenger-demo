@@ -10,7 +10,7 @@ import merge from "lodash.merge";
 import type { AppProps } from "next/app";
 import { Check, X } from "phosphor-react";
 import { Toaster } from "react-hot-toast";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
 import { gnosis, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 
@@ -20,7 +20,7 @@ import { DeepPartial } from "@/lib/types";
 import "@rainbow-me/rainbowkit/styles.css";
 
 const { chains, provider } = configureChains(
-  [goerli, gnosis],
+  [goerli, gnosis, mainnet],
   [publicProvider()]
 );
 

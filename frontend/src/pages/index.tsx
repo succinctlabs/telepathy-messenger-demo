@@ -2,7 +2,7 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { utils } from "ethers";
 import { useRouter } from "next/router";
-import { CircleNotch, PaperPlaneTilt } from "phosphor-react";
+import { CircleNotch, PaperPlaneTilt, Shuffle } from "phosphor-react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
@@ -20,7 +20,7 @@ import styles from "@/styles/Index.module.css";
 
 export default function Home() {
   const [message, setMessage] = useState(
-    "Telepathy uses zero-knowledge succinct proofs in the form of zkSNARKs to generate a validity proof of the state of a chain."
+    "Telepathy is Ethereum's first interoperability protocol powered by zero-knowledge succinct proofs, in the form of zkSNARKs, to allow for more secure, decentralized and permissionless interoperability. 🪄"
   );
   const [selectedSourceChain, setSelectedSourceChain] = useState(
     ChainId.Mainnet
@@ -66,7 +66,6 @@ export default function Home() {
             selectedSourceChain
           )}.`
         );
-        console.log(e);
         return;
       }
     }
@@ -88,7 +87,6 @@ export default function Home() {
         toast.error("Transaction rejected.");
       } else {
         toast.error("Transaction failed.");
-        console.log(e);
       }
       return;
     } finally {
@@ -96,7 +94,6 @@ export default function Home() {
     }
     toast.success("Transaction sent.");
     router.push("/dashboard");
-    console.log(tx);
   }
 
   async function onSendButton() {
@@ -165,13 +162,13 @@ export default function Home() {
                     styles.sendTextareaGradient
                   )}
                 >
-                  {/* <Button
+                  <Button
                     className="absolute bottom-4 left-4 focus:ring-offset-succinct-teal-10 pointer-events-auto"
                     size="lg"
                   >
                     <Shuffle />
-                    <span>Shuffle</span>
-                  </Button> */}
+                    <span>Ask ChatGPT</span>
+                  </Button>
                   <Button
                     className="absolute bottom-4 right-4 focus:ring-offset-succinct-teal-10 pointer-events-auto h-[46px] min-w-[50px] justify-center"
                     size="lg"
@@ -206,50 +203,6 @@ export default function Home() {
             />
           </div>
         </div>
-
-        {/* FAQ */}
-        <div className="mt-10">
-          <div>
-            <h2 className="text-3xl mt-2">FAQ</h2>
-          </div>
-
-          <div>
-            <Disclosure>
-              {({ open }) => (
-                <>
-                  <Disclosure.Button>
-                    <div className="">button</div>
-                  </Disclosure.Button>
-                  <Transition
-                    show={open}
-                    className="overflow-hidden"
-                    enter="transition transition-[max-height] duration-200 ease-in"
-                    enterFrom="transform max-h-0"
-                    enterTo="transform max-h-screen"
-                    leave="transition transition-[max-height] duration-400 ease-out"
-                    leaveFrom="transform max-h-screen"
-                    leaveTo="transform max-h-0"
-                  >
-                    <Disclosure.Panel static>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the
-                      1960s with the release of Letraset sheets containing Lorem
-                      Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </Disclosure.Panel>
-                  </Transition>
-                </>
-              )}
-            </Disclosure>
-          </div>
-        </div>
-        <div></div>
       </div>
     </div>
   );

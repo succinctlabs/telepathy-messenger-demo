@@ -15,42 +15,28 @@ import { ChainId } from "@/lib/chain";
 import { ExecutionStatus } from "@/lib/types";
 import { getExplorerUrl, shortenAddress, titlecase } from "@/lib/util";
 
-const STATUS_MAP: Record<ExecutionStatus, ReactNode> = {
-  [ExecutionStatus.WAITING_SLOT_FINALITY]: (
-    <StatusLoading>Waiting for slot to finalize</StatusLoading>
-  ),
-  [ExecutionStatus.WAITING_LIGHT_CLIENT_UPDATE]: (
-    <StatusLoading>Waiting for light client update</StatusLoading>
-  ),
-  [ExecutionStatus.WAITING_SAFETY_DELAY]: (
-    <StatusLoading>Waiting for safety threshold</StatusLoading>
-  ),
-  [ExecutionStatus.WAITING_RELAYER]: (
-    <StatusLoading>Waiting for relayer</StatusLoading>
-  ),
-  [ExecutionStatus.EXECUTED_SUCCESS]: <StatusComplete>Complete</StatusComplete>,
-  [ExecutionStatus.EXECUTED_FAIL]: <StatusError>Failed</StatusError>,
-  [ExecutionStatus.UNKNOWN]: <StatusError>Unknown</StatusError>,
+const STATUS_MAP: Record<ExecutionStatus, React.ElementType> = {
+  [ExecutionStatus.WAITING_SLOT_FINALITY]: StatusWaitingSlotFinality,
+  [ExecutionStatus.WAITING_LIGHT_CLIENT_UPDATE]: StatusWaitingLightClient,
+  [ExecutionStatus.WAITING_SAFETY_DELAY]: StatusWaitingSafetyDelay,
+  [ExecutionStatus.WAITING_RELAYER]: StatusWaitingRelayer,
+  [ExecutionStatus.EXECUTED_SUCCESS]: StatusExecutedSuccess,
+  [ExecutionStatus.EXECUTED_FAIL]: StatusExecutedFail,
+  [ExecutionStatus.UNKNOWN]: StatusUnknown,
 };
 
-function StatusComplete({
-  children,
-  href = "#",
-}: {
-  children: ReactNode;
-  href?: string;
-}) {
+function StatusExecutedSuccess({ href = "#" }: { href?: string }) {
   return (
     <a href={href} target="_blank">
       <span className="text-succinct-teal-50 flex flex-row items-center space-x-2">
         <Check weight="bold" size={20} />
-        <span>{children}</span>
+        <span>Delivered</span>
       </span>
     </a>
   );
 }
 
-function StatusLoading({ children }: { children: ReactNode }) {
+function StatusWaiting({ children }: { children: ReactNode }) {
   return (
     <span className="text-succinct-teal flex flex-row items-center space-x-2">
       <CircleNotch className="animate-spin" weight="bold" size={20} />
@@ -59,12 +45,41 @@ function StatusLoading({ children }: { children: ReactNode }) {
   );
 }
 
-function StatusError({ children }: { children: ReactNode }) {
+function StatusWaitingLightClient({ href }: { href?: string }) {
+  return <StatusWaiting>Waiting for light client update</StatusWaiting>;
+}
+
+function StatusWaitingSlotFinality({ href }: { href?: string }) {
+  return <StatusWaiting>Waiting for slot to finalize</StatusWaiting>;
+}
+
+function StatusWaitingSafetyDelay({ href }: { href?: string }) {
+  return <StatusWaiting>Waiting for safety threshold</StatusWaiting>;
+}
+
+function StatusWaitingRelayer({ href }: { href?: string }) {
+  return <StatusWaiting>Waiting for relayer</StatusWaiting>;
+}
+
+function StatusUnknown({ href }: { href?: string }) {
   return (
-    <span className="text-succinct-orange flex flex-row items-center space-x-2">
-      <WarningCircle weight="bold" size={20} />
-      <span>{children}</span>
-    </span>
+    <a href={href} target="_blank">
+      <span className="text-succinct-orange flex flex-row items-center space-x-2">
+        <WarningCircle weight="bold" size={20} />
+        <span>Unknown</span>
+      </span>
+    </a>
+  );
+}
+
+function StatusExecutedFail({ href = "#" }: { href?: string }) {
+  return (
+    <a href={href} target="_blank">
+      <span className="text-succinct-orange flex flex-row items-center space-x-2">
+        <WarningCircle weight="bold" size={20} />
+        <span>Failed</span>
+      </span>
+    </a>
   );
 }
 
@@ -84,6 +99,8 @@ export function MessageRow({
   const onClick = () => {
     setSelected(selected ? null : index);
   };
+
+  const StatusComponent = executionStatus ? STATUS_MAP[executionStatus] : null;
 
   return (
     <Fragment>
@@ -117,7 +134,9 @@ export function MessageRow({
           {sentMessage.transactionHash}
         </a>
       </td>
-      <td className="">{executionStatus ? STATUS_MAP[executionStatus] : ""}</td>
+      <td className="">
+        {StatusComponent ? <StatusComponent href={"#"} /> : ""}
+      </td>
       <td>
         <Button className="ring-offset-succinct-teal-5" onClick={onClick}>
           {selected ? <CaretUp weight="bold" /> : <CaretDown weight="bold" />}

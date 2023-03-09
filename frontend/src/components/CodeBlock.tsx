@@ -11,6 +11,10 @@ function Teal({ children }: { children: ReactNode }) {
   return <span className="text-succinct-teal opacity-70">{children}</span>;
 }
 
+function LightTeal({ children }: { children: ReactNode }) {
+  return <span className="text-succinct-teal">{children}</span>;
+}
+
 function Neon({ children }: { children: ReactNode }) {
   return <span className="text-succinct-neon">{children}</span>;
 }
@@ -80,12 +84,7 @@ export function CodeBlock({
       <Teal>
         <Border>targetChain</Border>
       </Teal>{" "}
-      ={" "}
-      <Orange>
-        {/* <Border> */}
-        {targetChain}
-        {/* </Border> */}
-      </Orange>
+      = <Orange>{targetChain}</Orange>
       <Teal>;</Teal>
     </span>,
     <span key="5">
@@ -95,13 +94,11 @@ export function CodeBlock({
       </Teal>{" "}
       ={" "}
       <Orange>
-        {isUnicodeString ? <Neon>unicode</Neon> : ""}&quot;
-        {/* <Border> */}
+        {isUnicodeString ? <LightTeal>unicode</LightTeal> : ""}&quot;
         {msg
           .replaceAll("\\", "\\\\")
           .replaceAll('"', '\\"')
           .replaceAll("\n", "\\n")}
-        {/* </Border> */}
         &quot;
       </Orange>
       <Teal>;</Teal>
@@ -114,49 +111,25 @@ export function CodeBlock({
       // ex. "Hello world! - vitalik.eth (1.23 ETH)"
     </span>,
     <span>
-      string memory <Teal>ens</Teal> = <Neon>ENSUtil</Neon>.
-      <Neon>reverseResolve</Neon>(<Teal>msg</Teal>.<Teal>sender</Teal>);
+      string memory <Teal>ens</Teal> = <LightTeal>ENSUtil</LightTeal>.
+      <LightTeal>reverseResolve</LightTeal>(<Teal>msg</Teal>.<Teal>sender</Teal>
+      )<Teal>;</Teal>
     </span>,
     <span>
-      string memory <Teal>balance</Teal> = <Neon>StringsUtil</Neon>.
-      <Neon>getBalance</Neon>(<Teal>msg</Teal>.<Teal>sender</Teal>);
+      string memory <Teal>balance</Teal> = <LightTeal>StringsUtil</LightTeal>.
+      <LightTeal>getBalance</LightTeal>(<Teal>msg</Teal>.<Teal>sender</Teal>)
+      <Teal>;</Teal>
     </span>,
     <span key="5">
-      string memory <Teal>message</Teal> = <Neon>string</Neon>.
-      <Neon>concat</Neon>(
-    </span>,
-    <pre>
-      {"    "}
-      <Teal>input</Teal>,
-    </pre>,
-    <pre>
-      {"    "}
-      <Orange>" - "</Orange>,
-    </pre>,
-    <pre>
-      {"    "}
-      <Teal>ens</Teal>
-    </pre>,
-    <pre>
-      {"    "}
-      <Orange>" ("</Orange>,
-    </pre>,
-    <pre>
-      {"    "}
-      <Teal>balance</Teal>,
-    </pre>,
-    <pre>
-      {"    "}
-      <Orange>" ETH)"</Orange>,
-    </pre>,
-    <span>
-      )<Teal>;</Teal>
+      string memory <Teal>message</Teal> = <LightTeal>string</LightTeal>.
+      <LightTeal>concat</LightTeal>(<Teal>input</Teal>, <Teal>ens</Teal>,{" "}
+      <Teal>balance</Teal>)<Teal>;</Teal>
     </span>,
     "",
     <span key="7">
       <Neon>ITelepathyRouter</Neon>(<Teal>router</Teal>).
       <Neon>send</Neon>(<Teal>targetChain</Teal>, <Teal>mailbox</Teal>,{" "}
-      <span className="text-succinct-teal">bytes</span>(<Teal>message</Teal>))
+      <LightTeal>bytes</LightTeal>(<Teal>message</Teal>))
       <Teal>;</Teal>
     </span>,
   ];
@@ -185,23 +158,6 @@ export function CodeBlock({
             </div>
           ))}
         </pre>
-        {/* <pre
-          ref={ref}
-          className={clsx(
-            "table-cell h-full flex-col relative customScrollBar whitespace-pre-wrap" 
-          )}
-        >
-          {codeLines.map((line, lineNum) => (
-            <div key={lineNum}>{line}</div>
-          ))}
-        </pre> */}
-        {/* <Button
-          className="absolute bottom-4 right-4 focus:ring-offset-[#0A1B2A]"
-          onClick={copyToClipboard}
-        >
-          <Copy />
-          <span>Copy snippet</span>
-        </Button> */}
       </div>
       <div className="flex flex-row justify-end pt-4">
         <Button
@@ -211,8 +167,6 @@ export function CodeBlock({
           href="https://github.com/succinctlabs/messenger-demo/blob/main/contracts/src/CrossChainMailbox.sol#L30"
           className=" focus:ring-offset-[#0A1B2A]"
         >
-          {/* <Copy />
-          <span>Copy snippet</span> */}
           <span>View on GitHub</span>
           <ArrowSquareOut weight="bold" />
         </Button>
