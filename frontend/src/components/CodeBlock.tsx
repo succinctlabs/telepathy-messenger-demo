@@ -1,11 +1,11 @@
-import { ArrowSquareOut, Copy, GithubLogo } from "phosphor-react";
+import Link from "next/link";
+import { ArrowSquareOut } from "phosphor-react";
 import { createRef, ReactNode } from "react";
 
 import Button from "./Button";
 
 import { ChainId } from "@/lib/chain";
 import { getExplorerUrl } from "@/lib/util";
-import Link from "next/link";
 
 function Teal({ children }: { children: ReactNode }) {
   return <span className="text-succinct-teal opacity-70">{children}</span>;

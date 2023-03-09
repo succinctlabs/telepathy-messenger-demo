@@ -1,3 +1,4 @@
+import { Disclosure, Transition } from "@headlessui/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { utils } from "ethers";
 import { useRouter } from "next/router";
@@ -121,8 +122,9 @@ export default function Home() {
           <BackgroundDottedLine />
         </div>
 
-        {/* Inputs */}
+        {/* Messenger */}
         <div className="grid grid-cols-3 mt-6 space-x-8">
+          {/* Inputs */}
           <div className="col-span-1 flex flex-col space-y-6 w-full text-succinct-teal">
             {/* Chain selectors */}
             <div className="grid grid-cols-2 relative">
@@ -204,6 +206,50 @@ export default function Home() {
             />
           </div>
         </div>
+
+        {/* FAQ */}
+        <div className="mt-10">
+          <div>
+            <h2 className="text-3xl mt-2">FAQ</h2>
+          </div>
+
+          <div>
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <Disclosure.Button>
+                    <div className="">button</div>
+                  </Disclosure.Button>
+                  <Transition
+                    show={open}
+                    className="overflow-hidden"
+                    enter="transition transition-[max-height] duration-200 ease-in"
+                    enterFrom="transform max-h-0"
+                    enterTo="transform max-h-screen"
+                    leave="transition transition-[max-height] duration-400 ease-out"
+                    leaveFrom="transform max-h-screen"
+                    leaveTo="transform max-h-0"
+                  >
+                    <Disclosure.Panel static>
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s, when an unknown
+                      printer took a galley of type and scrambled it to make a
+                      type specimen book. It has survived not only five
+                      centuries, but also the leap into electronic typesetting,
+                      remaining essentially unchanged. It was popularised in the
+                      1960s with the release of Letraset sheets containing Lorem
+                      Ipsum passages, and more recently with desktop publishing
+                      software like Aldus PageMaker including versions of Lorem
+                      Ipsum.
+                    </Disclosure.Panel>
+                  </Transition>
+                </>
+              )}
+            </Disclosure>
+          </div>
+        </div>
+        <div></div>
       </div>
     </div>
   );
