@@ -67,8 +67,8 @@ library StringHelper {
 
         // ETH for mainnet, xDAI for Gnosis, etc
         string memory currencyStr;
-        if (block.chainid == 56) {
-            currencyStr = " BNB";
+        if (block.chainid == 5) {
+            currencyStr = " gETH";
         } else if (block.chainid == 100) {
             currencyStr = " xDAI";
         } else if (block.chainid == 137) {
