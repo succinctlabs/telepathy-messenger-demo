@@ -13,7 +13,7 @@ export function MobileMessage({
   executedMessage,
 }: {
   sentMessage: SentMessage;
-  executionStatus: ExecutionStatus;
+  executionStatus: ExecutionStatus | null | undefined;
   executedMessage: ExecutedMessage | null;
 }) {
   return (

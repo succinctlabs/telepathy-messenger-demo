@@ -21,7 +21,7 @@ export function MessageRow({
   setSelected: (selected: number | null) => void;
   index: number;
   sentMessage: SentMessage;
-  executionStatus?: ExecutionStatus;
+  executionStatus?: ExecutionStatus | null | undefined;
   executedMessage: ExecutedMessage | null;
 }) {
   const onClick = () => {
