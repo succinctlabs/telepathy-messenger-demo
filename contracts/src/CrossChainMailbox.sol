@@ -43,7 +43,7 @@ contract CrossChainMailbox is TelepathyHandler {
 
     event MessageReceived(uint32 indexed sourceChainId, address indexed sourceAddress, string message);
 
-    constructor(address _telepathyReceiever) TelepathyHandler(_telepathyReceiever) {}
+    constructor(address _telepathyRouter) TelepathyHandler(_telepathyRouter) {}
 
     function handleTelepathyImpl(uint32 _sourceChainId, address _sourceAddress, bytes memory _message)
         internal

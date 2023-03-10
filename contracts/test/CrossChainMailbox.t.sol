@@ -157,17 +157,17 @@ contract MailboxTest is Test, ENSHelper {
 
     function test_formatBalance_WhenGt1Eth() public {
         string memory balanceStr = StringHelper.formatBalance(1234.5605 ether);
-        assertEq(balanceStr, "1234.56 ETH");
+        assertEq(balanceStr, "1234.56 gETH");
     }
 
     function test_formatBalance_WhenLt1Eth() public {
         string memory balanceStr = StringHelper.formatBalance(0.0234 ether);
-        assertEq(balanceStr, "0.02 ETH");
+        assertEq(balanceStr, "0.02 gETH");
     }
 
     function test_formatBalance_WhenZero() public {
         string memory balanceStr = StringHelper.formatBalance(0 ether);
-        assertEq(balanceStr, "0.00 ETH");
+        assertEq(balanceStr, "0.00 gETH");
     }
 
     function test_formatBalance_WhenDifferentChain() public {
