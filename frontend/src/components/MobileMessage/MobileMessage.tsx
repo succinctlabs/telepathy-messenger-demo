@@ -25,15 +25,16 @@ export function MobileMessage({
           //   "text-succinct-black bg-succinct-teal"
         )}
       >
-        <div>
-          Message from{" "}
-          <span className="capitalize">
-            {ChainId.toName(sentMessage.messageSenderChainID)}
-          </span>{" "}
-          to{" "}
-          <span className="capitalize">
-            {ChainId.toName(sentMessage.messageReceiverChainID)}
-          </span>{" "}
+        <div className="flex flex-row flex-wrap gap-1.5">
+          <span>
+            <span className="capitalize">
+              {ChainId.toName(sentMessage.messageSenderChainID)}
+            </span>{" "}
+            to{" "}
+            <span className="capitalize">
+              {ChainId.toName(sentMessage.messageReceiverChainID)}
+            </span>
+          </span>
           <a
             href={getExplorerUrl(
               sentMessage.messageSenderChainID,
@@ -55,7 +56,7 @@ export function MobileMessage({
           executedMessage={executedMessage}
         />
       </div>
-      <pre className="whitespace-pre-wrap p-4 overflow-auto">
+      <pre className="whitespace-pre-wrap p-4 overflow-auto break-words">
         {utils.toUtf8String(sentMessage.messageData)}
       </pre>
     </div>

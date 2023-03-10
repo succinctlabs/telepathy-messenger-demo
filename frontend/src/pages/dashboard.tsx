@@ -58,7 +58,7 @@ export default function Dashboard() {
               </div>
               <div className="">
                 <Button
-                  className="h-[50px] w-[50px] ring-offset-succinct-teal-5"
+                  className="h-[50px] w-[50px] ring-offset-succinct-teal-5 bg-succinct-teal-10"
                   onClick={refreshSent}
                   disabled={loadingSent || loadingStatuses}
                 >

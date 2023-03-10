@@ -30,7 +30,7 @@ export default function NavBar() {
           <Image
             src={SuccinctLogo}
             alt="Succinct Labs logo"
-            className="min-w-[100px]"
+            className="min-w-[110px] mt-0.5"
           />
         </Link>
         <NavLink href="/" name="Messenger" />
