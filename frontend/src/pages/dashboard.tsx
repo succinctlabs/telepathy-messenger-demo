@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import ChainSelector from "@/components/ChainSelector";
 import { MessageRow } from "@/components/MessageRow";
 import { MessagesTable } from "@/components/MessagesTable/MessagesTable";
+import { MobileMessage } from "@/components/MobileMessage/MobileMessage";
 import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
 import { useIsMounted } from "@/hooks/isMounted";
 import { useExecutionStatuses, useSentMessages } from "@/hooks/mailbox";
@@ -43,8 +44,8 @@ export default function Dashboard() {
           </div>
           <BackgroundDottedLine />
           <div className="relative">
-            <div className="flex flex-row justify-between">
-              <div className="flex flex-row space-x-2">
+            <div className="flex flex-row flex-wrap gap-2 justify-between">
+              <div className="flex flex-row flex-wrap gap-2">
                 <ChainSelector
                   label="From"
                   chains={SOURCE_CHAINS}
@@ -55,7 +56,7 @@ export default function Dashboard() {
                   <SliderSelector state={viewAll} setState={setViewAll} />
                 )}
               </div>
-              <div>
+              <div className="">
                 <Button
                   className="h-[50px] w-[50px] ring-offset-succinct-teal-5"
                   onClick={refreshSent}
@@ -65,7 +66,7 @@ export default function Dashboard() {
                 </Button>
               </div>
             </div>
-            <MessagesTable enableSelect>
+            <MessagesTable enableSelect className="hidden md:visible">
               {loadingSent &&
                 Array.from(Array(9).keys()).map((_, i) => (
                   <td
@@ -122,6 +123,17 @@ export default function Dashboard() {
                   />
                 ))}
             </MessagesTable>
+            <div className="mt-4 space-y-4">
+              {sentMessages.length > 0 &&
+                sentMessages.map((message, idx) => (
+                  <MobileMessage
+                    key={message.id}
+                    sentMessage={message}
+                    executionStatus={executionStatuses[idx]}
+                    executedMessage={executedMessages[idx]}
+                  />
+                ))}
+            </div>
           </div>
         </div>
       </div>

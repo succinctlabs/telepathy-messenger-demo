@@ -32,8 +32,8 @@ const ChainItem = forwardRef<HTMLDivElement, ChainItemProps>(
           height={50}
           width={140}
           alt={`${chainName} logo`}
-          style={{ maxHeight: "35px" }}
           draggable={false}
+          className="max-w-[80%] max-h-[35px]"
         />
       </div>
     );

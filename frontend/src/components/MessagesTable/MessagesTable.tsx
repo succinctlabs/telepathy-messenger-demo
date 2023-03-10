@@ -1,34 +1,32 @@
-import { Children, MouseEvent, ReactNode, useState } from "react";
+import { Children, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
-
-const COLUMNS = [
-  "SENDER",
-  "SOURCE",
-  "TARGET",
-  "MESSAGE",
-  "TRANSACTION",
-  "STATUS",
-  "",
-];
-const WIDTHS = ["140px", "110px", "110px", "auto", "180px", "280px", "80px"];
 
 export function MessagesTable({
   children,
+  className,
 }: {
   children: ReactNode;
+  className?: string;
   enableSelect?: boolean;
 }) {
   const rows = Children.toArray(children);
 
   return (
-    <table className="relative w-full border-separate border-spacing-y-3 table-fixed max-w-full">
+    <table
+      className={twMerge(
+        "relative w-full border-separate border-spacing-y-3 table-fixed max-w-full min-w-[1100px]",
+        className
+      )}
+    >
       <thead>
         <tr className="font-mono text-succinct-teal-50 text-left [&>th]:p-4">
-          {COLUMNS.map((colName, i) => (
-            <th key={colName} style={{ width: WIDTHS[i] }}>
-              {colName}
-            </th>
-          ))}
+          <th className="w-[140px]">SENDER</th>
+          <th className="w-[110px]">SOURCE</th>
+          <th className="w-[110px]">DEST</th>
+          <th className="w-auto min-w-[150px]">MESSAGE</th>
+          <th className="w-[180px]">TRANSACTION</th>
+          <th className="w-[280px]">STATUS</th>
+          <th className="w-[80px]"></th>
         </tr>
       </thead>
       <tbody className="">

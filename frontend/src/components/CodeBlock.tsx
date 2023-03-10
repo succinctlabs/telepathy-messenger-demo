@@ -145,12 +145,12 @@ export function CodeBlock({
   };
 
   return (
-    <div className="bg-[#0A1B2A] h-full relative rounded overflow-hidden p-4">
+    <div className="bg-[#0A1B2A] h-full relative rounded overflow-auto p-4">
       <div className="flex">
         <pre className="h-full table" ref={ref}>
           {codeLines.map((line, lineNum) => (
             <div key={lineNum}>
-              <span className="table-cell w-[36px] text-right pr-4 select-none text-succinct-teal-50">
+              <span className="table-cell min-w-[36px] text-right pr-4 select-none text-succinct-teal opacity-50">
                 {lineNum + 1}
               </span>
               <span className="table-cell whitespace-pre-line">{line}</span>
@@ -158,7 +158,7 @@ export function CodeBlock({
           ))}
         </pre>
       </div>
-      <div className="flex flex-row justify-end pt-4">
+      <div className="flex flex-row justify-start lg:justify-end pt-4">
         <Button
           as={Link}
           target="_blank"
