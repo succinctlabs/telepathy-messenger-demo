@@ -43,3 +43,7 @@ export function getExplorerUrl(chain: ChainId, path: string) {
   }
   return `${explorer}${path}`;
 }
+
+export function getRandomElement<T>(array: T[]) {
+  return array[Math.floor(Math.random() * array.length)];
+}

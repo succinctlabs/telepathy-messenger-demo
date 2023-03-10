@@ -1,8 +1,8 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { utils } from "ethers";
 import { useRouter } from "next/router";
-import { CircleNotch, PaperPlaneTilt, Shuffle } from "phosphor-react";
-import { useState } from "react";
+import { CircleNotch, PaperPlaneTilt } from "phosphor-react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 import { useAccount, useSwitchNetwork } from "wagmi";
@@ -16,6 +16,7 @@ import { CrossChainMailer__factory } from "@/contracts";
 import { useIsMounted } from "@/hooks/isMounted";
 import { CHAIN_MAP, ContractId, CONTRACTS, SOURCE_CHAINS } from "@/lib";
 import { ChainId } from "@/lib/chain";
+import { getRandomElement } from "@/lib/util";
 import styles from "@/styles/Index.module.css";
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
     ChainId.Mainnet
   );
   const [selectedTargetChain, setSelectedTargetChain] = useState(
-    ChainId.Gnosis
+    ChainId.Goerli
   );
   // if we are waiting for user to sign txn
   const [waiting, setWaiting] = useState(false);
@@ -41,6 +42,10 @@ export default function Home() {
   const router = useRouter();
 
   const sendButtonDisabled = !switchNetwork || !message || waiting;
+
+  useEffect(() => {
+    setSelectedTargetChain(getRandomElement(CHAIN_MAP[ChainId.Mainnet] || []));
+  }, []);
 
   async function sendTransaction() {
     //send message

@@ -50,7 +50,6 @@ export function CodeBlock({
   msg: string;
 }) {
   const ref = createRef<HTMLPreElement>();
-  const isUnicodeString = hasNonAscii(msg);
   const codeLines = [
     <span key="1">
       address <Teal>router</Teal> ={" "}
@@ -82,7 +81,7 @@ export function CodeBlock({
     <span key="4">
       uint32{" "}
       <Teal>
-        <Border>targetChain</Border>
+        <Border>destChain</Border>
       </Teal>{" "}
       = <Orange>{targetChain}</Orange>
       <Teal>;</Teal>
@@ -94,7 +93,7 @@ export function CodeBlock({
       </Teal>{" "}
       ={" "}
       <Orange>
-        {isUnicodeString ? <LightTeal>unicode</LightTeal> : ""}&quot;
+        &quot;
         {msg
           .replaceAll("\\", "\\\\")
           .replaceAll('"', '\\"')
@@ -111,13 +110,13 @@ export function CodeBlock({
       // ex. "Hello world! - vitalik.eth (1.23 ETH)"
     </span>,
     <span>
-      string memory <Teal>ens</Teal> = <LightTeal>ENSUtil</LightTeal>.
+      string memory <Teal>ens</Teal> = <LightTeal>ENS</LightTeal>.
       <LightTeal>reverseResolve</LightTeal>(<Teal>msg</Teal>.<Teal>sender</Teal>
       )<Teal>;</Teal>
     </span>,
     <span>
-      string memory <Teal>balance</Teal> = <LightTeal>StringsUtil</LightTeal>.
-      <LightTeal>getBalance</LightTeal>(<Teal>msg</Teal>.<Teal>sender</Teal>)
+      uint256 <Teal>balance</Teal> = <Teal>msg</Teal>.<Teal>sender</Teal>.
+      <Teal>balance</Teal>
       <Teal>;</Teal>
     </span>,
     <span key="5">
@@ -128,7 +127,7 @@ export function CodeBlock({
     "",
     <span key="7">
       <Neon>ITelepathyRouter</Neon>(<Teal>router</Teal>).
-      <Neon>send</Neon>(<Teal>targetChain</Teal>, <Teal>mailbox</Teal>,{" "}
+      <Neon>send</Neon>(<Teal>destChain</Teal>, <Teal>mailbox</Teal>,{" "}
       <LightTeal>bytes</LightTeal>(<Teal>message</Teal>))
       <Teal>;</Teal>
     </span>,
@@ -151,7 +150,7 @@ export function CodeBlock({
         <pre className="h-full table" ref={ref}>
           {codeLines.map((line, lineNum) => (
             <div key={lineNum}>
-              <span className="table-cell w-[36px] text-right pr-4 select-none text-succinct-teal opacity-50">
+              <span className="table-cell w-[36px] text-right pr-4 select-none text-succinct-teal-50">
                 {lineNum + 1}
               </span>
               <span className="table-cell whitespace-pre-line">{line}</span>
@@ -164,10 +163,10 @@ export function CodeBlock({
           as={Link}
           target="_blank"
           rel="noreferrer"
-          href="https://github.com/succinctlabs/messenger-demo/blob/main/contracts/src/CrossChainMailbox.sol#L30"
+          href="https://github.com/succinctlabs/messenger-demo/blob/main/contracts/src/CrossChainMailbox.sol#L34"
           className=" focus:ring-offset-[#0A1B2A]"
         >
-          <span>View on GitHub</span>
+          <span>View full code</span>
           <ArrowSquareOut weight="bold" />
         </Button>
       </div>
