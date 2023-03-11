@@ -31,14 +31,14 @@ export default function NavBar() {
         </Link>
         <NavLink href="/" name="Messenger" />
         <NavLink href="/dashboard" name="Dashboard" />
-        <NavLink href="/explorer" name="Explorer" />
-        <NavLink href="/docs" name="Docs" />
+        <NavLink href="https://scan.succinct.xyz/" name="Explorer" />
+        <NavLink href="https://docs.succinct.xyz/" name="Docs" />
       </div>
       <div className="flex flex-row items-center space-x-4">
-        <Link href="/" className="mt-1">
-          Become an early partner
-        </Link>
-        <ConnectButton />
+        <Link href="/">Become an early partner</Link>
+        <div className="connect-button-container">
+          <ConnectButton />
+        </div>
       </div>
     </nav>
   );

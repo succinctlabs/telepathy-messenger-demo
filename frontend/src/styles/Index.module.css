@@ -24,3 +24,13 @@
 .sendTextareaGradient {
     background: linear-gradient(to top, var(--color-succinct-teal-10) 0%, var(--color-succinct-teal-10) 75%, var(--color-transparent) 100%);
 }
+
+.fadeOverlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, var(--color-succinct-teal-10), var(--color-transparent))
+}

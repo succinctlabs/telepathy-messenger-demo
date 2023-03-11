@@ -70,3 +70,11 @@ html {
 .customScrollBar::-webkit-scrollbar-thumb:hover {
   background: var(--color-succinct-teal);
 }
+
+.connect-button-container, .connect-button-container button, .connect-button-container div {
+  font-weight: normal !important;
+}
+
+body {
+  background: repeating-linear-gradient( 104deg, #191919, #070F16 1px, #070F16 1px, #070F16 25px );
+}

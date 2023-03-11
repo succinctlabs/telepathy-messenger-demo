@@ -1,13 +1,18 @@
-import clsx from "clsx";
-import { Copy } from "phosphor-react";
+import Link from "next/link";
+import { ArrowSquareOut } from "phosphor-react";
 import { createRef, ReactNode } from "react";
-import styles from "@/styles/CodeBlock.module.css";
-import Highlight, { defaultProps } from "prism-react-renderer";
-import { Prism } from "prism-react-renderer";
+
 import Button from "./Button";
+
+import { ChainId } from "@/lib/chain";
+import { getExplorerUrl } from "@/lib/util";
 
 function Teal({ children }: { children: ReactNode }) {
   return <span className="text-succinct-teal opacity-70">{children}</span>;
+}
+
+function LightTeal({ children }: { children: ReactNode }) {
+  return <span className="text-succinct-teal">{children}</span>;
 }
 
 function Neon({ children }: { children: ReactNode }) {
@@ -22,158 +27,147 @@ function Border({ children }: { children: ReactNode }) {
   );
 }
 
+function Orange({ children }: { children: ReactNode }) {
+  return <span className="text-succinct-orange">{children}</span>;
+}
+
 function hasNonAscii(str: string) {
+  // eslint-disable-next-line no-control-regex
   return /[^\x00-\x7F]/.test(str);
 }
 
-// @ts-ignore
-// (typeof global !== "undefined" ? global : window).Prism = Prism;
-// require("prismjs/components/prism-solidity");
-
-// const code = `uint256 chainId = 1;
-// address telepathy = 0x12;
-// address mailbox = 0x12;
-// bytes memory msg = "asdf alsj falksdjf laskj falskfj laskj ";
-
-// ITelepathy(telepathy).send( chainId, mailbox, msg );`;
-
 export function CodeBlock({
-  chainId,
+  sourceChain,
+  targetChain,
   telepathy,
   mailbox,
   msg,
 }: {
-  chainId: number;
+  sourceChain: ChainId;
+  targetChain: ChainId;
   telepathy: string;
   mailbox: string;
   msg: string;
 }) {
   const ref = createRef<HTMLPreElement>();
-  const isUnicodeString = hasNonAscii(msg);
   const codeLines = [
-    <span key="2">
-      address <Teal>telepathy</Teal> = {telepathy}
+    <span key="1">
+      address <Teal>router</Teal> ={" "}
+      <Orange>
+        <a
+          target="_blank"
+          href={getExplorerUrl(sourceChain, `/address/${telepathy}#code`)}
+          className="underline"
+        >
+          {telepathy}
+        </a>
+      </Orange>
       <Teal>;</Teal>
     </span>,
-    <span key="3">
-      address <Teal>mailbox</Teal> = {mailbox}
+    <span key="2">
+      address <Teal>mailbox</Teal> ={" "}
+      <Orange>
+        <a
+          target="_blank"
+          href={getExplorerUrl(targetChain, `/address/${mailbox}#code`)}
+          className="underline"
+        >
+          {mailbox}
+        </a>
+      </Orange>
       <Teal>;</Teal>
     </span>,
     " ",
-    <span key="1">
-      uint256 <Teal>targetChain</Teal> = <Border>{chainId}</Border>
+    <span key="4">
+      uint32{" "}
+      <Teal>
+        <Border>destChain</Border>
+      </Teal>{" "}
+      = <Orange>{targetChain}</Orange>
       <Teal>;</Teal>
     </span>,
-    <span key="4">
-      bytes memory <Teal>msg</Teal> ={" "}
-      {isUnicodeString ? <Neon>unicode</Neon> : ""}&quot;
-      <Border>
+    <span key="5">
+      string memory{" "}
+      <Teal>
+        <Border>input</Border>
+      </Teal>{" "}
+      ={" "}
+      <Orange>
+        &quot;
         {msg
           .replaceAll("\\", "\\\\")
           .replaceAll('"', '\\"')
           .replaceAll("\n", "\\n")}
-      </Border>
-      &quot;
+        &quot;
+      </Orange>
       <Teal>;</Teal>
     </span>,
-    " ",
-    <span key="6">
-      <Teal>
-        <Neon>ITelepathy</Neon>(telepathy).<Neon>send</Neon>(targetChain,
-        mailbox, msg);
-      </Teal>
+    "",
+    <span className="text-succinct-teal-40">
+      // Append ENS/address and balance to the end of the message
+    </span>,
+    <span className="text-succinct-teal-40">
+      // ex. "Hello world! - vitalik.eth (1.23 ETH)"
+    </span>,
+    <span>
+      string memory <Teal>ens</Teal> = <LightTeal>ENS</LightTeal>.
+      <LightTeal>reverseResolve</LightTeal>(<Teal>msg</Teal>.<Teal>sender</Teal>
+      )<Teal>;</Teal>
+    </span>,
+    <span>
+      uint256 <Teal>balance</Teal> = <Teal>msg</Teal>.<Teal>sender</Teal>.
+      <Teal>balance</Teal>
+      <Teal>;</Teal>
+    </span>,
+    <span key="5">
+      string memory <Teal>message</Teal> = <LightTeal>string</LightTeal>.
+      <LightTeal>concat</LightTeal>(<Teal>input</Teal>, <Teal>ens</Teal>,{" "}
+      <Teal>balance</Teal>)<Teal>;</Teal>
+    </span>,
+    "",
+    <span key="7">
+      <Neon>ITelepathyRouter</Neon>(<Teal>router</Teal>).
+      <Neon>send</Neon>(<Teal>destChain</Teal>, <Teal>mailbox</Teal>,{" "}
+      <LightTeal>bytes</LightTeal>(<Teal>message</Teal>))
+      <Teal>;</Teal>
     </span>,
   ];
 
   const copyToClipboard = () => {
     if (ref.current !== null) {
-      navigator.clipboard.writeText(
-        ref.current.innerText.replaceAll("\n \n", "\n\n")
-      );
+      const text = ref.current.innerText
+        .replaceAll("\n \n", "\n\n")
+        .split("\n")
+        .map((line) => line.split("\t").slice(1).join(" "))
+        .join("\n");
+      navigator.clipboard.writeText(text);
     }
   };
 
   return (
-    <div className="bg-[#0A1B2A] h-full relative rounded overflow-hidden">
-      {/* <Highlight
-        {...defaultProps}
-        code={code}
-        language="solidity"
-        prism={Prism}
-      >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre
-            className={clsx(className, "p-4 overflow-x-auto w-full")}
-            style={style}
-          >
-            {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line, key: i })}>
-                <span className="text-right pr-4 select-none">{i + 1}</span>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
-                ))}
-              </div>
-            ))}
-          </pre>
-        )}
-      </Highlight> */}
-      {/* <div className="h-full flex flex-row pl-4 pt-4">
-        <pre className="h-full flex flex-col">
-          {codeLines.map((line, lineNum) => (
-            <span
-              key={lineNum}
-              className="table-cell text-right pr-4 select-none text-succinct-teal opacity-50"
-            >
-              {lineNum + 1}
-            </span>
-          ))}
-        </pre>
-        <pre
-          ref={ref}
-          className={clsx(
-            "table-cell h-full flex-col relative customScrollBar whitespace-pre-wrap"
-          )}
-        >
-          {codeLines.map((line, lineNum) => (
-            <div key={lineNum}>{line}</div>
-          ))}
-        </pre>
-        <Button
-          className="absolute bottom-4 right-4 focus:ring-offset-[#0A1B2A]"
-          onClick={copyToClipboard}
-        >
-          <Copy />
-          <span>Copy snippet</span>
-        </Button>
-      </div>
-    </div> */}
-      <div className="h-full flex pl-4 pt-4">
-        <pre className="h-full table">
+    <div className="bg-[#0A1B2A] h-full relative rounded overflow-hidden p-4">
+      <div className="flex">
+        <pre className="h-full table" ref={ref}>
           {codeLines.map((line, lineNum) => (
             <div key={lineNum}>
-              <span className="table-cell text-right pr-4 select-none text-succinct-teal opacity-50">
+              <span className="table-cell w-[36px] text-right pr-4 select-none text-succinct-teal-50">
                 {lineNum + 1}
               </span>
               <span className="table-cell whitespace-pre-line">{line}</span>
             </div>
           ))}
         </pre>
-        {/* <pre
-          ref={ref}
-          className={clsx(
-            "table-cell h-full flex-col relative customScrollBar whitespace-pre-wrap"
-          )}
-        >
-          {codeLines.map((line, lineNum) => (
-            <div key={lineNum}>{line}</div>
-          ))}
-        </pre> */}
+      </div>
+      <div className="flex flex-row justify-end pt-4">
         <Button
-          className="absolute bottom-4 right-4 focus:ring-offset-[#0A1B2A]"
-          onClick={copyToClipboard}
+          as={Link}
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/succinctlabs/messenger-demo/blob/main/contracts/src/CrossChainMailbox.sol#L34"
+          className=" focus:ring-offset-[#0A1B2A]"
         >
-          <Copy />
-          <span>Copy snippet</span>
+          <span>View full code</span>
+          <ArrowSquareOut weight="bold" />
         </Button>
       </div>
     </div>
