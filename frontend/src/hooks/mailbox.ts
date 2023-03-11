@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useImmer } from "use-immer";
 
 import { CONTRACTS } from "@/lib";
 import { ChainId } from "@/lib/chain";
 import { ContractId } from "@/lib/config";
 import { ExecutedMessage, ExecutionStatus, SentMessage } from "@/lib/types";
 import { addressToBytes32 } from "@/lib/util";
-import { useImmer } from "use-immer";
 
 type ExecutionStatusesResult = readonly [
   ExecutionStatus[],
