@@ -80,7 +80,7 @@ export function MessageStatus({
   executionStatus,
   executedMessage,
 }: {
-  executionStatus: ExecutionStatus | undefined;
+  executionStatus: ExecutionStatus | null | undefined;
   executedMessage: ExecutedMessage | null;
 }) {
   const executedMessageUrl =

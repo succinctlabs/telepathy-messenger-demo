@@ -70,7 +70,7 @@ export default function NavBar() {
                 <Button
                   as={Link}
                   href="/"
-                  className="hidden xl:block bg-transparent text-succinct-neon border-succinct-neon hover:bg-succinct-neon hover:text-succinct-black transition-colors"
+                  className="hidden xl:block bg-transparent text-succinct-neon hover:bg-transparent"
                 >
                   Become an early partner
                 </Button>
