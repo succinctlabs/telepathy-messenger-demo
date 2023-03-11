@@ -19,7 +19,7 @@ function StatusExecutedSuccess({ href = "#" }: { href?: string }) {
     <a href={href} target="_blank">
       <span className="text-succinct-teal-50 flex flex-row items-center space-x-2">
         <Check weight="bold" size={20} />
-        <span>Delivered</span>
+        <span className="underline">Delivered</span>
       </span>
     </a>
   );
@@ -59,7 +59,7 @@ function StatusUnknown({ href }: { href?: string }) {
     <a href={href} target="_blank">
       <span className="text-succinct-orange flex flex-row items-center space-x-2">
         <WarningCircle weight="bold" size={20} />
-        <span>Unknown</span>
+        <span className="underline">Unknown</span>
       </span>
     </a>
   );
