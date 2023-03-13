@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ArrowUpRight } from "phosphor-react";
-import SuccinctLogo from "public/svgs/succinct.svg";
+import TelepathyLogo from "public/svgs/telepathy.svg";
 import { twMerge } from "tailwind-merge";
 
 import Button from "@/components/Button";
@@ -64,10 +64,10 @@ export default function NavBar() {
           <>
             <div className="py-8 flex flex-row items-center justify-between whitespace-nowrap">
               <div className="flex flex-row items-center space-x-6">
-                <Link href="https://succinct.xyz">
+                <Link href="https://telepathy.xyz">
                   <Image
-                    src={SuccinctLogo}
-                    alt="Succinct Labs logo"
+                    src={TelepathyLogo}
+                    alt="Telepathy logo"
                     className="min-w-[110px] mt-0.5"
                   />
                 </Link>
