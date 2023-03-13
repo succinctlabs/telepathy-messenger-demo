@@ -4,12 +4,21 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ArrowUpRight } from "phosphor-react";
 import SuccinctLogo from "public/svgs/succinct.svg";
 import { twMerge } from "tailwind-merge";
 
 import Button from "@/components/Button";
 
-function NavLink({ href, name }: { href: string; name: string }) {
+function NavLink({
+  href,
+  name,
+  openInNewTab = false,
+}: {
+  href: string;
+  name: string;
+  openInNewTab?: boolean;
+}) {
   const { pathname } = useRouter();
   const isActive = pathname === href;
 
@@ -17,11 +26,15 @@ function NavLink({ href, name }: { href: string; name: string }) {
     <Link
       href={href}
       className={twMerge(
-        "mt-1 opacity-50 transition-opacity",
+        "mt-1 opacity-50 transition-opacity flex flex-row gap-1 items-center",
         isActive && "opacity-100"
       )}
+      target={openInNewTab ? "_blank" : undefined}
+      referrerPolicy={openInNewTab ? "no-referrer" : undefined}
     >
-      {name}
+      {name} {isActive && <span className="sr-only">(current)</span>}{" "}
+      {openInNewTab && <span className="sr-only">(opens in a new tab)</span>}
+      {openInNewTab && <ArrowUpRight className="mt-0.5" />}
     </Link>
   );
 }
@@ -61,8 +74,16 @@ export default function NavBar() {
                 <div className="gap-4 hidden xl:flex">
                   <NavLink href="/" name="Messenger" />
                   <NavLink href="/dashboard" name="Dashboard" />
-                  <NavLink href="https://scan.succinct.xyz/" name="Explorer" />
-                  <NavLink href="https://docs.succinct.xyz/" name="Docs" />
+                  <NavLink
+                    href="https://scan.succinct.xyz/"
+                    name="Explorer"
+                    openInNewTab
+                  />
+                  <NavLink
+                    href="https://docs.succinct.xyz/"
+                    name="Docs"
+                    openInNewTab
+                  />
                 </div>
               </div>
 
@@ -70,7 +91,7 @@ export default function NavBar() {
                 <Button
                   as={Link}
                   href="/"
-                  className="hidden xl:block bg-transparent text-succinct-neon hover:bg-transparent"
+                  className="hidden xl:block bg-transparent text-succinct-neon hover:bg-transparent focus:ring-0 focus:ring-offset-0"
                 >
                   Become an early partner
                 </Button>
