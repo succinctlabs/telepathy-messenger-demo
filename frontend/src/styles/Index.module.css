@@ -14,7 +14,6 @@
 
 .sendTextarea {
     border-radius: 10px;
-    cursor: pointer;
     border: 1px solid transparent;
     overflow: hidden;
     background: linear-gradient(var(--color-succinct-teal-10), var(--color-succinct-teal-10)) padding-box, linear-gradient(125deg, var(--color-succinct-teal) 8.73%, var(--color-succinct-teal-10) 39.15%, var(--color-succinct-teal-10) 68.63%, var(--color-succinct-teal) 100%) border-box,

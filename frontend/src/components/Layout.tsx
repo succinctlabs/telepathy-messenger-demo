@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex h-full min-h-screen px-10 lg:px-32 pb-20 flex-col items-center text-white">
+      <main className="flex h-full min-h-screen px-6 md:px-10 lg:px-32 pb-20 flex-col items-center text-white">
         <>
           <div className="min-h-full w-full max-w-[1200px]">
             <NavBar />

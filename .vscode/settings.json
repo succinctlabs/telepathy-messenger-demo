@@ -27,7 +27,10 @@
     "editor.formatOnSave": true
   },
   "solidity.formatter": "forge",
-  "search.exclude": { "lib": true },
+  "search.exclude": { "contracts/lib": true },
+  "files.exclude": {
+    "contracts/lib": true
+  },
   "editor.rulers": [
     {
       "column": 100

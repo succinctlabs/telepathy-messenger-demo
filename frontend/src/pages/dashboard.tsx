@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import ChainSelector from "@/components/ChainSelector";
 import { MessageRow } from "@/components/MessageRow";
 import { MessagesTable } from "@/components/MessagesTable/MessagesTable";
+import { MobileMessage } from "@/components/MobileMessage/MobileMessage";
 import { SliderSelector } from "@/components/SliderSelector/SliderSelector";
 import { useIsMounted } from "@/hooks/isMounted";
 import { useExecutionStatuses, useSentMessages } from "@/hooks/mailbox";
@@ -23,13 +24,19 @@ export default function Dashboard() {
   const isMounted = useIsMounted();
   const account = useAccount();
 
-  const [sentMessages, loadingSent, refreshSent] = useSentMessages(
-    viewAll ? undefined : account.address,
-    selectedChain === "all" ? undefined : selectedChain
-  );
+  const [sentMessages, loadingSent, refreshSent, loadMore, noMoreResults] =
+    useSentMessages(
+      viewAll ? undefined : account.address,
+      selectedChain === "all" ? undefined : selectedChain
+    );
 
-  const [executionStatuses, executedMessages, loadingStatuses] =
+  const [executionStatuses, executedMessages, loadingStatuses, resetStatuses] =
     useExecutionStatuses(sentMessages);
+
+  const onClickRefresh = () => {
+    resetStatuses();
+    refreshSent();
+  };
 
   return (
     <div className="w-full flex justify-center mt-10">
@@ -43,8 +50,8 @@ export default function Dashboard() {
           </div>
           <BackgroundDottedLine />
           <div className="relative">
-            <div className="flex flex-row justify-between">
-              <div className="flex flex-row space-x-2">
+            <div className="flex flex-row flex-wrap gap-2 justify-between">
+              <div className="flex flex-row flex-wrap gap-2">
                 <ChainSelector
                   label="From"
                   chains={SOURCE_CHAINS}
@@ -55,17 +62,17 @@ export default function Dashboard() {
                   <SliderSelector state={viewAll} setState={setViewAll} />
                 )}
               </div>
-              <div>
+              <div className="">
                 <Button
-                  className="h-[50px] w-[50px] ring-offset-succinct-teal-5"
-                  onClick={refreshSent}
+                  className="h-[50px] w-[50px] ring-offset-succinct-teal-5 bg-succinct-teal-10"
+                  onClick={onClickRefresh}
                   disabled={loadingSent || loadingStatuses}
                 >
                   <ArrowClockwise weight="bold" size={"20px"} />
                 </Button>
               </div>
             </div>
-            <MessagesTable enableSelect>
+            <MessagesTable enableSelect className="hidden 2xl:table">
               {loadingSent &&
                 Array.from(Array(9).keys()).map((_, i) => (
                   <td
@@ -122,6 +129,24 @@ export default function Dashboard() {
                   />
                 ))}
             </MessagesTable>
+            <div className="mt-4 space-y-4 2xl:hidden">
+              {sentMessages.length > 0 &&
+                sentMessages.map((message, idx) => (
+                  <MobileMessage
+                    key={message.id}
+                    sentMessage={message}
+                    executionStatus={executionStatuses[idx]}
+                    executedMessage={executedMessages[idx]}
+                  />
+                ))}
+            </div>
+            <Button
+              className="mt-4 bg-succinct-teal-10 ring-offset-succinct-teal-5"
+              onClick={loadMore}
+              disabled={loadingSent || loadingStatuses || noMoreResults}
+            >
+              {noMoreResults ? "No more messages" : "Load More"}
+            </Button>
           </div>
         </div>
       </div>

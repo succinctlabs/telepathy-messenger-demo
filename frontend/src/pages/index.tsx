@@ -59,6 +59,7 @@ export default function Home() {
         "Please switch chains in your wallet to " +
           ChainId.toName(selectedSourceChain)
       );
+      setWaiting(false);
       return;
     }
     setWaiting(true);
@@ -72,12 +73,14 @@ export default function Home() {
             selectedSourceChain
           )}.`
         );
+        setWaiting(false);
         return;
       }
     }
     const signer = await fetchSigner({ chainId: selectedSourceChain });
     if (!signer) {
       toast.error("Failed to load signer.");
+      setWaiting(false);
       return;
     }
     const mailer = CrossChainMailer__factory.connect(mailerContract, signer);
@@ -126,7 +129,7 @@ export default function Home() {
         </div>
 
         {/* Messenger */}
-        <div className="grid grid-cols-3 mt-6 space-x-8">
+        <div className="flex flex-col lg:grid lg:grid-cols-3 mt-6 space-y-8 lg:space-y-0 lg:space-x-8">
           {/* Inputs */}
           <div className="col-span-1 flex flex-col space-y-6 w-full text-succinct-teal">
             {/* Chain selectors */}
@@ -157,26 +160,26 @@ export default function Home() {
               <div className={twMerge("relative h-full", styles.sendTextarea)}>
                 <textarea
                   className={twMerge(
-                    "w-full h-full bg-succinct-teal-10 p-4 customScrollBar"
+                    "w-full h-full bg-succinct-teal-10 p-4 customScrollBar min-h-[200px] resize-none"
                   )}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                 />
                 <div
                   className={twMerge(
-                    "absolute w-full h-[100px] bottom-0 left-0 select-none pointer-events-none",
-                    styles.sendTextareaGradient
+                    "w-full p-4 bottom-0 left-0 justify-between"
                   )}
                 >
                   {/* <Button
-                    className="absolute bottom-4 left-4 focus:ring-offset-succinct-teal-10 pointer-events-auto"
+                    className="absolute bottom-4 left-4 focus:ring-offset-succinct-teal-10 pointer-events-auto h-[50px]"
                     size="lg"
                   >
                     <Shuffle />
                     <span>Ask ChatGPT</span>
                   </Button> */}
+                  <span></span>
                   <Button
-                    className="transition-width absolute bottom-4 right-4 focus:ring-offset-succinct-teal-10 pointer-events-auto h-[46px] min-w-[50px] justify-center"
+                    className="transition-width focus:ring-offset-succinct-teal-10 pointer-events-auto h-[50px] min-w-[50px] justify-center"
                     size="lg"
                     variant="secondary"
                     onClick={onSendButton}
