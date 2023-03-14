@@ -1,3 +1,5 @@
+import { Footer } from "@/components/footer/Footer";
+import { SuccinctFooterSection } from "@/components/footer/SuccinctFooterSection";
 import Head from "next/head";
 import { ReactNode } from "react";
 
@@ -20,7 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </>
       </main>
-      {/* <Footer /> */}
+      <SuccinctFooterSection />
     </>
   );
 }
