@@ -125,7 +125,6 @@ contract MailboxTest is Test, ENSHelper {
 
         assertEq(mailboxReceiver.messagesLength(), 1);
         string memory message = mailboxReceiver.messages(0);
-        console.log(message);
         assertEq(message, expectedMessage);
         assertEq(address(mailboxSender).balance, FEE);
 
