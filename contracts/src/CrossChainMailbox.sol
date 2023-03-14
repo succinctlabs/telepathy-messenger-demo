@@ -31,7 +31,7 @@ contract CrossChainMailer is FeeCollector, ENSHelper {
             revert InsufficientFee(msg.value, fee);
         }
         string memory data = StringHelper.formatMessage(_message, msg.sender.balance, ENSHelper.getName(msg.sender));
-        telepathyRouter.sendViaStorage(_destinationChainId, _destinationMailbox, bytes(data));
+        telepathyRouter.send(_destinationChainId, _destinationMailbox, bytes(data));
     }
 }
 
