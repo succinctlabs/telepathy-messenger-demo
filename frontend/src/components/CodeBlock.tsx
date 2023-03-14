@@ -145,8 +145,8 @@ export function CodeBlock({
   };
 
   return (
-    <div className="bg-[#0A1B2A] h-full relative rounded overflow-auto p-4">
-      <div className="flex">
+    <div className="bg-[#0A1B2A] h-full relative rounded overflow-auto p-4 flex flex-col">
+      <div className="flex grow">
         <pre className="h-full table" ref={ref}>
           {codeLines.map((line, lineNum) => (
             <div key={lineNum}>
