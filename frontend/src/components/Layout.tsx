@@ -3,6 +3,8 @@ import { ReactNode } from "react";
 
 import NavBar from "./NavBar";
 
+import { SuccinctFooterSection } from "@/components/footer/SuccinctFooterSection";
+
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
@@ -20,7 +22,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </>
       </main>
-      {/* <Footer /> */}
+      <SuccinctFooterSection />
     </>
   );
 }
