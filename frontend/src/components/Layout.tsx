@@ -1,9 +1,9 @@
-import { Footer } from "@/components/footer/Footer";
-import { SuccinctFooterSection } from "@/components/footer/SuccinctFooterSection";
 import Head from "next/head";
 import { ReactNode } from "react";
 
 import NavBar from "./NavBar";
+
+import { SuccinctFooterSection } from "@/components/footer/SuccinctFooterSection";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
