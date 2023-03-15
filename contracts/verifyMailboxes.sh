@@ -1,6 +1,6 @@
 # Edit these array to add/remove chains
-SOURCE_CHAIN_IDS=(1 5 100 137)
-DESTINATION_CHAINS_IDS=(1 5 56 100 137)
+SOURCE_CHAIN_IDS=(1 5 100)
+DESTINATION_CHAINS_IDS=(1 5 10 56 100 137 42161 43114)
 
 source .env.deployments
 
