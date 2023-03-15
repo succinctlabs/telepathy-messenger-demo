@@ -42,7 +42,7 @@ library StringHelper {
         uint256 integerDigits;
         if (integerAmount > 0) {
             while (true) {
-                if (integerAmount > 10 ** integerDigits) {
+                if (integerAmount >= 10 ** integerDigits) {
                     integerDigits++;
                 } else {
                     break;
