@@ -154,6 +154,11 @@ contract MailboxTest is Test, ENSHelper {
         mailboxSender.claimFees();
     }
 
+    function test_formatBalance_WhenAround1Eth() public {
+        string memory balanceStr = StringHelper.formatBalance(1.56 ether);
+        assertEq(balanceStr, "1.56 gETH");
+    }
+
     function test_formatBalance_WhenGt1Eth() public {
         string memory balanceStr = StringHelper.formatBalance(1234.5605 ether);
         assertEq(balanceStr, "1234.56 gETH");
