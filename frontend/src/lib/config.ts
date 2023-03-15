@@ -34,9 +34,9 @@ export enum ContractId {
 }
 
 export const CONTRACTS: Record<ContractId, string> = {
-  [ContractId.TelepathyRouter]: "0x68cb68162524661Ae764112726A7e494a0848f23",
-  [ContractId.CrossChainMailbox]: "0x18043308b8Dc2AaC4f4a94BD027A10daEF0199F9",
-  [ContractId.CrossChainMailer]: "0x2f071e002e1B008CFb2AA0Ff78cd83B215cC6ce0",
+  [ContractId.TelepathyRouter]: "0x41EA857C32c8Cb42EEFa00AF67862eCFf4eB795a",
+  [ContractId.CrossChainMailbox]: "0xdf6f9938b56b470b6a0d096f8ca955eac5156537",
+  [ContractId.CrossChainMailer]: "0x63eac3ccaf89a50cbd6446d01058ca8dbaf5c871",
 };
 
 export const SUBGRAPHS: Partial<Record<ChainId, string>> = {
