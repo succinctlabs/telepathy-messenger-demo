@@ -21,7 +21,7 @@ import styles from "@/styles/Index.module.css";
 
 export default function Home() {
   const [message, setMessage] = useState(
-    "Telepathy is Ethereum's first interoperability protocol powered by zero-knowledge succinct proofs, in the form of zkSNARKs, to allow for more secure, decentralized and permissionless interoperability. 🪄"
+    "Ethereum’s interoperability just got snarky 🪄"
   );
   const [selectedSourceChain, setSelectedSourceChain] = useState(
     ChainId.Mainnet
@@ -157,17 +157,22 @@ export default function Home() {
 
             {/* Message input */}
             <div className="w-full grow">
-              <div className={twMerge("relative h-full", styles.sendTextarea)}>
+              <div
+                className={twMerge(
+                  "relative h-full flex flex-col",
+                  styles.sendTextarea
+                )}
+              >
                 <textarea
                   className={twMerge(
-                    "w-full h-full bg-succinct-teal-10 p-4 customScrollBar min-h-[200px] resize-none"
+                    "w-full grow block bg-succinct-teal-10 p-4 customScrollBar min-h-[200px] resize-none"
                   )}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                 />
                 <div
                   className={twMerge(
-                    "w-full p-4 bottom-0 left-0 justify-between"
+                    "w-full p-4 flex flex-row justify-between"
                   )}
                 >
                   {/* <Button
