@@ -8,7 +8,7 @@ export function StatusTooltip() {
       <Tooltip id="status-tooltip" clickable>
         <ul className="break-words font-sans font-normal text-base">
           <h2 className="font-bold">
-            The steps for a message to land on the target chain:
+            The steps for a message to land on the destination chain:
           </h2>
           <li>
             <b>Waiting for slot to finalize:</b> 64+ beacon chain slots must
