@@ -18,6 +18,7 @@ import Layout from "@/components/Layout";
 import { getTailwindColor } from "@/lib/theme";
 import { DeepPartial } from "@/lib/types";
 import "@rainbow-me/rainbowkit/styles.css";
+import "react-tooltip/dist/react-tooltip.css";
 
 const { chains, provider } = configureChains(
   [goerli, gnosis, mainnet],
