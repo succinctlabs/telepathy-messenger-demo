@@ -1,10 +1,11 @@
+import Link from "next/link";
 import { Info } from "phosphor-react";
 import { Tooltip } from "react-tooltip";
 
 export function StatusTooltip() {
   return (
     <>
-      <Tooltip id="status-tooltip">
+      <Tooltip id="status-tooltip" clickable>
         <ul className="break-words font-sans font-normal text-base">
           <h2 className="font-bold">
             The steps for a message to land on the target chain:
@@ -14,20 +15,45 @@ export function StatusTooltip() {
             pass so the slot is finalized (~13 min on mainnet)
           </li>
           <li>
-            <b>Waiting for light client update:</b> an operator must generate
-            and submit a zkSNARK proof (our operator currently runs every ~12
-            minutes)
+            <b>Waiting for light client update:</b>{" "}
+            <Link
+              href="https://docs.telepathy.xyz/protocol/actors#operator"
+              target="_blank"
+              referrerPolicy="no-referrer"
+              className="underline"
+            >
+              an operator
+            </Link>{" "}
+            must generate and submit a zkSNARK proof (our operator currently
+            runs every ~12 minutes)
           </li>
           <li>
             <b>Waiting for safety threshold:</b> must wait safety buffer of 2
             minutes
           </li>
           <li>
-            <b>Waiting for relayer:</b> a relayer must relay the message
+            <b>Waiting for relayer:</b>{" "}
+            <Link
+              href="https://docs.telepathy.xyz/protocol/actors#operator"
+              target="_blank"
+              referrerPolicy="no-referrer"
+              className="underline"
+            >
+              a relayer
+            </Link>{" "}
+            must relay the message
           </li>
           <li>
             <b>Delivered:</b> success!
           </li>
+          <Link
+            href="https://docs.telepathy.xyz/protocol/overview"
+            target="_blank"
+            referrerPolicy="no-referrer"
+            className="underline"
+          >
+            More info
+          </Link>
         </ul>
       </Tooltip>
       <Info
