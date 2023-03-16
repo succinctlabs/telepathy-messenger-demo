@@ -90,7 +90,7 @@ export default function NavBar() {
               <div className="flex flex-row items-center space-x-4 mt-1 ml-4">
                 <Button
                   as={Link}
-                  href="/"
+                  href="https://airtable.com/shrKT6HrHi2oDcmrf"
                   className="hidden xl:block bg-transparent text-succinct-neon hover:bg-transparent focus:ring-0 focus:ring-offset-0"
                 >
                   Become an early partner
@@ -124,7 +124,7 @@ export default function NavBar() {
                 <MobileNavLink href="https://docs.succinct.xyz/" name="Docs" />
                 <Button
                   as="a"
-                  href="https://succinct.xyz"
+                  href="https://airtable.com/shrKT6HrHi2oDcmrf"
                   className="w-full text-succinct-neon bg-transparent border-succinct-neon hover:bg-succinct-neon hover:text-succinct-black"
                 >
                   Become an early partner

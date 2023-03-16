@@ -106,7 +106,7 @@ export default function Dashboard() {
                 <td>
                   <div className="absolute w-full h-full top-0 left-0 z-10 bg-gradient-to-b from-transparent to-succinct-black flex flex-col space-y-3 items-center justify-center">
                     <h2 className="text-3xl">No messages yet</h2>
-                    <h6>New messages can take ~12 seconds to show up</h6>
+                    <h6>New messages may take a few minutes to show up</h6>
                     <Link href="/">
                       <Button size="xl" className="ring-offset-succinct-teal-5">
                         Send a message
