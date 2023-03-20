@@ -29,7 +29,8 @@ export function MessagesTable({
           <th className="w-[180px]">TRANSACTION</th>
           <th className="w-[280px]">
             <div className="flex flex-row items-center gap-2">
-              STATUS <StatusTooltip />
+              STATUS
+              <StatusTooltip />
             </div>
           </th>
           <th className="w-[80px]"></th>

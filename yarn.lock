@@ -5621,7 +5621,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-hot-toast: ^2.4.0
-    react-tooltip: ^5.10.0
+    react-tooltip: 5.10.1-beta.4
     tailwind-merge: ^1.10.0
     tailwindcss: ^3.2.7
     typechain: ^8.1.1
@@ -9558,16 +9558,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tooltip@npm:^5.10.0":
-  version: 5.10.0
-  resolution: "react-tooltip@npm:5.10.0"
+"react-tooltip@npm:5.10.1-beta.4":
+  version: 5.10.1-beta.4
+  resolution: "react-tooltip@npm:5.10.1-beta.4"
   dependencies:
     "@floating-ui/dom": 1.2.3
     classnames: ^2.3.2
   peerDependencies:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
-  checksum: b1fdfa27cecc632afb418e1deb2f3184f69ca61e007bae28b43d91ea45857cf640f3754ba6e8148a35fc6f6ed0e0572d36a4f79e0865d0ea6940b9ddaaeaede9
+  checksum: f96c707a62fe5e957972368af1cecaf06eb00cd25d6751ed9a132ecbfbc8d499a221e2b27b74e53d1b65af42cb1cbd2975313de46f4c22b94a2e8fd12b0833b1
   languageName: node
   linkType: hard
 
