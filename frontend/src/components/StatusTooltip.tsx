@@ -12,7 +12,7 @@ export function StatusTooltip() {
           </h2>
           <li>
             <b>Waiting for slot to finalize:</b> 64+ beacon chain slots must
-            pass so the slot is finalized (~13 min on mainnet)
+            pass so the slot is finalized
           </li>
           <li>
             <b>Waiting for light client update:</b>{" "}
@@ -24,8 +24,7 @@ export function StatusTooltip() {
             >
               an operator
             </Link>{" "}
-            must generate and submit a zkSNARK proof (our operator currently
-            runs every ~12 minutes)
+            must generate and submit a zkSNARK proof
           </li>
           <li>
             <b>Waiting for safety threshold:</b> must wait safety buffer of 2
