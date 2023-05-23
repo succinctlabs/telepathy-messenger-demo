@@ -78,3 +78,8 @@ html {
 body {
   background: repeating-linear-gradient( 104deg, #0e171c, #070F16 1px, #070F16 1px, #070F16 25px );
 }
+
+.react-tooltip {
+  z-index: 999999;
+  max-width: 100vw;
+}

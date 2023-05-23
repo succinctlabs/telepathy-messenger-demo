@@ -75,12 +75,12 @@ export default function NavBar() {
                   <NavLink href="/" name="Messenger" />
                   <NavLink href="/dashboard" name="Dashboard" />
                   <NavLink
-                    href="https://scan.succinct.xyz/"
+                    href="https://explorer.telepathy.xyz/"
                     name="Explorer"
                     openInNewTab
                   />
                   <NavLink
-                    href="https://docs.succinct.xyz/"
+                    href="https://explorer.telepathy.xyz/"
                     name="Docs"
                     openInNewTab
                   />
@@ -118,10 +118,10 @@ export default function NavBar() {
                 <MobileNavLink href="/" name="Messenger" />
                 <MobileNavLink href="/dashboard" name="Dashboard" />
                 <MobileNavLink
-                  href="https://scan.succinct.xyz/"
+                  href="https://explorer.telepathy.xyz/"
                   name="Explorer"
                 />
-                <MobileNavLink href="https://docs.succinct.xyz/" name="Docs" />
+                <MobileNavLink href="https://docs.telepathy.xyz/" name="Docs" />
                 <Button
                   as="a"
                   href="https://airtable.com/shrKT6HrHi2oDcmrf"

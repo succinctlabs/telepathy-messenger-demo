@@ -1,6 +1,8 @@
 import { Children, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
+import { StatusTooltip } from "@/components/StatusTooltip";
+
 export function MessagesTable({
   children,
   className,
@@ -25,11 +27,16 @@ export function MessagesTable({
           <th className="w-[110px]">DEST</th>
           <th className="w-auto min-w-[150px]">MESSAGE</th>
           <th className="w-[180px]">TRANSACTION</th>
-          <th className="w-[280px]">STATUS</th>
+          <th className="w-[280px]">
+            <div className="flex flex-row items-center gap-2">
+              STATUS
+              <StatusTooltip />
+            </div>
+          </th>
           <th className="w-[80px]"></th>
         </tr>
       </thead>
-      <tbody className="">
+      <tbody className="relative">
         {rows.map((row, i) => (
           <tr
             key={i}

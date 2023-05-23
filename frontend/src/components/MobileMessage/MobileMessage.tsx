@@ -3,6 +3,7 @@ import { utils } from "ethers";
 import { twMerge } from "tailwind-merge";
 
 import { MessageStatus } from "@/components/MessageStatus";
+import { StatusTooltip } from "@/components/StatusTooltip";
 import { ChainId } from "@/lib/chain";
 import { ExecutedMessage, ExecutionStatus, SentMessage } from "@/lib/types";
 import { getExplorerUrl } from "@/lib/util";
@@ -51,10 +52,13 @@ export function MobileMessage({
             )}
           </a>
         </div>
-        <MessageStatus
-          executionStatus={executionStatus}
-          executedMessage={executedMessage}
-        />
+        <div className="flex flex-row items-center gap-2">
+          <MessageStatus
+            executionStatus={executionStatus}
+            executedMessage={executedMessage}
+          />
+          <StatusTooltip />
+        </div>
       </div>
       <pre className="whitespace-pre-wrap p-4 overflow-auto break-words">
         {utils.toUtf8String(sentMessage.messageData)}

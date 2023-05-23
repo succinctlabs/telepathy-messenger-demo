@@ -49,6 +49,13 @@ export function CodeBlock({
   mailbox: string;
   msg: string;
 }) {
+  const currency =
+    sourceChain === ChainId.Mainnet
+      ? "ETH"
+      : sourceChain === ChainId.Goerli
+      ? "gETH"
+      : "xDAI";
+
   const ref = createRef<HTMLPreElement>();
   const codeLines = [
     <span key="1">
@@ -107,7 +114,7 @@ export function CodeBlock({
       // Append ENS/address and balance to the end of the message
     </span>,
     <span className="text-succinct-teal-40">
-      // ex. "Hello world! - vitalik.eth (1.23 ETH)"
+      // ex. "Hello world! - vitalik.eth (1.23 {currency})"
     </span>,
     <span>
       string memory <Teal>ens</Teal> = <LightTeal>ENS</LightTeal>.

@@ -8,6 +8,7 @@ import {
 import { enableMapSet } from "immer";
 import merge from "lodash.merge";
 import type { AppProps } from "next/app";
+import { GoogleAnalytics } from "nextjs-google-analytics";
 import { Check, X } from "phosphor-react";
 import { Toaster } from "react-hot-toast";
 import { configureChains, createClient, mainnet, WagmiConfig } from "wagmi";
@@ -18,6 +19,7 @@ import Layout from "@/components/Layout";
 import { getTailwindColor } from "@/lib/theme";
 import { DeepPartial } from "@/lib/types";
 import "@rainbow-me/rainbowkit/styles.css";
+import "react-tooltip/dist/react-tooltip.css";
 
 const { chains, provider } = configureChains(
   [goerli, gnosis, mainnet],
@@ -75,6 +77,7 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         />
         <Layout>
+          <GoogleAnalytics />
           <Component {...pageProps} />
         </Layout>
       </RainbowKitProvider>

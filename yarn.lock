@@ -627,6 +627,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^1.2.2":
+  version: 1.2.4
+  resolution: "@floating-ui/core@npm:1.2.4"
+  checksum: 1c163ea1804e2b0a28fda6e32efed0e242d0db8081fd24aab9d1cbb100f94a558709231c483bf74bf09a9204ea6e7845813d43b5322ceb6ee63285308f68f65b
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:1.2.3":
+  version: 1.2.3
+  resolution: "@floating-ui/dom@npm:1.2.3"
+  dependencies:
+    "@floating-ui/core": ^1.2.2
+  checksum: b2428e1fda01d5cba59960bb8c04d7a5f2400200855f206267589533a67303a62fbdf85dc7747fe83c21bb15f4eda67feaaf51ef4a41bb132fd2b785612f1bb4
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -3719,6 +3735,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e
+  languageName: node
+  linkType: hard
+
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -5591,6 +5614,7 @@ __metadata:
     immer: ^9.0.19
     lodash.merge: ^4.6.2
     next: 13.1.6
+    nextjs-google-analytics: ^2.3.3
     phosphor-react: ^1.4.1
     postcss: ^8.4.21
     prism-react-renderer: ^1.3.5
@@ -5598,6 +5622,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     react-hot-toast: ^2.4.0
+    react-tooltip: 5.10.1-beta.4
     tailwind-merge: ^1.10.0
     tailwindcss: ^3.2.7
     typechain: ^8.1.1
@@ -5675,7 +5700,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:~2.3.1, fsevents@npm:~2.3.2":
+"fsevents@npm:^2.3.2, fsevents@npm:~2.3.1, fsevents@npm:~2.3.2":
   version: 2.3.2
   resolution: "fsevents@npm:2.3.2"
   dependencies:
@@ -5685,7 +5710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@~2.3.1#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
+"fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.1#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.2
   resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
   dependencies:
@@ -8314,6 +8339,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nextjs-google-analytics@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "nextjs-google-analytics@npm:2.3.3"
+  dependencies:
+    fsevents: ^2.3.2
+  peerDependencies:
+    next: ">=11.0.0"
+    react: ">=17.0.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  checksum: 5474b9c314d41a3a95574895c62c6039da482035dcf6cee08161ad043e5da5ca0f5a4c5be2e7ffea9cee8148a422ae1332874abc1f0201f30874641ab733d74a
+  languageName: node
+  linkType: hard
+
 "nice-try@npm:^1.0.4":
   version: 1.0.5
   resolution: "nice-try@npm:1.0.5"
@@ -9531,6 +9571,19 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 7ee8ef3aab74c7ae1d70ff34a27643d11ba1a8d62d072c767827d9ff9a520905223e567002e0bf6c772929d8ea1c781a3ba0cc4a563e92b1e3dc2eaa817ecbe8
+  languageName: node
+  linkType: hard
+
+"react-tooltip@npm:5.10.1-beta.4":
+  version: 5.10.1-beta.4
+  resolution: "react-tooltip@npm:5.10.1-beta.4"
+  dependencies:
+    "@floating-ui/dom": 1.2.3
+    classnames: ^2.3.2
+  peerDependencies:
+    react: ">=16.14.0"
+    react-dom: ">=16.14.0"
+  checksum: f96c707a62fe5e957972368af1cecaf06eb00cd25d6751ed9a132ecbfbc8d499a221e2b27b74e53d1b65af42cb1cbd2975313de46f4c22b94a2e8fd12b0833b1
   languageName: node
   linkType: hard
 
